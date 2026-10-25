@@ -89,9 +89,14 @@ export function LandingScrollDemo() {
     <section
       id="quick-demo"
       ref={trackRef}
-      className="relative h-[240vh] bg-[var(--color-bg)] sm:h-[280vh] md:h-[320vh]"
+      className="relative h-[240vh] bg-transparent sm:h-[280vh] md:h-[320vh]"
       aria-label="Bind demo"
     >
+      {/* Solid Bind bg resumes under the card so scrub stays clean */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-[22%] bottom-0 z-0 bg-[var(--color-bg)]"
+      />
       <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-center justify-center px-3 py-3 sm:px-5 sm:py-4 md:px-8">
         {/*
           Fit sticky band: width capped by 1120 / parent / height budget × aspect.
