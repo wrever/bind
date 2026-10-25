@@ -17,7 +17,7 @@ function shortAddr(a: string) {
 
 /**
  * Freighter connect for Bind demo / partner surfaces.
- * Read-only identity + network; signing cover txs comes later with vault wiring.
+ * Identity + network only — does NOT sign vault deposits/claims yet.
  */
 export function FreighterConnect() {
   const [wallet, setWallet] = useState<WalletState>({ status: "loading" });
@@ -109,8 +109,11 @@ export function FreighterConnect() {
 
   if (wallet.status === "connected") {
     return (
-      <div className="inline-flex min-h-[36px] flex-wrap items-center gap-2 border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5">
-        <span className="keel-meta text-[var(--color-accent2)]">LIVE</span>
+      <div
+        className="inline-flex min-h-[36px] flex-wrap items-center gap-2 border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5"
+        title="Wallet identity only — cover txs still use the policy engine / CLI vault"
+      >
+        <span className="keel-meta text-[var(--color-muted)]">ID</span>
         <span className="font-[family-name:var(--font-mono)] text-xs tracking-[0.04em] text-[var(--color-text)]">
           {shortAddr(wallet.address)}
         </span>

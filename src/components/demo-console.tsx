@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { DualTrackNote } from "@/components/chain-status";
 import { FreighterConnect } from "@/components/freighter-connect";
 import { PersistenceStatus } from "@/components/persistence-status";
 
@@ -83,18 +84,22 @@ export function DemoConsole() {
   const n = Number(amount);
   if (!state || !reserves || !account) {
     return (
-      <div className="px-5 py-16 text-[var(--keel-mute)] md:px-10">
+      <div className="px-5 py-16 text-[var(--color-muted)] md:px-10">
         Loading Bind console…
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-5 pb-20 md:px-10">
-      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <div className="relative mx-auto max-w-6xl space-y-8 px-5 pb-20 pt-10 md:px-10 md:pb-24 md:pt-14">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-surface)]/35 to-transparent"
+      />
+      <div className="relative flex flex-col gap-4 border-b border-[var(--color-line)] pb-10 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="keel-meta">[ DM-001 ] · Bind console · Retention Cover</p>
-          <h1 className="mt-1 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
+          <h1 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)]">
             Bind console
           </h1>
           <div className="mt-3 md:hidden">
@@ -147,6 +152,9 @@ export function DemoConsole() {
           </div>
           <div className="mt-3">
             <PersistenceStatus />
+          </div>
+          <div className="mt-4 max-w-xl">
+            <DualTrackNote />
           </div>
         </div>
         <div className="flex flex-col items-start gap-3 md:items-end">

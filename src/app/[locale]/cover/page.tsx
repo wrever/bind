@@ -1,6 +1,10 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import {
+  PageCtaRow,
+  PageHero,
+  PageSection,
+  PageShell,
+} from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
@@ -11,59 +15,58 @@ export default async function CoverPage({ params }: Props) {
   setRequestLocale(locale);
   const t = await getTranslations("Cover");
 
+  const notCovered = [t("not1"), t("not2"), t("not3"), t("not4")];
+
   return (
-    <div className="keel-atmosphere min-h-screen">
-      <SiteHeader />
-      <article className="mx-auto max-w-3xl space-y-8 px-5 pb-16 pt-4 md:px-10">
-        <header>
-          <p className="keel-meta">{t("meta")}</p>
-          <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
-            {t("title")}
-          </h1>
-          <p className="mt-3 text-[var(--color-muted)]">
+    <PageShell>
+      <PageHero
+        meta={t("meta")}
+        title={t("title")}
+        body={
+          <>
             {t("source")}{" "}
-            <code className="text-[var(--color-accent2)]">
+            <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--color-accent2)]">
               docs/COVER_SCHEDULE.md
             </code>
-          </p>
-        </header>
+          </>
+        }
+      />
 
-        <section className="space-y-2 border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold">
-            {t("coveredTitle")}
-          </h2>
-          <p className="text-sm text-[var(--color-muted)]">{t("coveredBody")}</p>
-        </section>
+      <PageSection title={t("coveredTitle")} index="01">
+        <p className="text-[var(--color-text)]">{t("coveredBody")}</p>
+      </PageSection>
 
-        <section className="space-y-2 border border-[var(--color-line)] bg-[var(--color-surface)] p-4">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold">
-            {t("notTitle")}
-          </h2>
-          <ul className="list-disc space-y-1 pl-5 text-sm text-[var(--color-muted)]">
-            <li>{t("not1")}</li>
-            <li>{t("not2")}</li>
-            <li>{t("not3")}</li>
-            <li>{t("not4")}</li>
-          </ul>
-        </section>
+      <PageSection title={t("notTitle")} index="02">
+        <ul className="divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
+          {notCovered.map((line) => (
+            <li
+              key={line}
+              className="flex gap-4 py-4 text-[15px] leading-relaxed md:text-base"
+            >
+              <span
+                className="mt-2 size-1.5 shrink-0 bg-[var(--color-accent)]"
+                aria-hidden
+              />
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </PageSection>
 
-        <section className="space-y-2">
-          <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold">
-            {t("capsTitle")}
-          </h2>
-          <p className="keel-meta">{t("capsMeta")}</p>
-        </section>
+      <PageSection title={t("capsTitle")} index="03">
+        <p className="keel-meta !normal-case !tracking-[0.04em]">
+          {t("capsMeta")}
+        </p>
+      </PageSection>
 
-        <div className="flex flex-wrap gap-3">
-          <Button asChild>
-            <Link href="/integrate">{t("ctaIntegrate")}</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href="/terms">{t("ctaTerms")}</Link>
-          </Button>
-        </div>
-      </article>
-      <SiteFooter />
-    </div>
+      <PageCtaRow>
+        <Button asChild>
+          <Link href="/integrate">{t("ctaIntegrate")}</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/terms">{t("ctaTerms")}</Link>
+        </Button>
+      </PageCtaRow>
+    </PageShell>
   );
 }
