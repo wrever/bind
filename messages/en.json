@@ -301,7 +301,7 @@
   "Live": {
     "meta": "Testnet",
     "title": "Live cover rail",
-    "body": "Sign real vault moves with Freighter on Stellar testnet (vault deployed 25 Oct). Use Get TUSDC here. Demo is only the policy simulator.",
+    "body": "Sign real txs against the live testnet vault with Freighter. Get TUSDC here. Demo is only the policy simulator.",
     "demoLink": "Open Demo (simulator)",
     "walletOn": "Wallet connected",
     "walletOff": "Connect Freighter",
@@ -339,7 +339,10 @@
     "underbacked": "Underbacked",
     "explorerVault": "Vault explorer",
     "explorerTx": "Deploy tx",
-    "openTx": "View tx"
+    "openTx": "View tx",
+    "needTestnet": "Switch Freighter to Testnet before signing vault txs.",
+    "explorerAccount": "account explorer",
+    "vaultLabel": "Vault"
   },
   "Por": {
     "meta": "Reserves",

@@ -301,7 +301,7 @@
   "Live": {
     "meta": "Testnet",
     "title": "Rail de cover ao vivo",
-    "body": "Assine movimentos reais do vault com Freighter na Stellar testnet (vault de 25 out). Use Obter TUSDC aqui. Demo é só o simulador de apólice.",
+    "body": "Assine txs reais contra o vault live da testnet com Freighter. Obtenha TUSDC aqui. Demo é só o simulador de apólice.",
     "demoLink": "Abrir Demo (simulador)",
     "walletOn": "Wallet conectada",
     "walletOff": "Conectar Freighter",
@@ -339,7 +339,10 @@
     "underbacked": "Underbacked",
     "explorerVault": "Explorer do vault",
     "explorerTx": "Tx de deploy",
-    "openTx": "Ver tx"
+    "openTx": "Ver tx",
+    "needTestnet": "Mude a Freighter para Testnet antes de assinar txs do vault.",
+    "explorerAccount": "explorer da conta",
+    "vaultLabel": "Vault"
   },
   "Por": {
     "meta": "Reservas",

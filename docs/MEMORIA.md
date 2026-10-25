@@ -21,7 +21,7 @@
 | `testnet:e2e` | **Verde** | mint→dispute→resolve→settle→unwrap |
 | Repo público | **Hecho** | https://github.com/wrever/bind |
 | Deploy prod | **Hecho** | https://bind-beta.vercel.app · vault `CDGNKK…` · faucet OK |
-| Tx proof in README | **Hecho** | e2e 2026-10-26 · links en README + EVIDENCE |
+| Tx proof in README | **Hecho** | e2e 2026-10-25 22:58 UTC · links en README + EVIDENCE |
 
 ---
 
@@ -90,5 +90,6 @@ npm run dev                # :3847 → /en/live
 | 2026-10-25x | Vercel `bind-beta`: env BIND_* + redeploy; faucet prod OK; repo público. |
 | 2026-10-25y | Blindaje Unlocked: `UNLOCKED.md`, dual-track copy, landing unlockLine, ARCHITECTURE/HACKATHON. |
 | 2026-10-25z | Frontend copy alineado a visión (Unlocked + dual-track + insurance lock); limpia de em dashes `—` en i18n/DocsSite/UI. |
-| 2026-10-26a | E2E firmado documentado en README (vault + 8 txs explorer); foco proof on-chain, no video. |
+| 2026-10-25aa | E2E firmado documentado en README (vault + 8 txs explorer); foco proof on-chain. |
+| 2026-10-25ab | Live UX: exige Freighter Testnet, muestra link vault CDGNKK; Freighter copy ya no dice “solo identity”. |
 | 2026-10-25aa | Video demo flow Remotion: `public/bind-demo-flow.mp4` + `npm run demo:render`. |

@@ -16,8 +16,7 @@ function shortAddr(a: string) {
 }
 
 /**
- * Freighter connect for Bind demo / partner surfaces.
- * Identity + network only. Does NOT sign vault deposits/claims yet.
+ * Freighter connect badge. On /live, the same wallet signs real vault txs.
  */
 export function FreighterConnect() {
   const [wallet, setWallet] = useState<WalletState>({ status: "loading" });
@@ -111,14 +110,22 @@ export function FreighterConnect() {
     return (
       <div
         className="inline-flex min-h-[36px] flex-wrap items-center gap-2 border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5"
-        title="Wallet identity only. Cover txs still use the policy engine / CLI vault"
+        title="Freighter on Stellar. Use Testnet for /live vault txs."
       >
-        <span className="keel-meta text-[var(--color-muted)]">ID</span>
+        <span className="keel-meta text-[var(--color-muted)]">Wallet</span>
         <span className="font-[family-name:var(--font-mono)] text-xs tracking-[0.04em] text-[var(--color-text)]">
           {shortAddr(wallet.address)}
         </span>
         {wallet.network ? (
-          <span className="keel-meta">{wallet.network}</span>
+          <span
+            className={
+              wallet.network === "TESTNET" || wallet.network === "Test SDF Network"
+                ? "keel-meta text-[var(--color-ok,var(--color-accent2))]"
+                : "keel-meta text-[var(--color-alert)]"
+            }
+          >
+            {wallet.network}
+          </span>
         ) : null}
       </div>
     );

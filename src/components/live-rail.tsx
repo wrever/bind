@@ -69,6 +69,22 @@ async function freighterAddress(): Promise<string | null> {
   }
 }
 
+async function assertFreighterTestnet() {
+  const api = await import("@stellar/freighter-api");
+  const net = await api.getNetwork();
+  if (net.error) {
+    throw new Error(net.error.message ?? "Could not read Freighter network");
+  }
+  const name = (net.network || "").toUpperCase();
+  const pass = net.networkPassphrase || "";
+  const ok =
+    name.includes("TESTNET") ||
+    pass.includes("Test SDF Network");
+  if (!ok) {
+    throw new Error("NEED_TESTNET");
+  }
+}
+
 async function signAndSubmit(
   address: string,
   xdr: string,
@@ -180,6 +196,15 @@ export function LiveRail() {
         throw new Error(prep.message ?? "prepare failed");
       }
 
+      try {
+        await assertFreighterTestnet();
+      } catch (e) {
+        if (e instanceof Error && e.message === "NEED_TESTNET") {
+          throw new Error(t("needTestnet"));
+        }
+        throw e;
+      }
+
       const sub = await signAndSubmit(
         address,
         prep.xdr,
@@ -248,6 +273,14 @@ export function LiveRail() {
       if (trustlineOnly) {
         if (!res.ok || !json.xdr || !json.networkPassphrase) {
           throw new Error(json.message ?? "trustline prepare failed");
+        }
+        try {
+          await assertFreighterTestnet();
+        } catch (e) {
+          if (e instanceof Error && e.message === "NEED_TESTNET") {
+            throw new Error(t("needTestnet"));
+          }
+          throw e;
         }
         const sub = await signAndSubmit(
           address,
@@ -379,18 +412,33 @@ export function LiveRail() {
         </div>
 
         {account ? (
-          <p className="font-[family-name:var(--font-mono)] text-xs text-[var(--color-muted)]">
-            {account.address.slice(0, 4)}…{account.address.slice(-4)}
-            {" · "}
-            <a
-              href={account.explorer.account}
-              target="_blank"
-              rel="noreferrer"
-              className="text-[var(--color-accent2)] underline underline-offset-4"
-            >
-              explorer
-            </a>
-          </p>
+          <div className="space-y-1 font-[family-name:var(--font-mono)] text-xs text-[var(--color-muted)]">
+            <p>
+              {account.address.slice(0, 4)}…{account.address.slice(-4)}
+              {" · "}
+              <a
+                href={account.explorer.account}
+                target="_blank"
+                rel="noreferrer"
+                className="text-[var(--color-accent2)] underline underline-offset-4"
+              >
+                {t("explorerAccount")}
+              </a>
+            </p>
+            <p>
+              {t("vaultLabel")}{" "}
+              {account.vault.slice(0, 4)}…{account.vault.slice(-4)}
+              {" · "}
+              <a
+                href={account.explorer.vault}
+                target="_blank"
+                rel="noreferrer"
+                className="text-[var(--color-accent2)] underline underline-offset-4"
+              >
+                {t("explorerVault")}
+              </a>
+            </p>
+          </div>
         ) : null}
 
         {lowTusdc ? (
