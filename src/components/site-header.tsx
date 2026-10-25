@@ -15,22 +15,13 @@ const links = [
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-bg)]">
-      <div className="keel-meta flex items-center justify-between gap-3 border-b border-[var(--color-line)] px-5 py-2 md:px-10">
-        <span>
-          [ BD-001 ] · Bind ·{" "}
-          <span className="text-[var(--color-accent2)]">Status: Active</span>
-        </span>
-        <span className="hidden sm:inline tabular-nums">
-          Mode: Protocol insurance · Demo/Testnet
-        </span>
-      </div>
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-3 md:px-10 md:py-4">
         <Link
           href="/"
-          className="group flex min-h-[44px] items-center gap-3 shrink-0"
+          className="group flex min-h-[44px] shrink-0 items-center gap-3"
         >
           <BrandMark variant="header" priority />
-          <span className="hidden border-l border-[var(--color-line)] pl-3 text-[11px] uppercase tracking-[0.08em] text-[var(--color-muted)] font-[family-name:var(--font-mono)] xl:inline">
+          <span className="hidden border-l border-[var(--color-line)] pl-3 font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.08em] text-[var(--color-muted)] xl:inline">
             DeFi protocol insurance
           </span>
         </Link>

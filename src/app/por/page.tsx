@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PorPanel } from "@/components/por-panel";
 
@@ -6,6 +7,7 @@ export default function PorPage() {
     <div className="keel-atmosphere min-h-screen">
       <SiteHeader />
       <PorPanel />
+      <SiteFooter />
     </div>
   );
 }

@@ -29,7 +29,7 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | UI Fuzz American Dynamism | **Aplicado** | tokens + landing/header/buttons; cyan=live, orange=CTA |
 | CI lint | **Arreglado** | Next 16 → `eslint` |
 | Deploy público demo | **Pendiente** | sin URL Vercel/Fly en submit |
-| Repo GitHub | **Público** | https://github.com/wrever/Keel |
+| Repo GitHub | **Privado (canónico)** | https://github.com/wrever/bind · legacy: `wrever/Keel` |
 | Auditoría / mainnet / LOIs | **Pendiente** | Fase 1–2 |
 
 ---

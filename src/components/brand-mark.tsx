@@ -49,9 +49,9 @@ export function BrandMark({
       <Image
         src="/brand/logo-horizontal.svg"
         alt="Bind"
-        width={120}
-        height={26}
-        className={`h-5 w-auto opacity-90 ${className}`}
+        width={160}
+        height={35}
+        className={`h-7 w-auto md:h-8 ${className}`}
         unoptimized
       />
     );

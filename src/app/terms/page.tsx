@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 
@@ -6,7 +7,7 @@ export default function TermsPage() {
   return (
     <div className="keel-atmosphere min-h-screen">
       <SiteHeader />
-      <article className="mx-auto max-w-3xl space-y-6 px-5 pb-24 pt-4 md:px-10">
+      <article className="mx-auto max-w-3xl space-y-6 px-5 pb-16 pt-4 md:px-10">
         <p className="keel-meta">[ LG-001 ] · Terms · Demo</p>
         <h1 className="font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
           Terms of use
@@ -31,6 +32,7 @@ export default function TermsPage() {
           </Button>
         </div>
       </article>
+      <SiteFooter />
     </div>
   );
 }

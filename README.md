@@ -11,7 +11,7 @@ Claims execution may use clawback L1 under the hood (Unlocked); the product is *
 |-------|-------|
 | Product | **Bind** |
 | Category / track | **Genesis** · **Stellar Unlocked** |
-| Repo | https://github.com/wrever/Keel |
+| Repo | https://github.com/wrever/bind |
 | Business model | [`docs/BIND_BUSINESS.md`](./docs/BIND_BUSINESS.md) |
 | Cover schedule | [`docs/COVER_SCHEDULE.md`](./docs/COVER_SCHEDULE.md) |
 | Terms (demo) | [`docs/TOS.md`](./docs/TOS.md) |

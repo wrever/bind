@@ -1,29 +1,34 @@
-# Sync to GitHub (`wrever/Keel`)
+# Sync to GitHub (`wrever/bind`)
 
 **Updated:** 2026-10-25
 
-Cloud agents authenticate to Origin, not always to GitHub. This repo’s canonical public/private home is:
+Canonical repo:
 
-**https://github.com/wrever/Keel**
+**https://github.com/wrever/bind**
 
-## From a machine with `gh` auth (your Mac)
+Legacy mirror (Keel name, do not push Bind product there by default): `https://github.com/wrever/Keel`
 
-```bash
-cd /path/to/Keel   # empty or existing clone of wrever/Keel
-# Option A — if you have the agent bundle artifact:
-git pull /path/to/keel-main.bundle main
-git push -u origin main
-
-# Option B — helper (PAT or gh):
-export GITHUB_TOKEN=ghp_...   # or rely on `gh auth`
-npm run push:github
-```
-
-## Remotes expected
+## Remotes (this Mac)
 
 | Remote | URL |
 |--------|-----|
-| `origin` (desired) | `https://github.com/wrever/Keel.git` |
-| `github` | same (helper) |
+| `origin` | `https://github.com/wrever/bind.git` |
+| `keel` | `https://github.com/wrever/Keel.git` (archive) |
 
-After the first successful push, CI (`.github/workflows/ci.yml`) runs on GitHub.
+```bash
+cd /Users/mac/Documents/GitHub/Bind
+git remote -v
+git push -u origin main
+```
+
+## Helper
+
+```bash
+npm run push:github   # pushes to origin = wrever/bind
+```
+
+CI (`.github/workflows/ci.yml`) needs a GitHub token with the `workflow` scope the first time it is added. Until then, keep the file local or push after:
+
+```bash
+gh auth refresh -h github.com -s workflow
+```

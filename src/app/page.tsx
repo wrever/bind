@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Lock, ShieldCheck, Timer } from "lucide-react";
-import { BrandMark } from "@/components/brand-mark";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { LandingRail } from "@/components/landing-rail";
 import { Button } from "@/components/ui/button";
@@ -231,39 +231,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        <footer className="border-t border-[var(--color-line)] px-5 py-8 md:px-10">
-          <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-3">
-              <BrandMark variant="footer" />
-              <p className="keel-meta">
-                BD-001 · Peg vault ≥ supply · Not a Blend clone
-              </p>
-            </div>
-            <p className="keel-meta">
-              <Link
-                href="/docs"
-                className="text-[var(--color-muted)] hover:text-[var(--color-text)]"
-              >
-                Docs
-              </Link>
-              {" · "}
-              <Link
-                href="/terms"
-                className="text-[var(--color-muted)] hover:text-[var(--color-text)]"
-              >
-                Terms
-              </Link>
-              {" · "}
-              <Link
-                href="/policy"
-                className="text-[var(--color-muted)] hover:text-[var(--color-text)]"
-              >
-                Claims
-              </Link>
-            </p>
-          </div>
-        </footer>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

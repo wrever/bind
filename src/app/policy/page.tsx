@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 
@@ -6,7 +7,7 @@ export default function PolicyPage() {
   return (
     <div className="keel-atmosphere min-h-screen">
       <SiteHeader />
-      <article className="mx-auto max-w-3xl space-y-8 px-5 pb-24 pt-4 md:px-10">
+      <article className="mx-auto max-w-3xl space-y-8 px-5 pb-16 pt-4 md:px-10">
         <header>
           <p className="keel-meta">[ CL-001 ] · Claims policy · v0</p>
           <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
@@ -62,6 +63,7 @@ export default function PolicyPage() {
           </Button>
         </div>
       </article>
+      <SiteFooter />
     </div>
   );
 }

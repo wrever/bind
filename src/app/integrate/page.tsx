@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,7 @@ export default function IntegratePage() {
   return (
     <div className="keel-atmosphere min-h-screen">
       <SiteHeader />
-      <main className="mx-auto max-w-4xl space-y-10 px-5 pb-24 pt-4 md:px-10">
+      <main className="mx-auto max-w-4xl space-y-10 px-5 pb-16 pt-4 md:px-10">
         <header>
           <p className="keel-meta">[ PT-002 ] · Partners</p>
           <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
@@ -102,6 +103,7 @@ curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
           </Button>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }
