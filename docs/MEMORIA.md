@@ -1,36 +1,55 @@
 # Bind — Memoria operativa
 
-**Actualizado:** 2026-10-25 (Bind rename + business model)  
-**Producto:** **Bind** (Keel retirado como marca)  
-**Autor de commits/repo:** `wrever` (único uploader)  
-**Norte:** [`VISION.md`](./VISION.md) · Negocio: [`BIND_BUSINESS.md`](./BIND_BUSINESS.md) · Plan: [`ROADMAP.md`](./ROADMAP.md)
+**Actualizado:** 2026-10-25 (tarde — UI institucional + hardening API + audit arch/sec)  
+**Producto:** **Bind** (Keel retirado como marca; paths de código pueden seguir en `keel/`)  
+**Autor de commits/repo:** `wrever` (único; sin Co-authored-by Cursor)  
+**Repo canónico:** https://github.com/wrever/bind (privado) · legacy mirror: `wrever/Keel`  
+**Norte:** [`VISION.md`](./VISION.md) · Negocio: [`BIND_BUSINESS.md`](./BIND_BUSINESS.md) · Plan: [`ROADMAP.md`](./ROADMAP.md) · Threat: [`THREAT_MODEL.md`](./THREAT_MODEL.md)
 
 Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en docs. Releer antes de expandir scope.
 
 ---
 
-## Snapshot (25 oct 2026)
+## Snapshot (25 oct 2026 — fin de día)
 
 | Capa | Estado | Evidencia |
 |------|--------|-----------|
-| Visión / producto transfer-insurance | **Lista** | `VISION.md`, `CLAW_PRODUCT.md`, framing Unlocked |
+| Visión / protocol insurance | **Lista** | `VISION.md`, `BIND_BUSINESS.md`, `PROTOCOL_INSURANCE.md` |
 | Motor TS settled/unsettled | **Lista** | `src/lib/keel/engine.ts` · `npm run test:engine` ✅ |
-| API partner `/api/v1/*` | **Lista** | health, sessions, actions, keeper, por, openapi, network |
-| UI demo / ops / por / integrate | **Lista** | build Next ✅ rutas estáticas + API |
-| SDK `@keel/sdk` | **Lista (surface)** | Safe Mode + `KeelClient` demo; no HTTP client prod |
+| Retention Standard / Fast Lane | **Lista** | `retention.ts` + demo lanes + `set_retention` |
+| API partner `/api/v1/*` | **Lista (simulador)** | No es custodia; ver hardening abajo |
+| UI storefront institucional | **Lista (pass 1)** | Sin `[SI-001]` en landing; footer pro; nav corta |
+| Brand assets Bind | **Integrados** | `src/img/` + `public/brand/` + `BrandMark` |
+| Freighter | **Identity only** | `FreighterConnect` en `/demo` + `/integrate` |
+| SDK `@keel/sdk` / BindClient | **Lista (surface)** | Safe Mode + HTTP thin; sin Soroban client |
 | `keel-core` Rust parity | **Lista** | 4/4 tests ✅ |
-| `keel-vault` Soroban | **Lista + testnet LIVE** | 4/4 tests ✅ · vault `CCQEAW…HL5J` · RPC healthy; CLI `por` hit fee-config noise hoy |
-| COVER clawback claims rail | **Lista (smoke)** | issuer + SAC · `testnet:cover` documentado |
-| PoR HMAC + verify | **Lista (demo)** | off-chain; on-chain `por()` leído en smoke |
-| Supabase schema | **Aplicada hoy** | tablas + RLS · proyecto `nllasdybyyxgvrtcsvjy` |
-| Persistencia runtime → Supabase | **Verificada live** | `.env.local` local; smoke → 1 session + claim + por row |
-| SDK HTTP `KeelApi` | **Listo** | `packages/sdk/src/http.ts` → health/sessions/actions/por/claims |
-| Claims audit API | **Listo** | `GET /api/v1/sessions/:id/claims` |
-| UI Fuzz American Dynamism | **Aplicado** | tokens + landing/header/buttons; cyan=live, orange=CTA |
-| CI lint | **Arreglado** | Next 16 → `eslint` |
-| Deploy público demo | **Pendiente** | sin URL Vercel/Fly en submit |
-| Repo GitHub | **Privado (canónico)** | https://github.com/wrever/bind · legacy: `wrever/Keel` |
-| Auditoría / mainnet / LOIs | **Pendiente** | Fase 1–2 |
+| `keel-vault` Soroban | **Lista + testnet LIVE** | vault `CCQEAW…HL5J`; TUSDC stand-in |
+| COVER clawback claims rail | **Lista (smoke)** | No storefront |
+| PoR HMAC | **Demo marcado** | `demo: true` si secreto default; on-chain `por()` en smoke |
+| Supabase schema + hydrate | **Lista** | service role writes; PoR read pública |
+| Security headers Next | **Lista** | CSP / nosniff / frame-deny |
+| API hardening pass | **Parcial** | actor ops obligatorio, UUID sessions, clamp windowMs |
+| CI workflow en GitHub | **Pendiente push** | Token sin scope `workflow`; `.github/` local untracked |
+| Deploy público demo | **Pendiente** | sin Vercel/Fly |
+| API ↔ vault cableado | **No** | Dos verdades; gap estructural #1 |
+| Auth partner / multisig | **No** | Strings `ops_*` spoofables si conoces el nombre |
+| Circle USDC en vault | **No** | TUSDC |
+| Freighter firmas cover | **No** | Solo address + network |
+| Auditoría scoped / LOIs | **Pendiente** | Fase 1–2 |
+
+---
+
+## Git / remotes (esta Mac)
+
+| Remote | URL | Uso |
+|--------|-----|-----|
+| `origin` | `https://github.com/wrever/bind.git` | Canónico — push aquí |
+| `keel` | `https://github.com/wrever/Keel.git` | Legacy archive |
+
+- Branch `main` trackea `origin/main`.
+- Commits solo como `wrever` (rebuild con `commit-tree` si el entorno inyecta Co-authored-by).
+- CI: falta `gh auth refresh -h github.com -s workflow` para subir `.github/workflows/ci.yml`.
+- Visibilidad: **privada** hasta submit hackathon (entonces public + accept consequences).
 
 ---
 
@@ -38,86 +57,123 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 
 ### Motor (`src/lib/keel/`)
 
-- **Listo:** deposit, transfer→unsettled, settle / settle_all, unwrap solo settled, exit pool + fee, dispute/freeze/resolve, pause, maxSupply, peg `vault ≥ supply`, roles, rate limits, migrateState.
-- **Demo-only:** faucet USDC, roles string (`ops_*`), store en memoria + JSON; no firmas wallet.
-- **Store:** `ensureStoreReady` hydrata desde Supabase (hasta 200 sessions) + merge por `updated_at`; miss → fetch row remota; upsert + PoR snapshots + claim events.
+- **Listo:** deposit, transfer→unsettled, settle / settle_all, unwrap solo settled, exit pool + fee, dispute/freeze/resolve, pause, maxSupply, peg `vault ≥ supply`, roles, rate limits, migrateState, retention profiles.
+- **Demo-only:** faucet USDC, roles string (`ops_*`), store memoria + `.data/sessions.json`; no firmas wallet.
+- **Store (hardening 25 oct):**
+  - Session id = `sess_` + `crypto.randomUUID()`
+  - `windowMs` clamp (min 1s, max del profile demo/prod)
+  - KYC **no** self-attest por body (solo profile `kyc_fast_lane`)
+  - freeze / resolve / pause / unpause: **actor obligatorio** (sin default silencioso a `ops_*`)
+  - Rate limits también en pause, faucet, session_create
+  - Faucet off si `BIND_STRICT=1` o `KEEL_NETWORK=mainnet`
 
 ### API (`src/app/api/v1/`)
 
 | Ruta | Listo |
 |------|-------|
 | `GET /health` | sí |
-| `GET /network` | sí (lee `testnet.addresses.json`) |
+| `GET /network` | sí |
 | `GET /openapi` | sí |
-| `POST /sessions` + actions/keeper/por | sí |
-| `POST /por/verify` | sí |
+| `POST /sessions` + actions/keeper/por | sí (simulador) |
+| `POST /por/verify` | sí — responde `demo` / attestation label |
+| `GET /sessions/:id` | sí — disclaimer + `mode: demo-simulator`; **ya no expone `roles`** |
 | `GET /sessions/:id/claims` | sí |
 
-Auth partner real / API keys: **no** (SDK acepta Bearer futuro). Rate limit in-memory: **sí (demo)**.
+**Auth partner real / API keys: no.** Bearer en SDK ignorado por server.  
+**Honestidad:** cualquiera con `sessionId` puede deposit/transfer/dispute. Ops roles spoofables si envías `actor: ops_recoverer`. Confianza de dinero → vault on-chain, no esta API.
 
-### Frontend
-
-- `/demo`, `/ops`, `/por`, `/integrate`, `/policy`, `/docs`, landing: **compilan**.
-- Freighter / wallet connect: **identity stub** (`FreighterConnect` en `/demo` + `/integrate`); sin firmas de cover aún.
-- URL pública hackathon: **no desplegada** (README lo declara).
-- Repo canónico: **https://github.com/wrever/bind** (privado hasta submit; falta `workflow` scope para CI).
-
-### Contratos
-
-- `keel-vault`: deposit/transfer/settle/unwrap/exit/dispute/pause/`por` — tests + smoke testnet documentados.
-- COVER Classic: clawback + remint smoke — **mecanismo claims**, no producto retail.
-- Circle USDC real en vault: **stand-in TUSDC**; swap Circle documentado como pendiente.
-
-### Supabase (`user-supabase-keel`) — audit 2026-10-25
+### Frontend / marca
 
 | Item | Estado |
 |------|--------|
-| URL | `https://nllasdybyyxgvrtcsvjy.supabase.co` |
-| Migración `001_keel_core` | **aplicada** (antes: 0 tablas / 0 migrations) |
-| `keel_sessions` | existe, RLS on, 0 rows |
-| `keel_claim_events` | existe, RLS on, 0 rows |
-| `keel_por_snapshots` | existe, RLS on, policy read pública |
-| Writes desde app | requieren `SUPABASE_SERVICE_ROLE_KEY` (o anon sin policies de write → fallará en silencio) |
-| Advisor seguridad | `public.rls_auto_enable()` ejecutable por anon/authenticated (WARN preexistente, no de Keel) |
-| Indexes | “unused” esperable con 0 rows |
+| Logos `src/img/` (15 assets + README uso) | **Sí** |
+| `public/brand/` + `BrandMark` | **Sí** |
+| Landing sin códigos `[ SI-001 ]` / grid HUD | **Sí** (pass institucional) |
+| Nav corta (Integrate · Cover · Docs · Reserves) | **Sí** |
+| `SiteFooter` multi-columna en páginas | **Sí** |
+| Botones sentence-case (no ALL CAPS mono) | **Sí** |
+| Freighter connect identity | **Sí** |
+| Freighter sign deposit/dispute/unwrap | **No** |
+| URL pública | **No** |
+
+Fuzz American Dynamism tokens se mantienen (`#0E100D` / `#F54307`); se **dejó de abusar** el estilo HUD en marketing. Diseño Figma externo: prompt listo para Grok (chat); aún no importado.
+
+### Contratos
+
+- `keel-vault`: deposit/transfer/settle/unwrap/exit/dispute/pause/`por` — tests + smoke testnet.
+- **No** llamado desde Next `/api/v1` (gap estructural).
+- COVER Classic: clawback + remint smoke — claims ops.
+- Circle USDC: **pendiente** (TUSDC).
+
+### Supabase
+
+| Item | Estado |
+|------|--------|
+| Proyecto | `nllasdybyyxgvrtcsvjy` |
+| Migración `001_keel_core` | aplicada |
+| Writes | `SUPABASE_SERVICE_ROLE_KEY` |
+| PoR snapshots | SELECT público (ok demo; restringir en prod) |
+| Advisor `rls_auto_enable` | WARN preexistente |
+
+### Seguridad (pass 25 oct tarde)
+
+Hecho:
+- Actor ops obligatorio
+- UUID sessions + window clamp + KYC no spoof
+- PoR demo marcado; `BIND_STRICT` exige secret
+- Headers Next (CSP básica, frame deny, nosniff)
+- Rate limits ampliados
+- Threat model actualizado con honestidad API vs vault
+
+Pendiente (P0–P1):
+- API keys / firmas Stellar
+- Cablear API↔vault o no vender API como rail
+- Redis rate limits
+- Multisig on-chain
+- Auditoría scoped
 
 ---
 
 ## Roadmap vs realidad
 
-Alineado a [`ROADMAP.md`](./ROADMAP.md):
+- **Fase 0:** cerrada (spec + demo + API + integrate + OpenAPI).
+- **Fase 1:** fuerte en código/testnet; **gaps:** Circle, Freighter firmas, auth real, deploy, auditoría; Freighter identity = `[~]`.
+- **Fase 2:** Safe Mode + `/ops` hechos; faltan LOIs + métricas.
+- **Fase 3–4:** Exit Pool real capital, settled-only DeFi, SEP — **no**.
 
-- **Fase 0:** prácticamente cerrada (spec + demo + API + integrate + OpenAPI).
-- **Fase 1:** fuerte en código/testnet; quedan auditoría scoped, Circle faucet wiring, Freighter.
-- **Fase 2:** Safe Mode SDK + `/ops` hechos; faltan LOIs y métricas TVL/partners.
-- **Fase 3–4:** Exit Pool real, settled-only DeFi, SEP draft — **no**.
-
-Hackathon Genesis/Unlocked: pack docs + evidence **listos**; falta **repo público + demo URL o video** en el form ([`HACKATHON.md`](./HACKATHON.md)).
+Hackathon: pack docs listo; falta **repo público + demo URL o video** ([`HACKATHON.md`](./HACKATHON.md)).
 
 ---
 
-## Cómo correr (orden corto)
+## Cómo correr
 
 ```bash
+cd /Users/mac/Documents/GitHub/Bind
 npm install
-cp .env.example .env.local   # rellenar Supabase si quieres persistencia remota
+cp .env.example .env.local   # Supabase + KEEL_POR_SECRET recomendado
 npm run test:engine
-npm run test:contracts
 npm run build
 npm run dev                  # :3847
+git remote -v                # origin = wrever/bind
 ```
 
-Supabase ya tiene schema; sin keys en local el motor sigue funcionando file-backed.
+Strict-ish local:
+
+```bash
+BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
+```
 
 ---
 
 ## Próximos movimientos (prioridad)
 
-1. Deploy URL pública (Vercel project name: `bind`) + pitch.
-2. Counsel-reviewed ToS (hoy hay demo `TOS.md` / `COVER_SCHEDULE.md`).
-3. Multisig arbiter + audit scoped antes de TVL real.
-4. 1 LOI protocolo/wallet.
-5. No lending/checkout/tokenomics; no cubrir exploits del partner en v1.
+1. **P0 seguridad/verdad:** no presentar `/api/v1` como custodia; `BIND_STRICT` en URL pública; API keys + firmas.
+2. **P0 go-to-market:** deploy Vercel `bind` + (cuando toque) repo público.
+3. **P1 chain:** cablear vault **o** documentar sim-only en OpenAPI/landing; Circle USDC; Freighter tx.
+4. **P1 ops:** multisig + CI workflow scope + monitors peg.
+5. **P2:** LOI partner, ToS counsel, auditoría scoped.
+6. **Diseño:** importar landing Figma (Grok) cuando esté; no volver a HUD codes en storefront.
+7. No lending / checkout / tokenomics; no vender clawback como recupera off-rail / LP sin Tier 3.
 
 ---
 
@@ -126,11 +182,14 @@ Supabase ya tiene schema; sin keys en local el motor sigue funcionando file-back
 | Fecha | Nota |
 |-------|------|
 | 2026-10-25 | Creación + migración Supabase + lint Next16. |
-| 2026-10-25b | Hydrate store, claims API, KeelApi SDK, health persistence, Fuzz American Dynamism UI. |
-| 2026-10-25c | `.env.local` live, smoke persist OK, demo/ops AD + audit trail, repo public push. |
-| 2026-10-25d | Producto = **Bind**. `BIND_BUSINESS.md` (protocol cover, revenue, legales). Keel fuera de marca. |
-| 2026-10-25e | Cutover UI Bind, TOS+Cover Schedule, caps engine, Safe Deposit SDK, /cover /terms. |
-| 2026-10-25f | `/docs` hub Bind + `PITCH_FAQ.md` (1-sentence, clawback safety, FAQ defensa). |
-| 2026-10-25g | Posición = seguro contratado por protocolos DeFi (`PROTOCOL_INSURANCE.md`); clawback solo ops. |
-| 2026-10-25h | Retención sin KYC + Fast Lane + viabilidad LP (`RETENTION_SECURITY.md`); tiers 1–3. |
-| 2026-10-25i | Ejecución Tier1/2: `retention.ts`, API profiles, demo lanes, `set_retention`. |
+| 2026-10-25b | Hydrate store, claims API, KeelApi SDK, health persistence, Fuzz AD UI. |
+| 2026-10-25c | `.env.local` live, smoke persist OK, demo/ops AD + audit trail. |
+| 2026-10-25d | Producto = **Bind**. `BIND_BUSINESS.md`. Keel fuera de marca. |
+| 2026-10-25e | Cutover UI Bind, TOS+Cover Schedule, caps, Safe Deposit, /cover /terms. |
+| 2026-10-25f | `/docs` hub + `PITCH_FAQ.md`. |
+| 2026-10-25g | Seguro contratado por protocolos; clawback solo ops. |
+| 2026-10-25h | Retención + Fast Lane + tiers (`RETENTION_SECURITY.md`). |
+| 2026-10-25i | Ejecución Tier1/2: `retention.ts`, API profiles, demo lanes. |
+| 2026-10-25j | Repo `wrever/bind` = origin; brand `src/img` + `public/brand`; footer pro; quit status bar BD-001. |
+| 2026-10-25k | Freighter identity; docs apuntan a bind; UI storefront anti-HUD (nav/CTA/copy). |
+| 2026-10-25l | **Audit arch/sec** + hardening API (actor, UUID, clamp, PoR demo flag, headers, RL). Gap #1: API≠vault. |
