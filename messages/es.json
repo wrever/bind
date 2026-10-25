@@ -50,8 +50,8 @@
   },
   "Home": {
     "eyebrow": "Bind",
-    "headline": "Seguro para depósitos DeFi.",
-    "subhead": "Tu protocolo contrata Bind: el usuario obtiene una ventana protegida antes de retirar, y Bind paga si los fondos se roban mientras siguen cubiertos.",
+    "headline": "Seguro para depósitos DeFi: ventana protegida antes de retirar, e indemnización si los roban mientras siguen cubiertos.",
+    "subhead": "Tu protocolo contrata la cobertura. Bind vive bajo tu producto; el usuario no descarga otra app.",
     "ctaTalk": "Hablar con Bind",
     "ctaDemo": "Ver la demo",
     "flowTitle": "La cobertura la compra tu protocolo, no una app que el usuario descarga.",
