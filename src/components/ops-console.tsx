@@ -131,7 +131,9 @@ export function OpsConsole() {
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-5 pb-24 md:px-10">
       <div>
-        <p className="keel-meta">[ OP-001 ] · Bind claims · not retail</p>
+        <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
+          Claims ops
+        </p>
         <h1 className="mt-1 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
           Claims console
         </h1>
@@ -284,7 +286,9 @@ export function OpsConsole() {
             <h2 className="font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
               Audit trail ({view.claims?.length ?? 0})
             </h2>
-            <p className="keel-meta">keel_claim_events · supabase or local events</p>
+            <p className="text-xs uppercase tracking-[0.06em] text-[var(--color-muted)]">
+              Claim events
+            </p>
             <ul className="max-h-48 space-y-1 overflow-auto border border-[var(--color-line)] bg-[var(--color-surface)] p-3 font-[family-name:var(--font-mono)] text-[11px] uppercase tracking-[0.06em] text-[var(--color-muted)]">
               {(view.claims ?? []).slice(0, 20).map((c) => (
                 <li key={c.id}>

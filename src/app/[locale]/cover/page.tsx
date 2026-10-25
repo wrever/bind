@@ -19,18 +19,7 @@ export default async function CoverPage({ params }: Props) {
 
   return (
     <PageShell>
-      <PageHero
-        meta={t("meta")}
-        title={t("title")}
-        body={
-          <>
-            {t("source")}{" "}
-            <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--color-accent2)]">
-              docs/COVER_SCHEDULE.md
-            </code>
-          </>
-        }
-      />
+      <PageHero meta={t("meta")} title={t("title")} body={t("body")} />
 
       <PageSection title={t("coveredTitle")} index="01">
         <p className="text-[var(--color-text)]">{t("coveredBody")}</p>
@@ -54,9 +43,7 @@ export default async function CoverPage({ params }: Props) {
       </PageSection>
 
       <PageSection title={t("capsTitle")} index="03">
-        <p className="keel-meta !normal-case !tracking-[0.04em]">
-          {t("capsMeta")}
-        </p>
+        <p>{t("capsMeta")}</p>
       </PageSection>
 
       <PageCtaRow>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   applyRetentionProfile,
   createInitialState,
@@ -19,19 +20,12 @@ import {
   DEMO_ADDRESSES,
 } from "@/lib/keel/engine";
 import type { KeelState, RetentionProfileId } from "@/lib/keel/types";
-import {
-  formatRetentionHuman,
-  RETENTION_COPY,
-  RETENTION_PROFILES,
-} from "@/lib/keel/retention";
+import { formatRetentionHuman } from "@/lib/keel/retention";
 import { formatUsd } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { DualTrackNote } from "@/components/chain-status";
-import { FreighterConnect } from "@/components/freighter-connect";
-import { PersistenceStatus } from "@/components/persistence-status";
+import { Link } from "@/i18n/navigation";
 
 const STORAGE_KEY = "keel-demo-state-v1";
 
@@ -47,8 +41,9 @@ function loadState(): KeelState {
 }
 
 export function DemoConsole() {
+  const t = useTranslations("Demo");
   const [state, setState] = useState<KeelState | null>(null);
-  const [actor, setActor] = useState<string>("alice");
+  const [actor, setActor] = useState("alice");
   const [amount, setAmount] = useState("100");
   const [to, setTo] = useState("bob");
   const [error, setError] = useState<string | null>(null);
@@ -57,8 +52,8 @@ export function DemoConsole() {
 
   useEffect(() => {
     setState(loadState());
-    const t = setInterval(() => setNow(Date.now()), 500);
-    return () => clearInterval(t);
+    const timer = setInterval(() => setNow(Date.now()), 500);
+    return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
@@ -84,287 +79,289 @@ export function DemoConsole() {
   const n = Number(amount);
   if (!state || !reserves || !account) {
     return (
-      <div className="px-5 py-16 text-[var(--color-muted)] md:px-10">
-        Loading Bind console…
-      </div>
+      <div className="px-5 py-16 text-[var(--color-muted)] md:px-10">…</div>
     );
   }
 
+  const guide = [t("guide1"), t("guide2"), t("guide3"), t("guide4")];
+
   return (
-    <div className="relative mx-auto max-w-6xl space-y-8 px-5 pb-20 pt-10 md:px-10 md:pb-24 md:pt-14">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-surface)]/35 to-transparent"
-      />
-      <div className="relative flex flex-col gap-4 border-b border-[var(--color-line)] pb-10 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p className="keel-meta">[ DM-001 ] · Bind console · Retention Cover</p>
-          <h1 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)]">
-            Bind console
-          </h1>
-          <div className="mt-3 md:hidden">
-            <FreighterConnect />
-          </div>
-          <p className="mt-2 max-w-xl text-sm text-[var(--color-muted)]">
-            {RETENTION_PROFILES[state.config.retentionProfile].blurb} Demo clock:{" "}
-            {formatRetentionHuman(state.config.windowMs)} (prod{" "}
-            {formatRetentionHuman(
-              RETENTION_PROFILES[state.config.retentionProfile].windowMs,
-            )}
-            ). {RETENTION_COPY.freeExit}
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Button
-              size="sm"
-              variant={
-                state.config.retentionProfile === "standard"
-                  ? "default"
-                  : "outline"
-              }
-              onClick={() =>
-                run(
-                  (s) => applyRetentionProfile(s, "standard"),
-                  "Lane: Protected 12h (no KYC)",
-                )
-              }
+    <div className="relative mx-auto max-w-5xl space-y-10 px-5 pb-20 pt-10 md:px-10 md:pb-24 md:pt-14">
+      <header className="border-b border-[var(--color-line)] pb-8">
+        <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
+          {t("meta")}
+        </p>
+        <h1 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold tracking-[-0.03em] text-[var(--color-text)]">
+          {t("title")}
+        </h1>
+        <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-[var(--color-muted)]">
+          {t("body")}
+        </p>
+
+        <ol className="mt-6 grid gap-2 sm:grid-cols-2">
+          {guide.map((step, i) => (
+            <li
+              key={step}
+              className="flex gap-3 border border-[var(--color-line)] bg-[var(--color-bg)] px-4 py-3 text-sm text-[var(--color-muted)]"
             >
-              No KYC · 12h
-            </Button>
-            <Button
-              size="sm"
-              variant={
-                state.config.retentionProfile === "kyc_fast_lane"
-                  ? "default"
-                  : "outline"
-              }
-              onClick={() =>
-                run(
-                  (s) =>
-                    applyRetentionProfile(s, "kyc_fast_lane" as RetentionProfileId, {
-                      kycAttested: true,
-                    }),
-                  "Lane: KYC Fast Lane",
-                )
-              }
-            >
-              KYC Fast Lane
-            </Button>
-          </div>
-          <div className="mt-3">
-            <PersistenceStatus />
-          </div>
-          <div className="mt-4 max-w-xl">
-            <DualTrackNote />
-          </div>
+              <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--color-accent2)]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span>{step}</span>
+            </li>
+          ))}
+        </ol>
+
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <Button
+            size="sm"
+            variant={
+              state.config.retentionProfile === "standard" ? "default" : "outline"
+            }
+            onClick={() =>
+              run(
+                (s) => applyRetentionProfile(s, "standard"),
+                t("msgLaneStandard"),
+              )
+            }
+          >
+            {t("laneStandard")}
+          </Button>
+          <Button
+            size="sm"
+            variant={
+              state.config.retentionProfile === "kyc_fast_lane"
+                ? "default"
+                : "outline"
+            }
+            onClick={() =>
+              run(
+                (s) =>
+                  applyRetentionProfile(s, "kyc_fast_lane" as RetentionProfileId, {
+                    kycAttested: true,
+                  }),
+                t("msgLaneFast"),
+              )
+            }
+          >
+            {t("laneFast")}
+          </Button>
+          <Badge tone={reserves.fullyBacked ? "ok" : "warn"}>
+            {reserves.fullyBacked ? t("backed") : t("pegBroken")}
+          </Badge>
+          <Badge tone="mute">
+            {t("hold", {
+              time: formatRetentionHuman(state.config.windowMs),
+            })}
+          </Badge>
         </div>
-        <div className="flex flex-col items-start gap-3 md:items-end">
-          <div className="hidden md:block">
-            <FreighterConnect />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Badge tone="sea">
-              {RETENTION_PROFILES[state.config.retentionProfile].badge}
-            </Badge>
-            <Badge tone={reserves.fullyBacked ? "ok" : "warn"}>
-              {reserves.fullyBacked ? "Fully backed" : "Peg broken"}
-            </Badge>
-            {reserves.paused ? <Badge tone="warn">Paused</Badge> : null}
-            <Badge tone="mute">Vault {formatUsd(reserves.vaultUsdc)} USDC</Badge>
-            <Badge tone="mute">
-              Hold {formatRetentionHuman(state.config.windowMs)}
-            </Badge>
-          </div>
-        </div>
-      </div>
+
+        <p className="mt-5 text-sm text-[var(--color-muted)]">
+          {t("dualNote")}{" "}
+          <Link
+            href="/live"
+            className="text-[var(--color-accent2)] underline underline-offset-4"
+          >
+            {t("dualCta")}
+          </Link>
+        </p>
+      </header>
 
       {(error || msg) && (
         <div
-          className={`rounded-lg border px-4 py-3 text-sm ${
+          className={`border px-4 py-3 text-sm ${
             error
-              ? "border-[var(--keel-coral)]/40 bg-[var(--keel-coral)]/10 text-[var(--keel-coral)]"
-              : "border-[var(--keel-sea)]/30 bg-[var(--keel-sea)]/10 text-[var(--keel-sea-bright)]"
+              ? "border-[var(--color-alert)]/40 text-[var(--color-alert)]"
+              : "border-[var(--color-accent2)]/30 text-[var(--color-accent2)]"
           }`}
         >
           {error ?? msg}
         </div>
       )}
 
-      <div className="grid gap-4 md:grid-cols-[220px_1fr]">
-        <Card>
-          <CardHeader>
-            <CardTitle>Actor</CardTitle>
-            <CardDescription>Who signs the next action</CardDescription>
-          </CardHeader>
-          <CardBody className="space-y-2">
+      <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
+        <section className="space-y-3">
+          <h2 className="font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+            {t("actorTitle")}
+          </h2>
+          <p className="text-xs text-[var(--color-muted)]">{t("actorBody")}</p>
+          <div className="space-y-2">
             {DEMO_ADDRESSES.map((a) => (
               <button
                 key={a}
                 type="button"
                 onClick={() => setActor(a)}
-                className={`flex w-full min-h-[44px] items-center justify-between rounded px-3 py-2 text-left text-sm capitalize transition-colors ${
+                className={`flex w-full min-h-[44px] items-center justify-between px-3 py-2 text-left text-sm capitalize ${
                   actor === a
-                    ? "bg-[var(--color-accent)] text-black font-semibold"
-                    : "bg-[var(--color-surface)] text-[var(--color-text)] hover:border-[var(--color-line-strong)] border border-[var(--color-line)]"
+                    ? "bg-[var(--color-accent)] font-semibold text-black"
+                    : "border border-[var(--color-line)] text-[var(--color-text)] hover:border-[var(--color-line-strong)]"
                 }`}
               >
                 <span>{a}</span>
                 <span className="text-xs opacity-80">
                   {formatUsd(
                     (state.accounts[a]?.settled ?? 0) +
-                      (state.accounts[a]?.unsettled.reduce((s, l) => s + l.amount, 0) ?? 0),
+                      (state.accounts[a]?.unsettled.reduce(
+                        (s, l) => s + l.amount,
+                        0,
+                      ) ?? 0),
                     0,
                   )}
                 </span>
               </button>
             ))}
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-2 w-full"
-              onClick={() =>
-                run((s) => createInitialState(s.config), "Demo reset")
-              }
-            >
-              Reset demo
-            </Button>
-          </CardBody>
-        </Card>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full"
+            onClick={() =>
+              run((s) => createInitialState(s.config), t("msgReset"))
+            }
+          >
+            {t("reset")}
+          </Button>
+        </section>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="capitalize">{actor}</CardTitle>
-              <CardDescription>Balances</CardDescription>
-            </CardHeader>
-            <CardBody className="space-y-3 text-sm">
-              <Row label="USDC (free)" value={formatUsd(account.usdc)} />
-              <Row label="rUSDC settled" value={formatUsd(account.settled)} hint="unwrap OK" />
+        <div className="space-y-6">
+          <section className="border border-[var(--color-line)] p-5">
+            <h2 className="font-[family-name:var(--font-display)] text-lg font-extrabold capitalize text-[var(--color-text)]">
+              {actor} · {t("balances")}
+            </h2>
+            <div className="mt-4 space-y-3 text-sm">
+              <Row label={t("usdcFree")} value={formatUsd(account.usdc)} />
               <Row
-                label="rUSDC unsettled"
+                label={t("settled")}
+                value={formatUsd(account.settled)}
+                hint={t("hintUnwrap")}
+              />
+              <Row
+                label={t("unsettled")}
                 value={formatUsd(
                   account.unsettled.reduce((s, l) => s + l.amount, 0),
                 )}
-                hint="in window"
+                hint={t("hintWindow")}
               />
-              <div className="flex flex-wrap gap-2 pt-2">
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => run((s) => faucet(s, actor, 500), "+500 USDC faucet")}
-                >
-                  Faucet +500
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() =>
-                    run((s) => deposit(s, actor, n), `Deposited ${n} → settled rUSDC`)
-                  }
-                >
-                  Deposit / wrap
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    run((s) => settle(s, actor, now), "Settled expired lots")
-                  }
-                >
-                  Settle ready
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    run((s) => settleAll(s, now), "Keeper settle_all")
-                  }
-                >
-                  Settle all
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    run((s) => unwrap(s, actor, n), `Unwrapped ${n} to USDC`)
-                  }
-                >
-                  Unwrap settled
-                </Button>
-              </div>
-            </CardBody>
-          </Card>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() =>
+                  run((s) => faucet(s, actor, 500), t("msgFaucet"))
+                }
+              >
+                {t("faucet")}
+              </Button>
+              <Button
+                size="sm"
+                onClick={() =>
+                  run(
+                    (s) => deposit(s, actor, n),
+                    t("msgDeposit", { n }),
+                  )
+                }
+              >
+                {t("deposit")}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  run((s) => settle(s, actor, now), t("msgSettle"))
+                }
+              >
+                {t("settleReady")}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  run((s) => settleAll(s, now), t("msgSettleAll"))
+                }
+              >
+                {t("settleAll")}
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() =>
+                  run(
+                    (s) => unwrap(s, actor, n),
+                    t("msgUnwrap", { n }),
+                  )
+                }
+              >
+                {t("unwrap")}
+              </Button>
+            </div>
+          </section>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Actions</CardTitle>
-              <CardDescription>Amount & destination</CardDescription>
-            </CardHeader>
-            <CardBody className="space-y-3">
-              <div className="grid grid-cols-2 gap-3">
-                <label className="space-y-1 text-xs text-[var(--keel-mute)]">
-                  Amount
-                  <Input
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    inputMode="decimal"
-                  />
-                </label>
-                <label className="space-y-1 text-xs text-[var(--keel-mute)]">
-                  To
-                  <select
-                    value={to}
-                    onChange={(e) => setTo(e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-[var(--keel-line)] bg-[var(--keel-ink)] px-3 text-sm text-[var(--keel-paper)]"
-                  >
-                    {DEMO_ADDRESSES.filter((a) => a !== actor).map((a) => (
-                      <option key={a} value={a}>
-                        {a}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  onClick={() =>
-                    run(
-                      (s) => transfer(s, actor, to, n),
-                      `Sent ${n} rUSDC → ${to} (unsettled)`,
-                    )
-                  }
+          <section className="border border-[var(--color-line)] p-5">
+            <h2 className="font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+              {t("actionsTitle")}
+            </h2>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              <label className="space-y-1 text-xs text-[var(--color-muted)]">
+                {t("amount")}
+                <Input
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  inputMode="decimal"
+                />
+              </label>
+              <label className="space-y-1 text-xs text-[var(--color-muted)]">
+                {t("to")}
+                <select
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                  className="flex h-10 w-full border border-[var(--color-line)] bg-[var(--color-bg)] px-3 text-sm text-[var(--color-text)]"
                 >
-                  Transfer recoverable
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    run(
-                      (s) => exitPool(s, actor, n),
-                      `Exit Pool: paid fee, got USDC now`,
-                    )
-                  }
-                >
-                  Exit Pool (instant)
-                </Button>
-              </div>
-              <p className="text-xs text-[var(--keel-mute)]">
-                Exit fee: {state.config.exitFeeBps / 100}% · Pool liquidity{" "}
-                {formatUsd(state.exitPoolUsdc)} USDC
-              </p>
-            </CardBody>
-          </Card>
+                  {DEMO_ADDRESSES.filter((a) => a !== actor).map((a) => (
+                    <option key={a} value={a}>
+                      {a}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Button
+                onClick={() =>
+                  run(
+                    (s) => transfer(s, actor, to, n),
+                    t("msgTransfer", { n }),
+                  )
+                }
+              >
+                {t("transfer")}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() =>
+                  run((s) => exitPool(s, actor, n), t("msgExit"))
+                }
+              >
+                {t("exitPool")}
+              </Button>
+            </div>
+            <p className="mt-3 text-xs text-[var(--color-muted)]">
+              {t("exitFee", {
+                fee: state.config.exitFeeBps / 100,
+                pool: formatUsd(state.exitPoolUsdc),
+              })}
+            </p>
+          </section>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Protected lots</CardTitle>
-            <CardDescription>
-              Retention countdown — free unwrap blocked until settle. Frozen =
-              claim path.
-            </CardDescription>
-          </CardHeader>
-          <CardBody className="space-y-2">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="border border-[var(--color-line)] p-5">
+          <h2 className="font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+            {t("lotsTitle")}
+          </h2>
+          <p className="mt-1 text-sm text-[var(--color-muted)]">{t("lotsBody")}</p>
+          <div className="mt-4 space-y-2">
             {Object.values(state.accounts).flatMap((acc) =>
               acc.unsettled.map((lot) => {
                 const rem = remainingMs(lot, now, state.config.windowMs);
@@ -372,78 +369,80 @@ export function DemoConsole() {
                 return (
                   <div
                     key={lot.id}
-                    className="flex flex-col gap-2 rounded-lg border border-[var(--keel-line)] bg-[var(--keel-ink)]/50 p-3 sm:flex-row sm:items-center sm:justify-between"
+                    className="flex flex-col gap-2 border border-[var(--color-line)] p-3 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="text-sm">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-medium text-[var(--keel-paper)]">
-                          {formatUsd(lot.amount)} rUSDC
+                        <span className="font-medium text-[var(--color-text)]">
+                          {formatUsd(lot.amount)}
                         </span>
                         <Badge tone={lot.frozen ? "warn" : ready ? "ok" : "sea"}>
                           {lot.frozen
-                            ? "frozen"
+                            ? t("frozen")
                             : ready
-                              ? "settle ready"
-                              : `Protected ${(rem / 1000).toFixed(0)}s`}
+                              ? t("settleReadyBadge")
+                              : t("protectedSecs", {
+                                  secs: (rem / 1000).toFixed(0),
+                                })}
                         </Badge>
                       </div>
-                      <p className="mt-1 text-xs text-[var(--keel-mute)]">
-                        {lot.from} → {acc.address} · {lot.id}
+                      <p className="mt-1 text-xs text-[var(--color-muted)]">
+                        {lot.from} → {acc.address}
                       </p>
                     </div>
-                    <div className="flex flex-wrap gap-2">
-                      {!lot.frozen && (
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() =>
-                            run(
-                              (s) =>
-                                openDisputeAsSender(
-                                  s,
-                                  lot.from,
-                                  acc.address,
-                                  lot.id,
-                                  "Suspected theft / phishing",
-                                ),
-                              "Dispute opened — lot frozen",
-                            )
-                          }
-                        >
-                          Dispute (as {lot.from})
-                        </Button>
-                      )}
-                    </div>
+                    {!lot.frozen ? (
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() =>
+                          run(
+                            (s) =>
+                              openDisputeAsSender(
+                                s,
+                                lot.from,
+                                acc.address,
+                                lot.id,
+                                "Suspected theft / phishing",
+                              ),
+                            t("msgDispute"),
+                          )
+                        }
+                      >
+                        {t("dispute")}
+                      </Button>
+                    ) : null}
                   </div>
                 );
               }),
             )}
-            {Object.values(state.accounts).every((a) => a.unsettled.length === 0) && (
-              <p className="text-sm text-[var(--keel-mute)]">
-                No unsettled lots. Transfer rUSDC to start a recovery window.
-              </p>
-            )}
-          </CardBody>
-        </Card>
+            {Object.values(state.accounts).every(
+              (a) => a.unsettled.length === 0,
+            ) ? (
+              <p className="text-sm text-[var(--color-muted)]">{t("noLots")}</p>
+            ) : null}
+          </div>
+        </section>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Disputes / arbiter</CardTitle>
-            <CardDescription>
-              Approve burns holder lot and remints settled to claimant.
-            </CardDescription>
-          </CardHeader>
-          <CardBody className="space-y-2">
-            {state.disputes.length === 0 && (
-              <p className="text-sm text-[var(--keel-mute)]">No disputes yet.</p>
-            )}
+        <section className="border border-[var(--color-line)] p-5">
+          <h2 className="font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+            {t("disputesTitle")}
+          </h2>
+          <p className="mt-1 text-sm text-[var(--color-muted)]">
+            {t("disputesBody")}
+          </p>
+          <div className="mt-4 space-y-2">
+            {state.disputes.length === 0 ? (
+              <p className="text-sm text-[var(--color-muted)]">{t("noDisputes")}</p>
+            ) : null}
             {state.disputes.map((d) => (
               <div
                 key={d.id}
-                className="rounded-lg border border-[var(--keel-line)] p-3 text-sm"
+                className="border border-[var(--color-line)] p-3 text-sm"
               >
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-medium">{d.id}</span>
+                  <span className="font-medium text-[var(--color-text)]">
+                    {formatUsd(d.amount)}
+                  </span>
                   <Badge
                     tone={
                       d.status === "open"
@@ -456,21 +455,21 @@ export function DemoConsole() {
                     {d.status}
                   </Badge>
                 </div>
-                <p className="mt-1 text-xs text-[var(--keel-mute)]">
-                  Claimant {d.claimant} · {formatUsd(d.amount)} · {d.reason}
+                <p className="mt-1 text-xs text-[var(--color-muted)]">
+                  {d.claimant}
                 </p>
-                {d.status === "open" && (
+                {d.status === "open" ? (
                   <div className="mt-2 flex gap-2">
                     <Button
                       size="sm"
                       onClick={() =>
                         run(
                           (s) => resolveDispute(s, d.id, true),
-                          "Recover approved",
+                          t("msgApprove"),
                         )
                       }
                     >
-                      Approve recover
+                      {t("approve")}
                     </Button>
                     <Button
                       size="sm"
@@ -478,35 +477,19 @@ export function DemoConsole() {
                       onClick={() =>
                         run(
                           (s) => resolveDispute(s, d.id, false),
-                          "Dispute rejected",
+                          t("msgReject"),
                         )
                       }
                     >
-                      Reject
+                      {t("reject")}
                     </Button>
                   </div>
-                )}
+                ) : null}
               </div>
             ))}
-          </CardBody>
-        </Card>
+          </div>
+        </section>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Event log</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <ul className="max-h-56 space-y-1 overflow-auto font-mono text-xs text-[var(--keel-mute)]">
-            {state.events.map((e, i) => (
-              <li key={`${e.at}-${i}`}>
-                {new Date(e.at).toLocaleTimeString()} · {JSON.stringify(e)}
-              </li>
-            ))}
-            {state.events.length === 0 && <li>No events yet.</li>}
-          </ul>
-        </CardBody>
-      </Card>
     </div>
   );
 }
@@ -521,12 +504,16 @@ function Row({
   hint?: string;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 border-b border-[var(--keel-line)]/60 pb-2">
-      <span className="text-[var(--keel-mute)]">
+    <div className="flex items-baseline justify-between gap-3 border-b border-[var(--color-line)]/60 pb-2">
+      <span className="text-[var(--color-muted)]">
         {label}
-        {hint ? <span className="ml-2 text-[10px] uppercase tracking-wider opacity-70">{hint}</span> : null}
+        {hint ? (
+          <span className="ml-2 text-[10px] uppercase tracking-wider opacity-70">
+            {hint}
+          </span>
+        ) : null}
       </span>
-      <span className="font-[family-name:var(--font-display)] text-lg text-[var(--keel-paper)]">
+      <span className="font-[family-name:var(--font-display)] text-lg text-[var(--color-text)]">
         {value}
       </span>
     </div>

@@ -18,19 +18,7 @@ export default async function TermsPage({ params }: Props) {
 
   return (
     <PageShell>
-      <PageHero
-        meta={t("meta")}
-        title={t("title")}
-        body={
-          <>
-            {t("body")}{" "}
-            <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--color-accent2)]">
-              docs/TOS.md
-            </code>
-            .
-          </>
-        }
-      />
+      <PageHero meta={t("meta")} title={t("title")} body={t("body")} />
 
       <ul className="divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
         {points.map((line, i) => (

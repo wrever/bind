@@ -92,7 +92,7 @@ curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
 
       <PageCtaRow>
         <Button asChild>
-          <Link href="/live">Live cover rail</Link>
+          <Link href="/live">{t("ctaLive")}</Link>
         </Button>
         <Button asChild variant="outline">
           <Link href="/cover">{t("ctaCover")}</Link>

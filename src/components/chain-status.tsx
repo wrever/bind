@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -25,7 +26,11 @@ type ChainPorPayload = {
 type State =
   | { status: "loading" }
   | { status: "ok"; data: ChainPorPayload }
-  | { status: "err"; message: string; explorer?: { vault: string; deployTx?: string } };
+  | {
+      status: "err";
+      message: string;
+      explorer?: { vault: string; deployTx?: string };
+    };
 
 function stroopsToUsdc(raw: string): string {
   try {
@@ -39,8 +44,9 @@ function stroopsToUsdc(raw: string): string {
   }
 }
 
-/** Live testnet vault PoR via /api/v1/chain/por (RPC simulate). */
 export function ChainStatus() {
+  const t = useTranslations("Live");
+  const tp = useTranslations("Por");
   const [state, setState] = useState<State>({ status: "loading" });
 
   async function load() {
@@ -54,7 +60,7 @@ export function ChainStatus() {
       if (!res.ok) {
         setState({
           status: "err",
-          message: json.message ?? "RPC unavailable",
+          message: json.message ?? t("rpcOffline"),
           explorer: json.explorer,
         });
         return;
@@ -63,7 +69,7 @@ export function ChainStatus() {
     } catch (e) {
       setState({
         status: "err",
-        message: e instanceof Error ? e.message : "fetch failed",
+        message: e instanceof Error ? e.message : t("rpcOffline"),
       });
     }
   }
@@ -76,28 +82,28 @@ export function ChainStatus() {
     <section className="relative space-y-6 border-t border-[var(--color-line)] pt-10">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="keel-meta">On-chain · Stellar testnet</p>
+          <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
+            {t("meta")}
+          </p>
           <h2 className="mt-2 font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight text-[var(--color-text)] md:text-2xl">
-            Live vault PoR
+            {t("chainTitle")}
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-[var(--color-muted)]">
-            Read-only RPC simulate of{" "}
-            <code className="text-[var(--color-accent2)]">por()</code> on the
-            published Bind vault — separate from the local demo engine above.
+            {t("chainBody")}
           </p>
         </div>
         <Button size="sm" variant="outline" onClick={() => void load()}>
-          Refresh
+          {t("refresh")}
         </Button>
       </div>
 
       {state.status === "loading" ? (
-        <p className="keel-meta">Querying Soroban RPC…</p>
+        <p className="text-xs text-[var(--color-muted)]">{t("rpcLoading")}</p>
       ) : null}
 
       {state.status === "err" ? (
         <div className="border border-[var(--color-line)] bg-[var(--color-bg)] p-5">
-          <Badge tone="warn">RPC offline</Badge>
+          <Badge tone="warn">{t("rpcOffline")}</Badge>
           <p className="mt-3 text-sm text-[var(--color-muted)]">{state.message}</p>
           {state.explorer?.vault ? (
             <a
@@ -106,7 +112,7 @@ export function ChainStatus() {
               rel="noreferrer"
               className="mt-4 inline-block text-sm text-[var(--color-accent2)] underline underline-offset-4"
             >
-              Open vault on stellar.expert
+              {t("explorerVault")}
             </a>
           ) : null}
         </div>
@@ -116,29 +122,26 @@ export function ChainStatus() {
         <div className="space-y-6">
           <div className="flex flex-wrap gap-2">
             <Badge tone={state.data.por.fullyBacked ? "ok" : "warn"}>
-              {state.data.por.fullyBacked ? "Peg held on-chain" : "Underbacked"}
+              {state.data.por.fullyBacked ? t("pegOk") : t("underbacked")}
             </Badge>
             <Badge tone="mute">
               {state.data.vault.slice(0, 4)}…{state.data.vault.slice(-4)}
-            </Badge>
-            <Badge tone="mute">
-              as of {new Date(state.data.asOf).toLocaleString()}
             </Badge>
           </div>
 
           <div className="grid gap-px overflow-hidden border border-[var(--color-line)] bg-[var(--color-line)] sm:grid-cols-2 lg:grid-cols-3">
             {(
               [
-                ["Vault USDC", state.data.por.vaultUsdc],
-                ["Supply", state.data.por.supply],
-                ["Settled", state.data.por.settled],
-                ["Unsettled", state.data.por.unsettled],
-                ["Exit pool", state.data.por.exitPool],
-                ["Fees", state.data.por.feesEarned],
+                [tp("vaultUsdc"), state.data.por.vaultUsdc],
+                [tp("supply"), state.data.por.supply],
+                [tp("settled"), state.data.por.settled],
+                [tp("unsettled"), state.data.por.unsettled],
+                [tp("exitPool"), state.data.por.exitPool],
+                [tp("fees"), state.data.por.feesEarned],
               ] as const
             ).map(([title, raw]) => (
               <div key={title} className="bg-[var(--color-bg)] px-5 py-5">
-                <p className="keel-meta !normal-case !tracking-[0.06em]">
+                <p className="text-xs uppercase tracking-[0.06em] text-[var(--color-muted)]">
                   {title}
                 </p>
                 <p className="mt-2 font-[family-name:var(--font-display)] text-xl font-extrabold text-[var(--color-text)]">
@@ -156,7 +159,7 @@ export function ChainStatus() {
                 rel="noreferrer"
                 className="text-[var(--color-accent2)] underline underline-offset-4"
               >
-                Vault explorer
+                {t("explorerVault")}
               </a>
             ) : null}
             {state.data.explorer?.deployTx ? (
@@ -166,7 +169,7 @@ export function ChainStatus() {
                 rel="noreferrer"
                 className="text-[var(--color-accent2)] underline underline-offset-4"
               >
-                Deploy tx
+                {t("explorerTx")}
               </a>
             ) : null}
           </div>
@@ -176,28 +179,27 @@ export function ChainStatus() {
   );
 }
 
-/** Honest dual-track note for demo / integrate surfaces. */
 export function DualTrackNote() {
+  const t = useTranslations("DualTrack");
   return (
     <aside className="border border-[var(--color-line)] bg-[var(--color-surface)]/40 px-4 py-3 text-sm leading-relaxed text-[var(--color-muted)]">
       <span className="font-[family-name:var(--font-display)] font-extrabold text-[var(--color-text)]">
-        Dual track.{" "}
+        {t("title")}{" "}
       </span>
-      This UI drives the Bind policy engine (simulator). Sign real vault txs on{" "}
+      {t("body")}{" "}
       <Link
         href="/live"
         className="text-[var(--color-accent2)] underline underline-offset-4"
       >
-        /live
+        {t("live")}
       </Link>
-      ; PoR on-chain on{" "}
+      {" · "}
       <Link
         href="/por"
         className="text-[var(--color-accent2)] underline underline-offset-4"
       >
-        /por
+        {t("por")}
       </Link>
-      .
     </aside>
   );
 }

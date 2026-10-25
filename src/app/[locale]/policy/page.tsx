@@ -22,11 +22,7 @@ export default async function PolicyPage({ params }: Props) {
         title={t("title")}
         body={
           <>
-            {t("intro")}{" "}
-            <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--color-accent2)]">
-              docs/DISPUTE_POLICY.md
-            </code>
-            {t("introPerils")}{" "}
+            {t("body")} {t("introPerils")}{" "}
             <Link
               href="/cover"
               className="text-[var(--color-accent2)] underline decoration-[var(--color-accent2)]/40 underline-offset-4"

@@ -1,6 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
-  CodePanel,
   DocLink,
   PageCtaRow,
   PageHero,
@@ -23,31 +22,14 @@ export default async function DocsPage({ params }: Props) {
     { href: "/terms" as const, title: t("linkTermsTitle"), body: t("linkTermsBody") },
     { href: "/integrate" as const, title: t("linkIntegrateTitle"), body: t("linkIntegrateBody") },
     { href: "/por" as const, title: t("linkPorTitle"), body: t("linkPorBody") },
+    { href: "/live" as const, title: t("linkLiveTitle"), body: t("linkLiveBody") },
   ];
 
-  const invariants = [
-    t("inv1"),
-    t("inv2"),
-    t("inv3"),
-    t("inv4"),
-    t("inv5"),
-  ];
+  const invariants = [t("inv1"), t("inv2"), t("inv3"), t("inv4"), t("inv5")];
 
   return (
     <PageShell width="wide">
-      <PageHero
-        meta={t("meta")}
-        title={t("title")}
-        body={
-          <>
-            {t("intro")}{" "}
-            <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--color-accent2)]">
-              docs/PROTOCOL_INSURANCE.md
-            </code>
-            .
-          </>
-        }
-      />
+      <PageHero meta={t("meta")} title={t("title")} body={t("intro")} />
 
       <PageSection title={t("startHere")} index="01">
         <div className="grid gap-3 sm:grid-cols-2">
@@ -82,15 +64,7 @@ export default async function DocsPage({ params }: Props) {
               <span className="font-[family-name:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--color-muted)]">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-[var(--color-text)]">
-                {i === 0 ? (
-                  <code className="font-[family-name:var(--font-mono)] text-[13px] text-[var(--color-accent2)]">
-                    {line}
-                  </code>
-                ) : (
-                  line
-                )}
-              </span>
+              <span className="text-[var(--color-text)]">{line}</span>
             </li>
           ))}
         </ol>
@@ -106,43 +80,6 @@ export default async function DocsPage({ params }: Props) {
 
       <PageSection title={t("safeTitle")} index="06">
         <p>{t("safeBody")}</p>
-      </PageSection>
-
-      <PageSection title={t("engineTitle")} index="07">
-        <CodePanel>
-          {`deposit / transfer / settle / settle_all
-unwrap / exitPool
-openDisputeAsSender / freeze / resolve
-safeDeposit / claimSafeDeposit
-por()  // peg + caps readout`}
-        </CodePanel>
-      </PageSection>
-
-      <PageSection title={t("repoTitle")} index="08">
-        <ul className="space-y-3 font-[family-name:var(--font-mono)] text-[13px]">
-          <li>
-            <span className="text-[var(--color-accent2)]">docs/VISION.md</span>
-            <span className="text-[var(--color-muted)]"> — {t("repoVision")}</span>
-          </li>
-          <li>
-            <span className="text-[var(--color-accent2)]">docs/BIND_BUSINESS.md</span>
-            <span className="text-[var(--color-muted)]"> — {t("repoBusiness")}</span>
-          </li>
-          <li>
-            <span className="text-[var(--color-accent2)]">docs/PITCH_FAQ.md</span>
-            <span className="text-[var(--color-muted)]"> — {t("repoPitch")}</span>
-          </li>
-          <li className="text-[var(--color-muted)]">
-            docs/COVER_SCHEDULE.md · TOS.md · DISPUTE_POLICY.md
-          </li>
-          <li>
-            <span className="text-[var(--color-accent2)]">docs/MEMORIA.md</span>
-            <span className="text-[var(--color-muted)]"> — {t("repoMemoria")}</span>
-          </li>
-          <li className="text-[var(--color-muted)]">
-            docs/HACKATHON.md · EVIDENCE.md · ARCHITECTURE.md
-          </li>
-        </ul>
       </PageSection>
 
       <PageCtaRow>

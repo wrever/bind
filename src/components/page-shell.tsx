@@ -120,6 +120,7 @@ type AppHref =
   | "/cover"
   | "/docs"
   | "/demo"
+  | "/live"
   | "/por"
   | "/policy"
   | "/terms";
