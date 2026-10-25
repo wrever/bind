@@ -27,7 +27,7 @@ export async function GET() {
       simulator: {
         surface: "/demo + /api/v1/sessions/*",
         custody: false,
-        note: "Policy engine demo — not the on-chain vault",
+        note: "Policy engine demo, not the on-chain vault",
       },
       chain: {
         surface: "/live + /api/v1/chain/*",
@@ -40,7 +40,7 @@ export async function GET() {
       backend: persistenceBackend(),
       supabaseConfigured: supabaseEnabled(),
       sessionsLoaded: sessionCount(),
-      note: "Simulator sessions only — not vault balances",
+      note: "Simulator sessions only, not vault balances",
     },
     time: new Date().toISOString(),
   });

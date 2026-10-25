@@ -250,7 +250,7 @@ export function OpsConsole() {
               Bob unsettled lots:{" "}
               {bobLots.length
                 ? bobLots.map((l) => `${l.id}${l.frozen ? " (frozen)" : ""}`).join(", ")
-                : "none — seed session first"}
+                : "none. Seed session first"}
             </p>
             <div className="flex flex-wrap gap-2">
               <Input

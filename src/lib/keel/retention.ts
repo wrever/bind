@@ -1,5 +1,5 @@
 /**
- * Bind Tier 1 — Retention Cover profiles.
+ * Bind Tier 1: Retention Cover profiles.
  * Production: real hours. Demo: compressed windows that keep the same UX story.
  */
 
@@ -21,7 +21,7 @@ export type RetentionProfile = {
   kycRequired: boolean;
   /** Early exit via Exit Pool allowed (pays fee) */
   allowExitPool: boolean;
-  /** Free unwrap of unsettled never allowed — settled only */
+  /** Free unwrap of unsettled never allowed; settled only */
   freeExitBlocked: true;
   blurb: string;
 };
@@ -37,7 +37,7 @@ export const RETENTION_PROFILES: Record<RetentionProfileId, RetentionProfile> = 
     allowExitPool: true,
     freeExitBlocked: true,
     blurb:
-      "No KYC. Covered funds stay unsettled ~12h — unwrap/swap to free USDC blocked until settle. Breach in window → claim.",
+      "No KYC. Covered funds stay unsettled ~12h. Unwrap/swap to free USDC blocked until settle. Breach in window → claim.",
   },
   kyc_fast_lane: {
     id: "kyc_fast_lane",

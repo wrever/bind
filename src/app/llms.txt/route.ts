@@ -3,7 +3,7 @@ import { loadTestnetAddresses } from "@/lib/keel/testnet";
 
 export const dynamic = "force-dynamic";
 
-/** LLM-oriented site brief — keep insurance vocabulary, dual-track honesty. */
+/** LLM-oriented site brief. Keep insurance vocabulary and dual-track honesty. */
 export function GET() {
   const vault =
     loadTestnetAddresses()?.vault ??
@@ -30,13 +30,13 @@ export function GET() {
     "Invariant: vault_USDC >= covered_supply",
     "",
     "## Surfaces",
-    "- /demo — local policy simulator (no wallet)",
-    "- /live — Freighter-signed vault txs on Stellar testnet",
-    "- /por — local + live por() + COVER evidence",
-    "- /integrate — partner path",
-    "- /docs/* — product documentation",
-    "- /api/v1/sessions — simulator API (not custody)",
-    "- /api/v1/chain/* — live testnet vault prepare/submit/por",
+    "- /demo: local policy simulator (no wallet)",
+    "- /live: Freighter-signed vault txs on Stellar testnet",
+    "- /por: local + live por() + COVER evidence",
+    "- /integrate: partner path",
+    "- /docs/*: product documentation",
+    "- /api/v1/sessions: simulator API (not custody)",
+    "- /api/v1/chain/*: live testnet vault prepare/submit/por",
     "",
     "## Testnet",
     `- Vault: ${vault}`,
@@ -45,7 +45,7 @@ export function GET() {
     "",
     "## Docs index",
     ...DOC_PAGES.sort((a, b) => a.order - b.order).map(
-      (p) => `- /docs/${p.slug}: ${p.title.en} — ${p.description.en}`,
+      (p) => `- /docs/${p.slug}: ${p.title.en}: ${p.description.en}`,
     ),
     "",
     "## LLM page summaries",

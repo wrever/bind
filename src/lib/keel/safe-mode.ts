@@ -1,5 +1,5 @@
 /**
- * Safe Mode helpers for partner wallets — classify balances & window state
+ * Safe Mode helpers for partner wallets. Classify balances and window state.
  * without owning Keel UI.
  */
 
@@ -92,10 +92,10 @@ export function safeModeSnapshot(
 /** Partner-facing copy hints (i18n-ready keys). */
 export const SAFE_MODE_COPY = {
   unsettledHint:
-    "Retention — free unwrap/swap blocked; claimable if breached",
-  settledHint: "Final — unwrap 1:1 to USDC",
+    "Retention: free unwrap/swap blocked; claimable if breached",
+  settledHint: "Final: unwrap 1:1 to USDC",
   frozenHint: "Frozen pending claim resolve",
-  readyHint: "Retention elapsed — settle then unwrap",
-  pausedHint: "Protocol paused — deposits/transfers blocked",
+  readyHint: "Retention elapsed. Settle then unwrap",
+  pausedHint: "Protocol paused. Deposits/transfers blocked",
   exitHint: "Exit Pool = paid escape from retention (not free)",
 } as const;

@@ -46,11 +46,11 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "callout",
           tone: "info",
-          text: "Hackathon track: Genesis · Stellar Unlocked. We unlock clawback + Soroban for insurance — not a Composed mashup of other apps.",
+          text: "Hackathon track: Genesis · Stellar Unlocked. We unlock clawback + Soroban for insurance, not a Composed mashup of other apps.",
         },
         {
           type: "p",
-          text: "Bind is security insurance for DeFi on Stellar. Protocols contract Bind. Users get Protected Deposit: a timed retention window before free exit — and in-window claims if a breach hits while funds stay on the Bind rail.",
+          text: "Bind is security insurance for DeFi on Stellar. Protocols contract Bind. Users get Protected Deposit: a timed retention window before free exit, and in-window claims if a breach hits while funds stay on the Bind rail.",
         },
         { type: "h2", id: "who-buys", text: "Who buys Bind" },
         {
@@ -63,7 +63,7 @@ export const DOC_PAGES: DocPage[] = [
         { type: "h2", id: "who-is-protected", text: "Who is protected" },
         {
           type: "p",
-          text: "Depositors on partner surfaces. They do not download a Bind consumer app — cover sits under the partner UX.",
+          text: "Depositors on partner surfaces. They do not download a Bind consumer app. Cover sits under the partner UX.",
         },
         { type: "h2", id: "not-this", text: "What Bind is not" },
         {
@@ -85,11 +85,11 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "callout",
           tone: "info",
-          text: "Track hackathon: Genesis · Stellar Unlocked. Desbloqueamos clawback + Soroban para insurance — no un mashup Composed.",
+          text: "Track hackathon: Genesis · Stellar Unlocked. Desbloqueamos clawback + Soroban para insurance, no un mashup Composed.",
         },
         {
           type: "p",
-          text: "Bind es seguro de seguridad DeFi en Stellar. Los protocolos contratan Bind. Los usuarios obtienen Protected Deposit: una ventana de retención antes de la salida libre — y claims dentro de la ventana si hay un breach mientras los fondos están en el rail de Bind.",
+          text: "Bind es seguro de seguridad DeFi en Stellar. Los protocolos contratan Bind. Los usuarios obtienen Protected Deposit: una ventana de retención antes de la salida libre, y claims dentro de la ventana si hay un breach mientras los fondos están en el rail de Bind.",
         },
         { type: "h2", id: "who-buys", text: "Quién compra Bind" },
         {
@@ -102,7 +102,7 @@ export const DOC_PAGES: DocPage[] = [
         { type: "h2", id: "who-is-protected", text: "Quién está protegido" },
         {
           type: "p",
-          text: "Depositantes en superficies partner. No descargan una app Bind — el cover vive bajo la UX del partner.",
+          text: "Depositantes en superficies partner. No descargan una app Bind. El cover vive bajo la UX del partner.",
         },
         { type: "h2", id: "not-this", text: "Qué no es Bind" },
         {
@@ -124,11 +124,11 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "callout",
           tone: "info",
-          text: "Track hackathon: Genesis · Stellar Unlocked. Desbloqueamos clawback + Soroban para insurance — não um mashup Composed.",
+          text: "Track hackathon: Genesis · Stellar Unlocked. Desbloqueamos clawback + Soroban para insurance, não um mashup Composed.",
         },
         {
           type: "p",
-          text: "Bind é seguro de segurança DeFi na Stellar. Protocolos contratam Bind. Usuários recebem Protected Deposit: uma janela de retenção antes da saída livre — e claims dentro da janela se houver breach enquanto fundos estão no rail da Bind.",
+          text: "Bind é seguro de segurança DeFi na Stellar. Protocolos contratam Bind. Usuários recebem Protected Deposit: uma janela de retenção antes da saída livre, e claims dentro da janela se houver breach enquanto fundos estão no rail da Bind.",
         },
         { type: "h2", id: "who-buys", text: "Quem compra Bind" },
         {
@@ -141,7 +141,7 @@ export const DOC_PAGES: DocPage[] = [
         { type: "h2", id: "who-is-protected", text: "Quem é protegido" },
         {
           type: "p",
-          text: "Depositantes em superfícies partner. Não baixam um app Bind — o cover vive sob a UX do partner.",
+          text: "Depositantes em superfícies partner. Não baixam um app Bind. O cover vive sob a UX do partner.",
         },
         { type: "h2", id: "not-this", text: "O que Bind não é" },
         {
@@ -182,10 +182,10 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "ol",
           items: [
-            "Deposit — wrap USDC into Bind cover credit (1:1).",
-            "Hold — transfer opens a retention window; free exit is blocked.",
-            "Choose — wait out the window, or open a claim if a breach hits on-rail.",
-            "Result — settle + unwrap, or approved claim remints cover to the rightful party.",
+            "Deposit: wrap USDC into Bind cover credit (1:1).",
+            "Hold: transfer opens a retention window; free exit is blocked.",
+            "Choose: wait out the window, or open a claim if a breach hits on-rail.",
+            "Result: settle + unwrap, or approved claim remints cover to the rightful party.",
           ],
         },
         { type: "h2", id: "lanes", text: "Retention lanes" },
@@ -210,7 +210,7 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "callout",
           tone: "warn",
-          text: "Tier 1 = retention + block unwrap/swap + claim on Bind rail. Funds already off-rail need Tier 3 capital — do not promise clawback recovers any LP drain.",
+          text: "Tier 1 = retention + block unwrap/swap + claim on Bind rail. Funds already off-rail need Tier 3 capital. Do not promise clawback recovers any LP drain.",
         },
       ],
       [
@@ -218,10 +218,10 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "ol",
           items: [
-            "Deposit — wrap USDC a crédito Bind (1:1).",
-            "Hold — el transfer abre la ventana; la salida libre está bloqueada.",
-            "Choose — espera la ventana, o abre un claim si hay breach on-rail.",
-            "Result — settle + unwrap, o un claim aprobado remintea cover a quien corresponde.",
+            "Deposit: wrap USDC a crédito Bind (1:1).",
+            "Hold, el transfer abre la ventana; la salida libre está bloqueada.",
+            "Choose: espera la ventana, o abre un claim si hay breach on-rail.",
+            "Result: settle + unwrap, o un claim aprobado remintea cover a quien corresponde.",
           ],
         },
         { type: "h2", id: "lanes", text: "Lanes de retención" },
@@ -246,7 +246,7 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "callout",
           tone: "warn",
-          text: "Tier 1 = retención + bloqueo unwrap/swap + claim en el rail Bind. Fondos ya off-rail requieren capital Tier 3 — no prometas que clawback recupera cualquier drain de LP.",
+          text: "Tier 1 = retención + bloqueo unwrap/swap + claim en el rail Bind. Fondos ya off-rail requieren capital Tier 3. No prometas que clawback recupera cualquier drain de LP.",
         },
       ],
       [
@@ -254,10 +254,10 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "ol",
           items: [
-            "Deposit — wrap USDC em crédito Bind (1:1).",
-            "Hold — o transfer abre a janela; saída livre fica bloqueada.",
-            "Choose — espere a janela, ou abra um claim se houver breach on-rail.",
-            "Result — settle + unwrap, ou claim aprovado reminta cover a quem corresponde.",
+            "Deposit: wrap USDC em crédito Bind (1:1).",
+            "Hold, o transfer abre a janela; saída livre fica bloqueada.",
+            "Choose: espere a janela, ou abra um claim se houver breach on-rail.",
+            "Result: settle + unwrap, ou claim aprovado reminta cover a quem corresponde.",
           ],
         },
         { type: "h2", id: "lanes", text: "Lanes de retenção" },
@@ -282,7 +282,7 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "callout",
           tone: "warn",
-          text: "Tier 1 = retenção + bloqueio unwrap/swap + claim no rail Bind. Fundos já off-rail precisam de capital Tier 3 — não prometa que clawback recupera qualquer drain de LP.",
+          text: "Tier 1 = retenção + bloqueio unwrap/swap + claim no rail Bind. Fundos já off-rail precisam de capital Tier 3. Não prometa que clawback recupera qualquer drain de LP.",
         },
       ],
     ),
@@ -307,7 +307,7 @@ export const DOC_PAGES: DocPage[] = [
         { type: "h2", id: "covered", text: "Covered" },
         {
           type: "p",
-          text: "Unauthorized movement of unsettled Bind credit (key theft, phishing, or mis-send) while the retention window is open — subject to caps and claims policy.",
+          text: "Unauthorized movement of unsettled Bind credit (key theft, phishing, or mis-send) while the retention window is open, subject to caps and claims policy.",
         },
         { type: "h2", id: "not-covered", text: "Not covered" },
         {
@@ -334,7 +334,7 @@ export const DOC_PAGES: DocPage[] = [
         { type: "h2", id: "covered", text: "Cubierto" },
         {
           type: "p",
-          text: "Movimiento no autorizado de crédito Bind unsettled (robo de llave, phishing o envío erróneo) mientras la ventana está abierta — sujeto a caps y política de claims.",
+          text: "Movimiento no autorizado de crédito Bind unsettled (robo de llave, phishing o envío erróneo) mientras la ventana está abierta, sujeto a caps y política de claims.",
         },
         { type: "h2", id: "not-covered", text: "No cubierto" },
         {
@@ -361,7 +361,7 @@ export const DOC_PAGES: DocPage[] = [
         { type: "h2", id: "covered", text: "Coberto" },
         {
           type: "p",
-          text: "Movimento não autorizado de crédito Bind unsettled (roubo de chave, phishing ou envio errado) enquanto a janela está aberta — sujeito a caps e política de claims.",
+          text: "Movimento não autorizado de crédito Bind unsettled (roubo de chave, phishing ou envio errado) enquanto a janela está aberta, sujeito a caps e política de claims.",
         },
         { type: "h2", id: "not-covered", text: "Não coberto" },
         {
@@ -417,8 +417,8 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "ul",
           items: [
-            "Approve — remint settled cover to the claimant (COVER clawback rail under the hood).",
-            "Reject — unfreeze the lot; the settlement clock continues.",
+            "Approve: remint settled cover to the claimant (COVER clawback rail under the hood).",
+            "Reject: unfreeze the lot; the settlement clock continues.",
           ],
         },
         {
@@ -442,8 +442,8 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "ul",
           items: [
-            "Approve — remintea cover settled al claimant (rail COVER bajo el capó).",
-            "Reject — descongela el lote; el reloj de settlement sigue.",
+            "Approve: remintea cover settled al claimant (rail COVER bajo el capó).",
+            "Reject: descongela el lote; el reloj de settlement sigue.",
           ],
         },
         {
@@ -467,8 +467,8 @@ export const DOC_PAGES: DocPage[] = [
         {
           type: "ul",
           items: [
-            "Approve — reminta cover settled ao claimant (rail COVER sob o capô).",
-            "Reject — descongela o lote; o relógio de settlement segue.",
+            "Approve: reminta cover settled ao claimant (rail COVER sob o capô).",
+            "Reject: descongela o lote; o relógio de settlement segue.",
           ],
         },
         {
@@ -622,10 +622,10 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "ul",
           items: [
-            "GET /api/v1/chain/por — simulate vault.por()",
-            "GET /api/v1/chain/account?address=G… — XLM + TUSDC",
-            "POST /api/v1/chain/tx/prepare — assemble XDR",
-            "POST /api/v1/chain/tx/submit — submit signed XDR",
+            "GET /api/v1/chain/por. Simulate vault.por()",
+            "GET /api/v1/chain/account?address=G…. XLM + TUSDC",
+            "POST /api/v1/chain/tx/prepare. Assemble XDR",
+            "POST /api/v1/chain/tx/submit. Submit signed XDR",
           ],
         },
         {
@@ -650,10 +650,10 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "ul",
           items: [
-            "GET /api/v1/chain/por — simula vault.por()",
-            "GET /api/v1/chain/account?address=G… — XLM + TUSDC",
-            "POST /api/v1/chain/tx/prepare — arma el XDR",
-            "POST /api/v1/chain/tx/submit — envía el XDR firmado",
+            "GET /api/v1/chain/por. Simula vault.por()",
+            "GET /api/v1/chain/account?address=G…. XLM + TUSDC",
+            "POST /api/v1/chain/tx/prepare. Arma el XDR",
+            "POST /api/v1/chain/tx/submit. Envía el XDR firmado",
           ],
         },
         {
@@ -678,10 +678,10 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "ul",
           items: [
-            "GET /api/v1/chain/por — simula vault.por()",
-            "GET /api/v1/chain/account?address=G… — XLM + TUSDC",
-            "POST /api/v1/chain/tx/prepare — monta o XDR",
-            "POST /api/v1/chain/tx/submit — envia o XDR assinado",
+            "GET /api/v1/chain/por. Simula vault.por()",
+            "GET /api/v1/chain/account?address=G…. XLM + TUSDC",
+            "POST /api/v1/chain/tx/prepare. Monta o XDR",
+            "POST /api/v1/chain/tx/submit. Envia o XDR assinado",
           ],
         },
         {
@@ -728,15 +728,15 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "ol",
           items: [
-            "Open /por — local demo + live por() + COVER evidence.",
-            "Open /live — connect Freighter (Testnet) with TUSDC and sign a deposit.",
+            "Open /por. Local demo + live por() + COVER evidence.",
+            "Open /live. Connect Freighter (Testnet) with TUSDC and sign a deposit.",
             "Optional CLI: npm run testnet:smoke · npm run testnet:cover",
           ],
         },
         {
           type: "callout",
           tone: "warn",
-          text: "Freighter must be on Testnet and hold TUSDC. Friendbot funds XLM only — use Get TUSDC on /live.",
+          text: "Freighter must be on Testnet and hold TUSDC. Friendbot funds XLM only. Use Get TUSDC on /live.",
         },
       ],
       [
@@ -760,15 +760,15 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "ol",
           items: [
-            "Abre /por — demo local + por() live + evidence COVER.",
-            "Abre /live — Freighter (Testnet) con TUSDC y firma un deposit.",
+            "Abre /por. Demo local + por() live + evidence COVER.",
+            "Abre /live. Freighter (Testnet) con TUSDC y firma un deposit.",
             "CLI opcional: npm run testnet:smoke · npm run testnet:cover",
           ],
         },
         {
           type: "callout",
           tone: "warn",
-          text: "Freighter debe estar en Testnet y tener TUSDC. Friendbot solo fondea XLM — usa Get TUSDC en /live.",
+          text: "Freighter debe estar en Testnet y tener TUSDC. Friendbot solo fondea XLM, usa Get TUSDC en /live.",
         },
       ],
       [
@@ -792,15 +792,15 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "ol",
           items: [
-            "Abra /por — demo local + por() live + evidence COVER.",
-            "Abra /live — Freighter (Testnet) com TUSDC e assine um deposit.",
+            "Abra /por. Demo local + por() live + evidence COVER.",
+            "Abra /live. Freighter (Testnet) com TUSDC e assine um deposit.",
             "CLI opcional: npm run testnet:smoke · npm run testnet:cover",
           ],
         },
         {
           type: "callout",
           tone: "warn",
-          text: "Freighter deve estar na Testnet e ter TUSDC. Friendbot só financia XLM — use Obter TUSDC em /live.",
+          text: "Freighter deve estar na Testnet e ter TUSDC. Friendbot só financia XLM, use Obter TUSDC em /live.",
         },
       ],
     ),

@@ -89,3 +89,4 @@ npm run dev                # :3847 → /en/live
 | 2026-10-25w | Risk board: AI_ATTRIBUTION, LICENSE, health tracks, hygiene curl/ops token |
 | 2026-10-25x | Vercel `bind-beta`: env BIND_* + redeploy; faucet prod OK; repo público. |
 | 2026-10-25y | Blindaje Unlocked: `UNLOCKED.md`, dual-track copy, landing unlockLine, ARCHITECTURE/HACKATHON. |
+| 2026-10-25z | Frontend copy alineado a visión (Unlocked + dual-track + insurance lock); limpia de em dashes `—` en i18n/DocsSite/UI. |
