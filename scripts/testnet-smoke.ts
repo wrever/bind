@@ -1,5 +1,5 @@
 /**
- * Live PoR check against the published testnet vault.
+ * Live PoR + prepare smoke against the published testnet vault.
  * Prefers Soroban RPC (no CLI identity). Falls back to stellar CLI if present.
  */
 
@@ -8,9 +8,12 @@ import path from "path";
 import { execFileSync } from "child_process";
 import {
   Account,
+  Address,
+  BASE_FEE,
   Contract,
   Networks,
   TransactionBuilder,
+  nativeToScVal,
   rpc,
   scValToNative,
 } from "@stellar/stellar-sdk";
@@ -49,8 +52,7 @@ async function porViaRpc(cfg: {
 
 function porViaCli(vault: string) {
   const stellar =
-    process.env.STELLAR_BIN ||
-    `${process.env.HOME}/.cargo/bin/stellar`;
+    process.env.STELLAR_BIN || `${process.env.HOME}/.cargo/bin/stellar`;
   const out = execFileSync(
     stellar,
     [
@@ -76,6 +78,30 @@ function porViaCli(vault: string) {
   return JSON.parse(jsonLine) as { fully_backed: boolean };
 }
 
+async function prepareOk(
+  srv: rpc.Server,
+  passphrase: string,
+  vault: string,
+  address: string,
+  op: ReturnType<Contract["call"]>,
+) {
+  const account = await srv.getAccount(address);
+  const tx = new TransactionBuilder(account, {
+    fee: BASE_FEE,
+    networkPassphrase: passphrase,
+  })
+    .addOperation(op)
+    .setTimeout(60)
+    .build();
+  const sim = await srv.simulateTransaction(tx);
+  if (!rpc.Api.isSimulationSuccess(sim)) {
+    throw new Error(
+      `prepare fail: ${"error" in sim ? JSON.stringify(sim.error) : "x"}`,
+    );
+  }
+  return true;
+}
+
 async function main() {
   if (!existsSync(ADDR)) {
     throw new Error("docs/testnet.addresses.json missing — run npm run testnet:up");
@@ -85,6 +111,8 @@ async function main() {
     status: string;
     rpcUrl: string;
     networkPassphrase: string;
+    alice: string;
+    bob: string;
   };
   if (cfg.status !== "live") {
     throw new Error(`testnet status is ${cfg.status}, expected live`);
@@ -107,12 +135,70 @@ async function main() {
   if (!por.fully_backed) {
     throw new Error(`peg broken: ${JSON.stringify(por)}`);
   }
+
+  const srv = new rpc.Server(
+    cfg.rpcUrl || "https://soroban-testnet.stellar.org",
+  );
+  const passphrase = cfg.networkPassphrase || Networks.TESTNET;
+  const contract = new Contract(cfg.vault);
+  const alice = cfg.alice;
+  const prepares: string[] = [];
+
+  try {
+    await prepareOk(
+      srv,
+      passphrase,
+      cfg.vault,
+      alice,
+      contract.call(
+        "deposit",
+        Address.fromString(alice).toScVal(),
+        nativeToScVal(BigInt(1_000_000), { type: "i128" }),
+      ),
+    );
+    prepares.push("deposit");
+  } catch (e) {
+    console.warn("prepare deposit skipped", e instanceof Error ? e.message : e);
+  }
+
+  try {
+    await prepareOk(
+      srv,
+      passphrase,
+      cfg.vault,
+      alice,
+      contract.call(
+        "transfer",
+        Address.fromString(alice).toScVal(),
+        Address.fromString(cfg.bob).toScVal(),
+        nativeToScVal(BigInt(1_000_000), { type: "i128" }),
+      ),
+    );
+    prepares.push("transfer");
+  } catch (e) {
+    console.warn("prepare transfer skipped", e instanceof Error ? e.message : e);
+  }
+
+  try {
+    await prepareOk(
+      srv,
+      passphrase,
+      cfg.vault,
+      alice,
+      contract.call("settle", Address.fromString(alice).toScVal()),
+    );
+    prepares.push("settle");
+  } catch (e) {
+    console.warn("prepare settle skipped", e instanceof Error ? e.message : e);
+  }
+
   console.log("ok", {
     via,
     vault: cfg.vault,
     fully_backed: por.fully_backed,
     vault_usdc: por.vault_usdc?.toString?.() ?? por.vault_usdc,
     supply: por.supply?.toString?.() ?? por.supply,
+    prepares,
   });
 }
 

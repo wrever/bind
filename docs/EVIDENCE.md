@@ -1,22 +1,20 @@
 # On-chain evidence (Stellar Testnet)
 
-**Updated:** 2026-10-25
+**Updated:** 2026-10-25 (redeploy with `credits` / `lots_of`)
 
 ## Policy vault
 
 | Item | Value |
 |------|-------|
-| Contract | [`CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J`](https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J) |
-| Deploy tx | [`30d08e65218d424acf2a685d574ac9a949b3b62acdf6b0bb06503acb20282368`](https://stellar.expert/explorer/testnet/tx/30d08e65218d424acf2a685d574ac9a949b3b62acdf6b0bb06503acb20282368) |
+| Contract | [`CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ`](https://stellar.expert/explorer/testnet/contract/CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ) |
 | Smoke | deposit → transfer → dispute/resolve → exit → `por().fully_backed` |
+| E2E | `npm run testnet:e2e` (mint → dispute/resolve → settle/unwrap) |
 
 Reproduce:
 
 ```bash
 npm run testnet:smoke
-# or
-stellar contract invoke --id CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J \
-  --source keel-admin --network testnet -- por
+npm run testnet:e2e   # needs scripts/sync-testnet-env.sh
 ```
 
 ## COVER claims rail (Unlocked)

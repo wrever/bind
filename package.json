@@ -16,6 +16,8 @@
     "script:deploy-vault": "tsx scripts/deploy-vault.ts",
     "testnet:up": "bash scripts/testnet-up.sh",
     "testnet:smoke": "tsx scripts/testnet-smoke.ts",
+    "testnet:e2e": "tsx scripts/testnet-e2e.ts",
+    "testnet:sync-env": "bash scripts/sync-testnet-env.sh",
     "testnet:cover": "bash scripts/cover-issuer-up.sh",
     "demo:hackathon": "bash scripts/demo-hackathon.sh",
     "push:github": "bash scripts/push-github.sh"

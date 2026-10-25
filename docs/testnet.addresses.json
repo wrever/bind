@@ -3,23 +3,22 @@
   "networkPassphrase": "Test SDF Network ; September 2015",
   "rpcUrl": "https://soroban-testnet.stellar.org",
   "horizonUrl": "https://horizon-testnet.stellar.org",
-  "deployedAt": "2026-10-18T02:30:00Z",
+  "deployedAt": "2026-10-25T21:12:16Z",
   "windowSecs": 60,
   "exitFeeBps": 30,
   "assetCode": "TUSDC",
-  "asset": "TUSDC:GAPCON7NQZ4ZCVSEM47NGKJZBPZAQPLKF3IMVXC4K2NIMKY452AVWNEC",
-  "tusdcSac": "CAHA2THSZSMX4FGDTRHWOCPPQZ6BPFVZ33IRG5OGCKQ7MCZ7U7HJ5WUS",
+  "asset": "TUSDC:GCNPSYT4C5DOYXHYPFZ6ZJJPE7ER7I2Y63UJKYDKRD6GSA3NRBE4KD7X",
+  "tusdcSac": "CBTMLE4GB2JGXPW4IQKK3XHFDRQMTSOI2IQ4DG5REP4WPWRD54GTMYKO",
   "circleUsdcSac": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
   "circleUsdcIssuer": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
-  "vault": "CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J",
-  "admin": "GAPCON7NQZ4ZCVSEM47NGKJZBPZAQPLKF3IMVXC4K2NIMKY452AVWNEC",
-  "arbiter": "GBFN2LAEJT622PU76AX7N4MEM4PYLTQT4XEKOJMJDRWXRGL6JAVNEQHD",
-  "alice": "GAUEWPJQMHNHEIHATNW2R4LDKBEQ36EZFWVHGDZXHTPRYHJEZH6JKYQO",
-  "bob": "GDDN2NMBQYF63RKMJTUZZFK2XFEGCL2DUQS3JOGBJHVLRGZJNITQYTQF",
+  "vault": "CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ",
+  "admin": "GCNPSYT4C5DOYXHYPFZ6ZJJPE7ER7I2Y63UJKYDKRD6GSA3NRBE4KD7X",
+  "arbiter": "GDPQVHY2VUAOIZO2FTHELDVEXCBY5GGBHSVKDB5EDS7LLOMQ5OJN4PID",
+  "alice": "GB5FFYJRMUWIVSSRQAGA36LQPLL7O5G36IBWQJO4YTSIMRHQ27FR7ABI",
+  "bob": "GDMSZX33BT3WDDQNFGY4HYHWKN532WWADL3FO6YZ7Z3XBWM2TZMXEFDH",
   "explorer": {
-    "vault": "https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J",
-    "tusdc": "https://stellar.expert/explorer/testnet/contract/CAHA2THSZSMX4FGDTRHWOCPPQZ6BPFVZ33IRG5OGCKQ7MCZ7U7HJ5WUS",
-    "deployTx": "https://stellar.expert/explorer/testnet/tx/30d08e65218d424acf2a685d574ac9a949b3b62acdf6b0bb06503acb20282368"
+    "vault": "https://stellar.expert/explorer/testnet/contract/CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ",
+    "tusdc": "https://stellar.expert/explorer/testnet/contract/CBTMLE4GB2JGXPW4IQKK3XHFDRQMTSOI2IQ4DG5REP4WPWRD54GTMYKO"
   },
   "status": "live",
   "smoke": {
@@ -27,9 +26,11 @@
     "transfer": true,
     "disputeResolve": true,
     "exit": true,
-    "porFullyBacked": true
+    "porFullyBacked": true,
+    "creditsView": true,
+    "lotsOfView": true
   },
-  "notes": "TUSDC is Keel testnet stand-in for Circle USDC. Vault holds internal rUSDC credits (settled/unsettled); recover is on-contract burn/remint. Secrets stay in local stellar CLI keystore (keel-admin/arbiter/alice/bob).",
+  "notes": "TUSDC stand-in for Circle USDC. Sync secrets: bash scripts/sync-testnet-env.sh",
   "cover": {
     "assetCode": "COVER",
     "asset": "COVER:GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P",

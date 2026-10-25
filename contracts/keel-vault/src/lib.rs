@@ -55,6 +55,13 @@ pub struct Por {
     pub fully_backed: bool,
 }
 
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct Credits {
+    pub settled: i128,
+    pub unsettled: i128,
+}
+
 #[contracterror]
 #[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
 #[repr(u32)]
@@ -322,6 +329,35 @@ impl KeelVault {
             paused: env.storage().instance().get(&DATA_PAUSED).unwrap(),
             fully_backed: vault >= supply,
         })
+    }
+
+    /// Read-only per-address settled + unsettled credits (no auth).
+    pub fn credits(env: Env, who: Address) -> Result<Credits, Error> {
+        Self::require_init(&env)?;
+        let settled = Self::settled_map(&env).get(who.clone()).unwrap_or(0);
+        let lots = Self::lots_map(&env);
+        let mut unsettled = 0i128;
+        for k in lots.keys().iter() {
+            let lot = lots.get(k).unwrap();
+            if lot.owner == who {
+                unsettled += lot.amount;
+            }
+        }
+        Ok(Credits { settled, unsettled })
+    }
+
+    /// Read-only lots owned by `who` (no auth).
+    pub fn lots_of(env: Env, who: Address) -> Result<Vec<Lot>, Error> {
+        Self::require_init(&env)?;
+        let lots = Self::lots_map(&env);
+        let mut out: Vec<Lot> = Vec::new(&env);
+        for k in lots.keys().iter() {
+            let lot = lots.get(k).unwrap();
+            if lot.owner == who {
+                out.push_back(lot);
+            }
+        }
+        Ok(out)
     }
 
     // --- internals ---

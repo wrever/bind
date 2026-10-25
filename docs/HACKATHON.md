@@ -32,15 +32,18 @@
 ## Demo (≈3 min)
 
 ```bash
+npm run testnet:sync-env   # once: BIND_* into .env.local
 npm run demo:hackathon
-npm run dev   # :3847
+npm run dev   # :3847 → open /en/…
 ```
 
 1. **Landing** — product one-liner  
 2. **`/demo`** — policy engine: deposit → hold → settle/claim (say “simulator”)  
-3. **`/live`** — Freighter signs vault deposit/transfer on testnet (explorer tx)  
+3. **`/live`** — Freighter: trustline → Get TUSDC → deposit → transfer → dispute → Approve (ops) **or** wait → settle → unwrap; Exit optional  
 4. **`/por`** — live RPC `por()` + COVER clawback evidence  
-5. **Terminal (optional)** — `npm run testnet:cover` for Unlocked clawback beat  
+5. **Terminal** — `npm run testnet:smoke` / `npm run testnet:e2e` for hashes  
+
+Vault + TUSDC: see [`testnet.addresses.json`](./testnet.addresses.json) / [`TESTNET.md`](./TESTNET.md).
 
 ## Out of scope
 

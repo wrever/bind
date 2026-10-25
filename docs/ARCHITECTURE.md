@@ -40,7 +40,7 @@ Source of truth: [`testnet.addresses.json`](./testnet.addresses.json)
 
 | Component | ID |
 |-----------|-----|
-| Policy vault | `CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J` |
+| Policy vault | see `docs/testnet.addresses.json` → `vault` (redeployed with `credits` / `lots_of`) |
 | COVER SAC | `CAZGFSWXBWZIOZGRV42GXEKLZTP7MCJ74LVJZ6UYLHAOVHT52NMNP5Z2` |
 | COVER issuer | `GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P` |
 | Network | Testnet · RPC `https://soroban-testnet.stellar.org` |

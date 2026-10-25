@@ -89,6 +89,23 @@ fn pause_blocks_deposit() {
 }
 
 #[test]
+fn credits_and_lots_of_views() {
+    let (_env, client, alice, bob, _usdc) = setup();
+    client.deposit(&alice, &100_000_000);
+    let lot = client.transfer(&alice, &bob, &40_000_000);
+    let alice_c = client.credits(&alice);
+    assert_eq!(alice_c.settled, 60_000_000);
+    assert_eq!(alice_c.unsettled, 0);
+    let bob_c = client.credits(&bob);
+    assert_eq!(bob_c.settled, 0);
+    assert_eq!(bob_c.unsettled, 40_000_000);
+    let bob_lots = client.lots_of(&bob);
+    assert_eq!(bob_lots.len(), 1);
+    assert_eq!(bob_lots.get(0).unwrap().id, lot);
+    assert_eq!(bob_lots.get(0).unwrap().amount, 40_000_000);
+}
+
+#[test]
 fn exit_pool_charges_fee() {
     let (env, client, alice, bob, usdc) = setup();
     let token = token::Client::new(&env, &usdc);

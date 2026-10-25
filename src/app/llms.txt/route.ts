@@ -1,10 +1,13 @@
 import { DOC_PAGES } from "@/content/docs/catalog";
+import { loadTestnetAddresses } from "@/lib/keel/testnet";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 /** LLM-oriented site brief — keep insurance vocabulary, dual-track honesty. */
 export function GET() {
-  const vault = "CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J";
+  const vault =
+    loadTestnetAddresses()?.vault ??
+    "CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ";
   const lines = [
     "# Bind",
     "",

@@ -10,12 +10,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 
+type LotView = {
+  id: string;
+  amount: string;
+  receivedAt: string;
+  frozen: boolean;
+  from: string;
+};
+
 type AccountView = {
   address: string;
   exists: boolean;
   xlm?: string;
   tusdc?: string;
+  settled?: string;
+  unsettled?: string;
+  lots?: LotView[];
   vault: string;
+  windowSecs?: number;
   explorer: { vault: string; account: string };
 };
 
@@ -24,9 +36,23 @@ type TxLog = {
   status: string;
   hash?: string;
   explorerUrl?: string;
+  detail?: string;
   error?: string;
   at: string;
 };
+
+type VaultAction =
+  | "deposit"
+  | "transfer"
+  | "settle"
+  | "unwrap"
+  | "exit"
+  | "dispute";
+
+const OPS_TOKEN =
+  typeof process !== "undefined"
+    ? process.env.NEXT_PUBLIC_BIND_OPS_TOKEN?.trim() || ""
+    : "";
 
 async function freighterAddress(): Promise<string | null> {
   try {
@@ -41,6 +67,35 @@ async function freighterAddress(): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+async function signAndSubmit(
+  address: string,
+  xdr: string,
+  networkPassphrase: string,
+) {
+  const api = await import("@stellar/freighter-api");
+  const signed = await api.signTransaction(xdr, {
+    networkPassphrase,
+    address,
+  });
+  if (signed.error || !signed.signedTxXdr) {
+    throw new Error(signed.error?.message ?? "Freighter rejected");
+  }
+  const subRes = await fetch("/api/v1/chain/tx/submit", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ signedXdr: signed.signedTxXdr }),
+  });
+  const sub = (await subRes.json()) as {
+    hash?: string;
+    status?: string;
+    explorerUrl?: string;
+    returnValue?: unknown;
+    message?: string;
+  };
+  if (!subRes.ok) throw new Error(sub.message ?? "submit failed");
+  return sub;
 }
 
 export function LiveRail() {
@@ -77,27 +132,38 @@ export function LiveRail() {
 
   useEffect(() => {
     void syncWallet();
-    const timer = setInterval(() => void syncWallet(), 4000);
+    const timer = setInterval(() => void syncWallet(), 5000);
     return () => clearInterval(timer);
   }, [syncWallet]);
 
-  async function run(
-    action: "deposit" | "transfer" | "settle" | "unwrap",
-  ) {
+  function pushLog(row: Omit<TxLog, "at">) {
+    setLog((prev) => [{ ...row, at: new Date().toISOString() }, ...prev].slice(0, 10));
+  }
+
+  async function run(action: VaultAction, lotId?: string) {
     setError(null);
     if (!address) {
       setError(t("needWallet"));
       return;
     }
-    setBusy(action);
+    setBusy(action + (lotId ?? ""));
     try {
       const prepBody: Record<string, string> = { action, address };
-      if (action === "deposit" || action === "unwrap" || action === "transfer") {
+      if (
+        action === "deposit" ||
+        action === "unwrap" ||
+        action === "transfer" ||
+        action === "exit"
+      ) {
         prepBody.amount = amount;
       }
       if (action === "transfer") {
         if (!to.trim()) throw new Error(t("needTo"));
         prepBody.to = to.trim();
+      }
+      if (action === "dispute") {
+        if (!lotId) throw new Error(t("needLot"));
+        prepBody.lotId = lotId;
       }
 
       const prepRes = await fetch("/api/v1/chain/tx/prepare", {
@@ -114,59 +180,155 @@ export function LiveRail() {
         throw new Error(prep.message ?? "prepare failed");
       }
 
-      const api = await import("@stellar/freighter-api");
-      const signed = await api.signTransaction(prep.xdr, {
-        networkPassphrase: prep.networkPassphrase,
+      const sub = await signAndSubmit(
         address,
-      });
-      if (signed.error || !signed.signedTxXdr) {
-        throw new Error(signed.error?.message ?? "Freighter rejected");
-      }
-
-      const subRes = await fetch("/api/v1/chain/tx/submit", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ signedXdr: signed.signedTxXdr }),
-      });
-      const sub = (await subRes.json()) as {
-        hash?: string;
-        status?: string;
-        explorerUrl?: string;
-        message?: string;
-      };
-      if (!subRes.ok) throw new Error(sub.message ?? "submit failed");
-
-      setLog((prev) =>
-        [
-          {
-            action,
-            status: sub.status ?? "UNKNOWN",
-            hash: sub.hash,
-            explorerUrl: sub.explorerUrl,
-            at: new Date().toISOString(),
-          },
-          ...prev,
-        ].slice(0, 8),
+        prep.xdr,
+        prep.networkPassphrase,
       );
+      const detail =
+        action === "transfer" && sub.returnValue != null
+          ? `lot #${String(sub.returnValue)}`
+          : undefined;
+      pushLog({
+        action,
+        status: sub.status ?? "UNKNOWN",
+        hash: sub.hash,
+        explorerUrl: sub.explorerUrl,
+        detail,
+      });
       await refreshAccount(address);
     } catch (e) {
       const message = e instanceof Error ? e.message : "tx failed";
       setError(message);
-      setLog((prev) =>
-        [
-          {
-            action,
-            status: "ERROR",
-            error: message,
-            at: new Date().toISOString(),
-          },
-          ...prev,
-        ].slice(0, 8),
-      );
+      pushLog({ action, status: "ERROR", error: message });
     } finally {
       setBusy(null);
     }
   }
+
+  async function faucet(trustlineOnly = false) {
+    setError(null);
+    if (!address) {
+      setError(t("needWallet"));
+      return;
+    }
+    if (!OPS_TOKEN) {
+      setError(t("opsDisabled"));
+      return;
+    }
+    setBusy(trustlineOnly ? "trustline" : "faucet");
+    try {
+      const res = await fetch("/api/v1/chain/faucet", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${OPS_TOKEN}`,
+        },
+        body: JSON.stringify({
+          address,
+          amount: "50",
+          trustlineOnly: trustlineOnly || undefined,
+        }),
+      });
+      const json = (await res.json()) as {
+        error?: string;
+        message?: string;
+        xdr?: string;
+        networkPassphrase?: string;
+        hash?: string;
+        explorerUrl?: string;
+        amount?: string;
+      };
+
+      if (res.status === 409 || json.error === "need_trustline") {
+        setError(t("needTrustline"));
+        return;
+      }
+
+      if (trustlineOnly) {
+        if (!res.ok || !json.xdr || !json.networkPassphrase) {
+          throw new Error(json.message ?? "trustline prepare failed");
+        }
+        const sub = await signAndSubmit(
+          address,
+          json.xdr,
+          json.networkPassphrase,
+        );
+        pushLog({
+          action: "trustline",
+          status: sub.status ?? "UNKNOWN",
+          hash: sub.hash,
+          explorerUrl: sub.explorerUrl,
+        });
+        await refreshAccount(address);
+        return;
+      }
+
+      if (!res.ok) throw new Error(json.message ?? "faucet failed");
+      pushLog({
+        action: "faucet",
+        status: "SUCCESS",
+        hash: json.hash,
+        explorerUrl: json.explorerUrl,
+        detail: json.amount ? `+${json.amount} TUSDC` : undefined,
+      });
+      await refreshAccount(address);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "faucet failed";
+      setError(message);
+      pushLog({
+        action: trustlineOnly ? "trustline" : "faucet",
+        status: "ERROR",
+        error: message,
+      });
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function resolveLot(lotId: string, approve: boolean) {
+    setError(null);
+    if (!OPS_TOKEN) {
+      setError(t("opsDisabled"));
+      return;
+    }
+    setBusy(`resolve-${lotId}-${approve}`);
+    try {
+      const res = await fetch("/api/v1/chain/tx/resolve", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${OPS_TOKEN}`,
+        },
+        body: JSON.stringify({ lotId, approve }),
+      });
+      const json = (await res.json()) as {
+        message?: string;
+        hash?: string;
+        status?: string;
+        explorerUrl?: string;
+      };
+      if (!res.ok) throw new Error(json.message ?? "resolve failed");
+      pushLog({
+        action: approve ? "resolve:approve" : "resolve:reject",
+        status: json.status ?? "UNKNOWN",
+        hash: json.hash,
+        explorerUrl: json.explorerUrl,
+        detail: `lot #${lotId}`,
+      });
+      if (address) await refreshAccount(address);
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "resolve failed";
+      setError(message);
+      pushLog({ action: "resolve", status: "ERROR", error: message });
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const lowTusdc =
+    !account?.tusdc || account.tusdc === "0" || Number(account.tusdc) < 1;
+  const showOps = Boolean(OPS_TOKEN);
 
   return (
     <div className="relative mx-auto max-w-5xl space-y-12 px-5 pb-20 pt-10 md:px-10 md:pb-24 md:pt-14">
@@ -204,6 +366,16 @@ export function LiveRail() {
           {account?.tusdc ? (
             <Badge tone="sea">TUSDC {account.tusdc}</Badge>
           ) : null}
+          {account?.settled != null ? (
+            <Badge tone="mute">
+              {t("settled")} {account.settled}
+            </Badge>
+          ) : null}
+          {account?.unsettled != null ? (
+            <Badge tone="mute">
+              {t("unsettled")} {account.unsettled}
+            </Badge>
+          ) : null}
         </div>
 
         {account ? (
@@ -221,9 +393,28 @@ export function LiveRail() {
           </p>
         ) : null}
 
-        {!account?.tusdc || account.tusdc === "0" ? (
-          <aside className="border border-[var(--color-line)] bg-[var(--color-surface)]/40 px-4 py-3 text-sm text-[var(--color-muted)]">
-            {t("noTusdc")}
+        {lowTusdc ? (
+          <aside className="space-y-3 border border-[var(--color-line)] bg-[var(--color-surface)]/40 px-4 py-3 text-sm text-[var(--color-muted)]">
+            <p>{t("noTusdc")}</p>
+            {showOps ? (
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  disabled={!!busy || !address}
+                  onClick={() => void faucet(false)}
+                >
+                  {busy === "faucet" ? t("signing") : t("getTusdc")}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={!!busy || !address}
+                  onClick={() => void faucet(true)}
+                >
+                  {busy === "trustline" ? t("signing") : t("addTrustline")}
+                </Button>
+              </div>
+            ) : null}
           </aside>
         ) : null}
       </section>
@@ -280,7 +471,70 @@ export function LiveRail() {
           >
             {busy === "unwrap" ? t("signing") : t("unwrap")}
           </Button>
+          <Button
+            variant="outline"
+            disabled={!!busy}
+            onClick={() => void run("exit")}
+          >
+            {busy === "exit" ? t("signing") : t("exit")}
+          </Button>
         </div>
+
+        {account?.lots && account.lots.length > 0 ? (
+          <div className="space-y-3">
+            <h3 className="text-sm font-medium text-[var(--color-text)]">
+              {t("lotsTitle")}
+            </h3>
+            <ul className="divide-y divide-[var(--color-line)] border border-[var(--color-line)]">
+              {account.lots.map((lot) => (
+                <li
+                  key={lot.id}
+                  className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div className="text-sm text-[var(--color-muted)]">
+                    <span className="font-[family-name:var(--font-mono)] text-[var(--color-text)]">
+                      #{lot.id}
+                    </span>
+                    {" · "}
+                    {lot.amount} cover
+                    {lot.frozen ? ` · ${t("frozen")}` : null}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={!!busy || lot.frozen}
+                      onClick={() => void run("dispute", lot.id)}
+                    >
+                      {busy === `dispute${lot.id}`
+                        ? t("signing")
+                        : t("dispute")}
+                    </Button>
+                    {showOps && lot.frozen ? (
+                      <>
+                        <Button
+                          size="sm"
+                          disabled={!!busy}
+                          onClick={() => void resolveLot(lot.id, true)}
+                        >
+                          {t("approve")}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          disabled={!!busy}
+                          onClick={() => void resolveLot(lot.id, false)}
+                        >
+                          {t("reject")}
+                        </Button>
+                      </>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         {error ? (
           <p className="text-sm text-[var(--color-alert)]">{error}</p>
@@ -298,6 +552,7 @@ export function LiveRail() {
                 </span>
                 <span className="text-[var(--color-text)]">
                   {row.status}
+                  {row.detail ? ` · ${row.detail}` : null}
                   {row.error ? ` · ${row.error}` : null}
                 </span>
                 {row.explorerUrl ? (

@@ -23,6 +23,7 @@ export async function POST(req: Request) {
     switch (action) {
       case "deposit":
       case "unwrap":
+      case "exit":
         payload = {
           action,
           address,
@@ -54,7 +55,8 @@ export async function POST(req: Request) {
         return NextResponse.json(
           {
             error: "invalid_action",
-            message: "deposit | transfer | settle | unwrap | dispute",
+            message:
+              "deposit | transfer | settle | unwrap | exit | dispute",
           },
           { status: 400 },
         );

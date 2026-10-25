@@ -128,9 +128,16 @@ POR="$(stellar contract invoke \
 echo "    lot=$LOT fee=$FEE"
 echo "    por=$POR"
 
-python3 - "$VAULT" "$USDC_SAC" "$ADMIN" "$ARBITER" "$ALICE" "$BOB" "$ASSET" "$WINDOW_SECS" "$EXIT_FEE_BPS" "$OUT_JSON" "$OUT_DATA" <<'PY'
+python3 - "$VAULT" "$USDC_SAC" "$ADMIN" "$ARBITER" "$ALICE" "$BOB" "$ASSET" "$WINDOW_SECS" "$EXIT_FEE_BPS" "$OUT_JSON" "$OUT_DATA" "$ROOT" <<'PY'
 import json, sys, pathlib, datetime
-vault, sac, admin, arbiter, alice, bob, asset, window, fee_bps, out_json, out_data = sys.argv[1:]
+vault, sac, admin, arbiter, alice, bob, asset, window, fee_bps, out_json, out_data, root = sys.argv[1:]
+prev = {}
+p = pathlib.Path(out_json)
+if p.exists():
+  try:
+    prev = json.loads(p.read_text())
+  except Exception:
+    prev = {}
 data = {
   "network": "testnet",
   "networkPassphrase": "Test SDF Network ; September 2015",
@@ -160,27 +167,30 @@ data = {
     "disputeResolve": True,
     "exit": True,
     "porFullyBacked": True,
+    "creditsView": True,
+    "lotsOfView": True,
   },
-  "notes": "TUSDC stand-in for Circle USDC. Secrets in local stellar CLI keystore only.",
+  "notes": "TUSDC stand-in for Circle USDC. Sync secrets: bash scripts/sync-testnet-env.sh",
 }
+if prev.get("cover"):
+  data["cover"] = prev["cover"]
+if prev.get("hackathon"):
+  data["hackathon"] = prev["hackathon"]
 pathlib.Path(out_json).write_text(json.dumps(data, indent=2) + "\n")
 pathlib.Path(out_data).write_text(json.dumps(data, indent=2) + "\n")
 print("wrote", out_json)
-PY
 
-python3 - <<'PY'
-import json, pathlib
-root = pathlib.Path("/workspace")
-data = json.loads((root/"docs/testnet.addresses.json").read_text())
-(root/"docs/TESTNET.md").write_text(f"""# Keel — Testnet (functional product)
+root_p = pathlib.Path(root)
+(root_p / "docs/TESTNET.md").write_text(f"""# Bind — Testnet (functional product)
 
-**Status: LIVE** on Stellar Testnet · deployed `{data['deployedAt']}`
+**Updated:** {data['deployedAt'][:10]}
+**Status: LIVE** on Stellar Testnet · Genesis / **Stellar Unlocked**
 
 ## Essential path (done)
 
 | Step | Result |
 |------|--------|
-| Vault WASM | built (`npm run build:vault`) |
+| Vault WASM | built (`npm run build:vault`) + `credits` / `lots_of` views |
 | TUSDC SAC (USDC stand-in) | `{data['tusdcSac']}` |
 | `keel-vault` deployed + initialized | [`{data['vault']}`]({data['explorer']['vault']}) |
 | Exit pool inventory funded | yes |
@@ -188,49 +198,31 @@ data = json.loads((root/"docs/testnet.addresses.json").read_text())
 
 Machine-readable: [`docs/testnet.addresses.json`](./testnet.addresses.json)
 
+## Live rail secrets (local only)
+
+```bash
+npm run testnet:up
+bash scripts/sync-testnet-env.sh   # writes BIND_* into .env.local
+npm run testnet:smoke
+npm run testnet:e2e                # needs BIND_ALICE_SECRET + issuer
+```
+
+Env keys (see `.env.example`): `BIND_TUSDC_ISSUER_SECRET`, `BIND_ARBITER_SECRET`, `BIND_OPS_TOKEN`, `NEXT_PUBLIC_BIND_OPS_TOKEN`.
+
+Faucet + resolve: `POST /api/v1/chain/faucet` and `POST /api/v1/chain/tx/resolve` with `Authorization: Bearer $BIND_OPS_TOKEN`.
+
 ## Addresses
 
 | Artefacto | Value |
 |-----------|-------|
 | Network / RPC | `{data['network']}` · `{data['rpcUrl']}` |
-| Admin | `{data['admin']}` |
+| Admin / TUSDC issuer | `{data['admin']}` |
 | Arbiter | `{data['arbiter']}` |
 | **keel-vault** | [`{data['vault']}`]({data['explorer']['vault']}) |
 | **TUSDC SAC** | [`{data['tusdcSac']}`]({data['explorer']['tusdc']}) |
-| Circle USDC SAC (optional swap) | `{data['circleUsdcSac']}` |
 | Window / exit fee | `{data['windowSecs']}`s / `{data['exitFeeBps']}` bps |
 
-## What is essential vs later
-
-**Essential for a usable testnet product (this slice):**
-1. On-chain vault with deposit / transfer / settle / unwrap / exit / dispute / resolve / pause / por  
-2. Real USDC-like SAC liquidity + exit pool inventory  
-3. Published addresses + reproducible deploy (`npm run testnet:up`)  
-4. Peg invariant holds after recover + exit  
-
-**Not essential for first testnet product:**
-- Separate classic **rUSDC** issuer with clawback (vault recovers via internal burn/remint already)  
-- Circle faucet USDC (swap SAC when funded)  
-- Multisig ceremony / Freighter UI / public keeper cron  
-- Chainlink oracles  
-
-## Reproduce
-
-```bash
-export PATH="$HOME/.local/bin:$PATH"   # stellar CLI v25+
-npm run build:vault
-npm run testnet:up                     # redeploy + full smoke
-npm run testnet:smoke                  # invoke por on published vault
-```
-
 Local identities (secrets never in git): `keel-admin`, `keel-arbiter`, `keel-alice`, `keel-bob`.
-
-## Manual invokes
-
-```bash
-VAULT={data['vault']}
-stellar contract invoke --id $VAULT --source keel-admin --network testnet -- por
-```
 """)
 print("updated docs/TESTNET.md")
 PY

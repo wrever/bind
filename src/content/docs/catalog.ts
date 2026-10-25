@@ -1,8 +1,13 @@
 import type { AppLocale } from "@/i18n/routing";
 import type { DocBlock, DocNavItem, DocPage } from "@/content/docs/types";
+import testnetAddresses from "../../../docs/testnet.addresses.json";
 
-const VAULT = "CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J";
-const RPC = "https://soroban-testnet.stellar.org";
+const VAULT =
+  (testnetAddresses as { vault?: string }).vault ??
+  "CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ";
+const RPC =
+  (testnetAddresses as { rpcUrl?: string }).rpcUrl ??
+  "https://soroban-testnet.stellar.org";
 
 function L(
   en: string,
@@ -682,9 +687,9 @@ curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
       "Vault live, TUSDC, COVER e como verificar.",
     ),
     llm: L(
-      `Bind testnet is LIVE. Policy vault Soroban ${VAULT}. RPC ${RPC}. Collateral is TUSDC stand-in for Circle USDC. COVER Classic asset uses AUTH_CLAWBACK_ENABLED for claims indemnity. UI /live signs deposit|transfer|settle|unwrap via Freighter. Verify: GET /api/v1/chain/por, npm run testnet:smoke, npm run testnet:cover. Peg must remain fully_backed.`,
-      `Bind testnet está LIVE. Vault Soroban ${VAULT}. RPC ${RPC}. Colateral TUSDC (stand-in de Circle USDC). COVER Classic con AUTH_CLAWBACK_ENABLED para indemnización. UI /live firma deposit|transfer|settle|unwrap con Freighter. Verificar: GET /api/v1/chain/por, npm run testnet:smoke, npm run testnet:cover. El peg debe seguir fully_backed.`,
-      `Bind testnet está LIVE. Vault Soroban ${VAULT}. RPC ${RPC}. Colateral TUSDC (stand-in de Circle USDC). COVER Classic com AUTH_CLAWBACK_ENABLED para indenização. UI /live assina deposit|transfer|settle|unwrap com Freighter. Verificar: GET /api/v1/chain/por, npm run testnet:smoke, npm run testnet:cover. O peg deve continuar fully_backed.`,
+      `Bind testnet is LIVE. Policy vault Soroban ${VAULT}. RPC ${RPC}. Collateral is TUSDC stand-in for Circle USDC. COVER Classic asset uses AUTH_CLAWBACK_ENABLED for claims indemnity. UI /live: faucet + deposit|transfer|settle|unwrap|exit|dispute; resolve via ops. Verify: GET /api/v1/chain/por, npm run testnet:smoke, npm run testnet:e2e. Peg must remain fully_backed.`,
+      `Bind testnet está LIVE. Vault Soroban ${VAULT}. RPC ${RPC}. Colateral TUSDC (stand-in de Circle USDC). COVER Classic con AUTH_CLAWBACK_ENABLED. UI /live: faucet + deposit|transfer|settle|unwrap|exit|dispute; resolve via ops. Verificar: GET /api/v1/chain/por, npm run testnet:smoke, npm run testnet:e2e. El peg debe seguir fully_backed.`,
+      `Bind testnet está LIVE. Vault Soroban ${VAULT}. RPC ${RPC}. Colateral TUSDC (stand-in de Circle USDC). COVER Classic com AUTH_CLAWBACK_ENABLED. UI /live: faucet + deposit|transfer|settle|unwrap|exit|dispute; resolve via ops. Verificar: GET /api/v1/chain/por, npm run testnet:smoke, npm run testnet:e2e. O peg deve continuar fully_backed.`,
     ),
     body: B(
       [
