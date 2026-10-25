@@ -14,6 +14,7 @@ import {
 
 /**
  * Scroll-scrubbed Remotion story — sits on the hero aurora (no black gap).
+ * Sticky height is viewport-aware so mobile doesn't crush the card.
  */
 export function LandingScrollDemo() {
   const t = useTranslations("QuickDemo");
@@ -82,10 +83,14 @@ export function LandingScrollDemo() {
     <section
       id="quick-demo"
       ref={trackRef}
-      className="relative h-[300vh] bg-transparent"
+      className="relative h-[220vh] bg-transparent sm:h-[260vh] md:h-[300vh]"
       aria-label="Bind demo"
     >
-      <div className="sticky top-[52px] flex h-[min(520px,calc(100dvh-56px))] w-full items-start justify-center px-4 pt-0 md:px-8">
+      {/*
+        Sticky band sized to remaining viewport under the header.
+        Player uses width + max-height so 16:9 never overflows short phones.
+      */}
+      <div className="sticky top-[56px] flex h-[min(360px,calc(100dvh-8rem))] w-full items-start justify-center px-3 pt-2 sm:top-[60px] sm:h-[min(440px,calc(100dvh-7rem))] sm:px-4 sm:pt-1 md:h-[min(500px,calc(100dvh-5.5rem))] md:px-8 md:pt-0">
         <Player
           ref={playerRef}
           component={BindDemo}
@@ -94,8 +99,10 @@ export function LandingScrollDemo() {
           compositionWidth={BIND_DEMO_WIDTH}
           compositionHeight={BIND_DEMO_HEIGHT}
           fps={BIND_DEMO_FPS}
+          className="overflow-hidden rounded-none shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
           style={{
             width: "min(100%, 860px)",
+            maxHeight: "100%",
             aspectRatio: `${BIND_DEMO_WIDTH} / ${BIND_DEMO_HEIGHT}`,
             background: "transparent",
           }}

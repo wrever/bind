@@ -32,7 +32,7 @@ export default async function HomePage({ params }: Props) {
         <section className="relative overflow-x-clip">
           {/*
             Sticky viewport aurora: horizon maps to the SCREEN.
-            A tall absolute canvas (200vh+) pushed the sea below the fold.
+            Bottom mask fades the sea into #0E100D before the next section.
           */}
           <div
             aria-hidden
@@ -58,24 +58,26 @@ export default async function HomePage({ params }: Props) {
               brightness={1.25}
               interactive={false}
             />
+            {/* Soft bottom fade on the sticky aurora itself */}
+            <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-transparent via-[var(--color-bg)]/50 to-[var(--color-bg)]" />
           </div>
 
-          {/* Compact hero — sits on the sea */}
-          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-5 pb-3 pt-12 text-center md:px-10 md:pb-4 md:pt-14">
-            <p className="animate-keel-rise text-sm text-[var(--color-muted)]">
+          {/* Compact hero — breathing room under CTAs before the demo card */}
+          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-5 pt-8 text-center sm:px-5 sm:pb-4 sm:pt-10 md:px-10 md:pb-5 md:pt-14">
+            <p className="animate-keel-rise text-xs text-[var(--color-muted)] sm:text-sm">
               {t("eyebrow")}
             </p>
-            <h1 className="animate-keel-rise-delay mt-3 font-[family-name:var(--font-display)] text-[clamp(1.9rem,5vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)]">
+            <h1 className="animate-keel-rise-delay mt-2 font-[family-name:var(--font-display)] text-[clamp(1.65rem,6.5vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-[var(--color-text)] sm:mt-3">
               {t("headline")}
             </h1>
-            <p className="animate-keel-rise-delay-2 mt-3 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] md:text-[15px]">
+            <p className="animate-keel-rise-delay-2 mt-2 max-w-xl text-[13px] leading-relaxed text-[var(--color-muted)] sm:mt-3 sm:text-sm md:text-[15px]">
               {t("subhead")}
             </p>
-            <div className="animate-keel-rise-delay-2 relative z-20 mt-6 flex flex-wrap items-center justify-center gap-3">
+            <div className="animate-keel-rise-delay-2 relative z-20 mt-4 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-6 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
               <Button
                 asChild
                 size="lg"
-                className="shadow-[0_12px_40px_rgba(0,0,0,0.55)] ring-1 ring-black/40"
+                className="w-full shadow-[0_12px_40px_rgba(0,0,0,0.55)] ring-1 ring-black/40 sm:w-auto"
               >
                 <Link href="/integrate">
                   {t("ctaTalk")}
@@ -90,7 +92,7 @@ export default async function HomePage({ params }: Props) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-[var(--color-line)] bg-[var(--color-bg)]/55 backdrop-blur-sm"
+                className="w-full border-[var(--color-line)] bg-[var(--color-bg)]/55 backdrop-blur-sm sm:w-auto"
               >
                 <Link href="#quick-demo">{t("ctaDemo")}</Link>
               </Button>
@@ -101,9 +103,19 @@ export default async function HomePage({ params }: Props) {
           <div className="relative z-10">
             <LandingScrollDemo />
           </div>
+
+          {/*
+            Tall curtain over the sticky aurora: as the scrub ends,
+            solid #0E100D rises so the next section never sits on the sea.
+          */}
+          <div
+            aria-hidden
+            className="pointer-events-none relative z-20 h-[55vh] bg-gradient-to-b from-transparent from-0% via-[var(--color-bg)]/70 via-45% to-[var(--color-bg)] to-85%"
+          />
+          <div aria-hidden className="relative z-20 h-16 bg-[var(--color-bg)] sm:h-20" />
         </section>
 
-        <section className="relative z-10 border-t border-[var(--color-line)] bg-[var(--color-bg)] px-5 py-20 md:px-10 md:py-24">
+        <section className="relative z-10 -mt-px border-t border-[var(--color-line)] bg-[var(--color-bg)] px-5 py-16 sm:py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="max-w-2xl">
               <h2 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-[2.5rem] md:leading-tight">

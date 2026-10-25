@@ -262,19 +262,21 @@ export function VoxelArc({
         ctx!.fillRect(0, hz - h * 0.2, w, h * 0.45);
       }
 
-      // soft top vignette only — don't swallow the sea under the hero
+      // soft top vignette — keep aurora under the hero
       const vig = ctx!.createLinearGradient(0, 0, 0, h * 0.28);
       vig.addColorStop(0, rgb(bg, 0.28));
       vig.addColorStop(1, "rgba(0,0,0,0)");
       ctx!.fillStyle = vig;
       ctx!.fillRect(0, 0, w, h * 0.28);
 
-      // thin bottom fade when this canvas is the sticky viewport layer
-      const bot = ctx!.createLinearGradient(0, h * 0.92, 0, h);
+      // Deep bottom fade — handoff into page bg / next section
+      const bot = ctx!.createLinearGradient(0, h * 0.62, 0, h);
       bot.addColorStop(0, "rgba(0,0,0,0)");
-      bot.addColorStop(1, rgb(bg, 0.85));
+      bot.addColorStop(0.45, rgb(bg, 0.35));
+      bot.addColorStop(0.75, rgb(bg, 0.78));
+      bot.addColorStop(1, rgb(bg, 1));
       ctx!.fillStyle = bot;
-      ctx!.fillRect(0, h * 0.92, w, h * 0.08);
+      ctx!.fillRect(0, h * 0.62, w, h * 0.38);
 
       // prune old ripples
       const pr = ripplesRef.current;
