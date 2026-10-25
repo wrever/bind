@@ -23,7 +23,7 @@ Product language = insurance; clawback stays claims ops.
 
 ## On-chain proof (Stellar Testnet) — keep this handy
 
-**Last signed e2e:** 2026-10-26 · `fully_backed: true` · vault `CDGNKK…`
+**Last signed e2e:** 2026-10-25 22:58 UTC · `fully_backed: true` · vault `CDGNKK…`
 
 ### Contracts & accounts
 

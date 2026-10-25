@@ -1,8 +1,8 @@
 # On-chain evidence (Stellar Testnet)
 
-**Updated:** 2026-10-26  
+**Updated:** 2026-10-25  
 **Submission vault created:** 2026-10-25 21:10 UTC (not the 18 Oct prior vault).  
-**Last signed e2e:** 2026-10-26 (hashes below + mirrored in [`README.md`](../README.md)).
+**Last signed e2e:** 2026-10-25 22:58 UTC (hashes below + mirrored in [`README.md`](../README.md)).
 
 ## Policy vault (LIVE — use this)
 
