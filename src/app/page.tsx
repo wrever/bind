@@ -33,21 +33,21 @@ export default function HomePage() {
         <section className="relative isolate overflow-hidden">
           <VoxelArc
             className="min-h-[78vh] md:min-h-[86vh]"
-            color="#22211E"
+            color="#2A2824"
             accentColor="#F54307"
             backgroundColor="#0E100D"
-            density={1.05}
-            voxelSize={0.58}
-            roundness={0.12}
-            horizon={0.48}
-            curvature={0.6}
-            waveHeight={1.05}
-            waveLength={0.95}
-            speed={0.42}
-            turbulence={0.38}
-            glow={1.1}
-            haze={0.8}
-            bloom={0.55}
+            density={1.12}
+            voxelSize={0.62}
+            roundness={0.1}
+            horizon={0.52}
+            curvature={0.72}
+            waveHeight={1.15}
+            waveLength={0.9}
+            speed={0.38}
+            turbulence={0.42}
+            glow={1.25}
+            haze={0.85}
+            bloom={0.65}
             interactive
           >
             <div className="mx-auto flex min-h-[78vh] max-w-3xl flex-col items-center justify-center px-5 pb-28 pt-16 text-center md:min-h-[86vh] md:px-10 md:pb-36 md:pt-20">
