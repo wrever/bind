@@ -55,6 +55,17 @@ export async function SiteHeader() {
           >
             {t("demo")}
           </Link>
+          <Link
+            href="/live"
+            className="hidden min-h-[44px] items-center gap-1.5 px-3 text-sm text-[var(--color-accent2)] transition-colors hover:text-[var(--color-text)] md:inline-flex"
+            title={t("liveHint")}
+          >
+            <span
+              className="size-1.5 rounded-full bg-[var(--color-accent2)]"
+              aria-hidden
+            />
+            {t("live")}
+          </Link>
           <Button asChild size="sm">
             <Link href="/integrate">
               {t("getCover")}

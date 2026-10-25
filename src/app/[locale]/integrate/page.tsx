@@ -1,4 +1,5 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { DualTrackNote } from "@/components/chain-status";
 import { FreighterConnect } from "@/components/freighter-connect";
 import {
   CodePanel,
@@ -31,6 +32,8 @@ export default async function IntegratePage({ params }: Props) {
         body={t("body")}
         aside={<FreighterConnect />}
       />
+
+      <DualTrackNote />
 
       <ol className="divide-y divide-[var(--color-line)] border-y border-[var(--color-line)]">
         {pillars.map((p) => (
@@ -89,6 +92,9 @@ curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
 
       <PageCtaRow>
         <Button asChild>
+          <Link href="/live">Live cover rail</Link>
+        </Button>
+        <Button asChild variant="outline">
           <Link href="/cover">{t("ctaCover")}</Link>
         </Button>
         <Button asChild variant="outline">

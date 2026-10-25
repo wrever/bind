@@ -183,8 +183,14 @@ export function DualTrackNote() {
       <span className="font-[family-name:var(--font-display)] font-extrabold text-[var(--color-text)]">
         Dual track.{" "}
       </span>
-      This UI drives the Bind policy engine (simulator). The Unlocked vault +
-      COVER clawback rail are live on Stellar testnet — PoR and explorer links on{" "}
+      This UI drives the Bind policy engine (simulator). Sign real vault txs on{" "}
+      <Link
+        href="/live"
+        className="text-[var(--color-accent2)] underline underline-offset-4"
+      >
+        /live
+      </Link>
+      ; PoR on-chain on{" "}
       <Link
         href="/por"
         className="text-[var(--color-accent2)] underline underline-offset-4"

@@ -20,7 +20,7 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | API partner `/api/v1/*` | **Lista (simulador)** | No es custodia; ver hardening abajo |
 | UI storefront institucional | **Lista (pass 6)** | Hero + VoxelArc + quick demo + i18n en/es/pt (`next-intl`) |
 | Brand assets Bind | **Integrados** | `src/img/` + `public/brand/` + `BrandMark` |
-| Freighter | **Identity only** | `FreighterConnect` en `/demo` + `/integrate` |
+| Freighter | **Identity + sign vault txs** | `/live` prepare→sign→submit; ID-only badge elsewhere |
 | SDK `@keel/sdk` / BindClient | **Lista (surface)** | Safe Mode + HTTP thin; sin Soroban client |
 | `keel-core` Rust parity | **Lista** | 4/4 tests ✅ |
 | `keel-vault` Soroban | **Lista + testnet LIVE** | vault `CCQEAW…HL5J`; TUSDC stand-in |
@@ -34,7 +34,7 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | API ↔ vault cableado | **No** | Dos verdades; gap estructural #1 |
 | Auth partner / multisig | **No** | Strings `ops_*` spoofables si conoces el nombre |
 | Circle USDC en vault | **No** | TUSDC |
-| Freighter firmas cover | **No** | Solo address + network |
+| Freighter firmas cover | **Sí (testnet)** | deposit/transfer/settle/unwrap vía `/live` |
 | Auditoría scoped / LOIs | **Pendiente** | Fase 1–2 |
 
 ---
@@ -93,17 +93,19 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | `SiteFooter` multi-columna en páginas | **Sí** |
 | Botones sentence-case (no ALL CAPS mono) | **Sí** |
 | Freighter connect identity | **Sí** |
-| Freighter sign deposit/dispute/unwrap | **No** |
-| URL pública | **No** |
+| Freighter sign deposit/transfer/settle/unwrap | **Sí** (`/live` + `/api/v1/chain/tx/*`) |
+| Live `por()` RPC | **Sí** (`GET /api/v1/chain/por`) |
+| COVER evidence en UI | **Sí** (`/por`) |
+| URL pública | **No** (pendiente Vercel) |
 
 Fuzz American Dynamism tokens se mantienen (`#0E100D` / `#F54307`); se **dejó de abusar** el estilo HUD en marketing. Diseño Figma externo: prompt listo para Grok (chat); aún no importado.
 
 ### Contratos
 
 - `keel-vault`: deposit/transfer/settle/unwrap/exit/dispute/pause/`por` — tests + smoke testnet.
-- **No** llamado desde Next `/api/v1` (gap estructural).
-- COVER Classic: clawback + remint smoke — claims ops.
-- Circle USDC: **pendiente** (TUSDC).
+- **Sí** desde Next `/api/v1/chain/*` (prepare/submit Freighter + live `por`). Sessions API sigue siendo simulador.
+- COVER Classic: clawback + remint smoke — claims ops; evidence en `/por`.
+- Circle USDC: **pendiente** (TUSDC stand-in).
 
 ### Supabase
 
@@ -137,7 +139,7 @@ Pendiente (P0–P1):
 ## Roadmap vs realidad
 
 - **Fase 0:** cerrada (spec + demo + API + integrate + OpenAPI).
-- **Fase 1:** fuerte en código/testnet; **gaps:** Circle, Freighter firmas, auth real, deploy, auditoría; Freighter identity = `[~]`.
+- **Fase 1:** fuerte en código/testnet; Freighter firmas vault = `[x]` vía `/live`; **gaps:** Circle, auth partner, deploy público, auditoría.
 - **Fase 2:** Safe Mode + `/ops` hechos; faltan LOIs + métricas.
 - **Fase 3–4:** Exit Pool real capital, settled-only DeFi, SEP — **no**.
 
@@ -167,13 +169,20 @@ BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
 
 ## Próximos movimientos (prioridad)
 
-1. **P0 seguridad/verdad:** no presentar `/api/v1` como custodia; `BIND_STRICT` en URL pública; API keys + firmas.
-2. **P0 go-to-market:** deploy Vercel `bind` + (cuando toque) repo público.
-3. **P1 chain:** cablear vault **o** documentar sim-only en OpenAPI/landing; Circle USDC; Freighter tx.
-4. **P1 ops:** multisig + CI workflow scope + monitors peg.
+1. **P0 go-to-market:** deploy Vercel + repo público + video/demo URL en form hackathon.
+2. **P0 demo script:** `/demo` (sim) → `/live` (Freighter) → `/por` (RPC PoR + COVER) → explorer.
+3. **P1:** faucet TUSDC a Freighter address (ops mint); Circle USDC swap opcional.
+4. **P1 ops:** API keys partner; multisig; CI workflow scope.
 5. **P2:** LOI partner, ToS counsel, auditoría scoped.
-6. **Diseño:** importar landing Figma (Grok) cuando esté; no volver a HUD codes en storefront.
-7. No lending / checkout / tokenomics; no vender clawback como recupera off-rail / LP sin Tier 3.
+6. No lending / checkout / tokenomics; no vender clawback como recupera off-rail / LP sin Tier 3.
+
+### Cierre plataforma demo (25 oct noche)
+
+| Track | Superficie | Verdad |
+|-------|------------|--------|
+| Policy engine | `/demo`, `/ops`, `/api/v1/sessions/*` | Simulador |
+| Unlocked vault | `/live`, `/api/v1/chain/*` | Testnet + Freighter |
+| PoR + COVER | `/por`, `GET /api/v1/chain/por`, `/api/v1/network` | RPC + metadata smoke |
 
 ---
 
@@ -197,5 +206,6 @@ BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
 | 2026-10-25n | Quit Protected Deposit card; hero centrado; shadcn MCP Cursor; fondo voxel-arc Bind (`three`/`r3f`). |
 | 2026-10-25o | Landing quick demo (`LandingQuickDemo`): deposit → hold → settle/claim en 4 taps bajo el hero. |
 | 2026-10-25p | Voxel Arc a medida (`voxel-arc.tsx` Canvas 2D): paleta Bind, sin licencia React Bits / sin WebGL. |
+| 2026-10-25q | Dual-track completo: `/live` Freighter→vault, chain por/account/tx API, COVER evidence UI, PageShell internals. |
 | 2026-10-25q | i18n `next-intl`: locales en/es/pt, `messages/*`, `[locale]` routing, language switcher en header. |
 | 2026-10-25r | Hero voxel steel/teal; demo = Remotion Player scrubbed por scroll de página (`LandingScrollDemo`). |

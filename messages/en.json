@@ -19,6 +19,8 @@
     "docs": "Docs",
     "reserves": "Reserves",
     "reservesLive": "Live proof of reserves",
+    "live": "Live",
+    "liveHint": "Freighter · testnet vault",
     "demo": "Demo",
     "getCover": "Get cover"
   },
@@ -31,6 +33,7 @@
     "integrate": "Integrate",
     "coverSchedule": "Cover schedule",
     "proofOfReserves": "Proof of reserves",
+    "liveRail": "Live cover rail",
     "demo": "Demo",
     "documentation": "Documentation",
     "claimsPolicy": "Claims policy",

@@ -10,7 +10,7 @@ export function GET() {
       title: "Bind Demo API",
       version: "0.1.0",
       description:
-        "Bind protocol/transfer cover demo API. Not mainnet custody. Not a Blend clone or payment gateway.",
+        "Bind protocol/transfer cover demo API. Session actions = policy simulator. /api/v1/chain/* = live Stellar testnet vault (Freighter-signed). Not mainnet custody.",
     },
     paths: {
       "/api/v1/health": {
@@ -20,7 +20,28 @@ export function GET() {
       },
       "/api/v1/network": {
         get: {
-          summary: "Network addresses + Chainlink stance",
+          summary: "Network addresses + Chainlink stance + COVER rail",
+        },
+      },
+      "/api/v1/chain/por": {
+        get: {
+          summary: "Live vault por() via Soroban RPC simulate",
+        },
+      },
+      "/api/v1/chain/account": {
+        get: {
+          summary: "Testnet account XLM + TUSDC balance for Freighter address",
+        },
+      },
+      "/api/v1/chain/tx/prepare": {
+        post: {
+          summary:
+            "Assemble vault deposit|transfer|settle|unwrap|dispute XDR for Freighter",
+        },
+      },
+      "/api/v1/chain/tx/submit": {
+        post: {
+          summary: "Submit Freighter-signed vault XDR and poll status",
         },
       },
       "/api/v1/sessions": {

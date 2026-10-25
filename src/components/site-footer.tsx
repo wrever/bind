@@ -38,6 +38,7 @@ export async function SiteFooter() {
     { href: "/integrate", label: t("integrate") },
     { href: "/cover", label: t("coverSchedule") },
     { href: "/por", label: t("proofOfReserves") },
+    { href: "/live", label: t("liveRail") },
     { href: "/demo", label: t("demo") },
   ];
 

@@ -33,15 +33,15 @@
 
 ```bash
 npm run demo:hackathon
-npm run dev   # then open /demo and /ops
+npm run dev   # :3847
 ```
 
-1. Deposit → covered credit  
-2. Transfer → unsettled policy  
-3. Claim approve → **L1 clawback** + remint  
-4. PoR fully backed  
-5. Exit Pool path  
+1. **Landing** — product one-liner  
+2. **`/demo`** — policy engine: deposit → hold → settle/claim (say “simulator”)  
+3. **`/live`** — Freighter signs vault deposit/transfer on testnet (explorer tx)  
+4. **`/por`** — live RPC `por()` + COVER clawback evidence  
+5. **Terminal (optional)** — `npm run testnet:cover` for Unlocked clawback beat  
 
 ## Out of scope
 
-Mainnet, lending/yield, merchant checkout, Chainlink-as-core, Freighter polish.
+Mainnet, lending/yield, merchant checkout, Chainlink-as-core, Circle USDC (TUSDC stand-in).

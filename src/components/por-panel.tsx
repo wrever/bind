@@ -5,6 +5,7 @@ import { createInitialState, migrateState, por } from "@/lib/keel/engine";
 import type { KeelState } from "@/lib/keel/types";
 import { formatUsd } from "@/lib/utils";
 import { ChainStatus } from "@/components/chain-status";
+import { CoverRailEvidence } from "@/components/cover-rail-evidence";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -118,6 +119,7 @@ export function PorPanel() {
       </section>
 
       <ChainStatus />
+      <CoverRailEvidence />
     </div>
   );
 }
