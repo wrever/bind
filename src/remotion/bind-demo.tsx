@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties, ReactNode } from "react";
 import {
   AbsoluteFill,
   Easing,
@@ -38,7 +39,7 @@ export type BindDemoLabels = {
   claim: string;
 };
 
-const SURFACE = "rgba(14, 16, 13, 0.42)";
+const SURFACE = "rgba(14, 16, 13, 0.48)";
 const LINE = "rgba(123, 164, 178, 0.45)";
 const MUTED = "#A8ABA2";
 const TEXT = "#F4F1EA";
@@ -86,38 +87,37 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
     <AbsoluteFill style={{ backgroundColor: "transparent" }}>
       <AbsoluteFill
         style={{
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "20px 36px 28px",
+          justifyContent: "stretch",
+          alignItems: "stretch",
+          padding: "16px 28px 20px",
         }}
       >
         <div
           style={{
             position: "relative",
             width: "100%",
-            maxWidth: 1180,
-            minHeight: 780,
             height: "100%",
-            maxHeight: 860,
             border: `1px solid ${LINE}`,
             background: SURFACE,
             backdropFilter: "blur(14px)",
             WebkitBackdropFilter: "blur(14px)",
-            padding: "32px 44px 36px",
+            padding: "28px 40px 32px",
             boxShadow:
               "0 28px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)",
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",
+            minHeight: 0,
           }}
         >
-          {/* Step dots */}
+          {/* Chrome — fixed height */}
           <div
             style={{
               display: "flex",
               gap: 8,
-              marginBottom: 18,
+              marginBottom: 14,
               alignItems: "center",
+              flexShrink: 0,
             }}
           >
             {[0, 1, 2, 3, 4].map((i) => (
@@ -139,9 +139,10 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
             style={{
               height: 2,
               background: "rgba(255,255,255,0.06)",
-              marginBottom: 22,
+              marginBottom: 20,
               position: "relative",
               overflow: "hidden",
+              flexShrink: 0,
             }}
           >
             <div
@@ -154,38 +155,41 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
             />
           </div>
 
-          <div style={{ position: "relative", flex: 1, minHeight: 440 }}>
+          {/* Scenes fill every leftover pixel */}
+          <div style={{ position: "relative", flex: 1, minHeight: 0 }}>
             {/* —— DEPOSIT —— */}
             <Scene opacity={deposit}>
-              <Kicker>{labels.depositKicker}</Kicker>
-              <Title>{labels.depositTitle}</Title>
-              <Body>{labels.depositBody}</Body>
-
-              {/* Big visual: wallet → Bind rail */}
-              <div
-                style={{
-                  marginTop: 32,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                }}
-              >
-                <NodeBox
-                  label="Wallet"
-                  value="100 USDC"
-                  tone="steel"
-                  active={tokenX < 0.85}
-                />
-                <FlowTrack progress={tokenX} />
-                <NodeBox
-                  label="Bind rail"
-                  value={coverLit > 0.5 ? "100 Cover" : "—"}
-                  tone="accent"
-                  active={coverLit > 0.4}
-                />
-              </div>
-
+              <Copy>
+                <Kicker>{labels.depositKicker}</Kicker>
+                <Title>{labels.depositTitle}</Title>
+                <Body>{labels.depositBody}</Body>
+              </Copy>
+              <Stage>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 16,
+                    width: "100%",
+                    maxWidth: 980,
+                  }}
+                >
+                  <NodeBox
+                    label="Wallet"
+                    value="100 USDC"
+                    tone="steel"
+                    active={tokenX < 0.85}
+                  />
+                  <FlowTrack progress={tokenX} />
+                  <NodeBox
+                    label="Bind rail"
+                    value={coverLit > 0.5 ? "100 Cover" : "—"}
+                    tone="accent"
+                    active={coverLit > 0.4}
+                  />
+                </div>
+              </Stage>
               <Stats
                 items={[
                   { k: labels.usdcIn, v: "100" },
@@ -201,108 +205,131 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
 
             {/* —— HOLD —— */}
             <Scene opacity={hold}>
-              <Kicker>{labels.holdKicker}</Kicker>
-              <Title>{labels.holdTitle}</Title>
-              <Body>{labels.holdBody}</Body>
-
-              <div
-                style={{
-                  marginTop: 28,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 28,
-                }}
-              >
-                <TimerRing pct={holdPct} />
-                <div style={{ flex: 1 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: 10,
-                    }}
-                  >
-                    <span style={{ color: MUTED, fontSize: 13 }}>
-                      {labels.window}
-                    </span>
-                    <span
-                      style={{
-                        color: TEXT,
-                        fontWeight: 700,
-                        fontVariantNumeric: "tabular-nums",
-                      }}
-                    >
-                      {Math.round(holdPct * 100)}%
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      height: 10,
-                      background: "rgba(0,0,0,0.35)",
-                      overflow: "hidden",
-                    }}
-                  >
+              <Copy>
+                <Kicker>{labels.holdKicker}</Kicker>
+                <Title>{labels.holdTitle}</Title>
+                <Body>{labels.holdBody}</Body>
+              </Copy>
+              <Stage>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 36,
+                    width: "100%",
+                    maxWidth: 920,
+                  }}
+                >
+                  <TimerRing pct={holdPct} />
+                  <div style={{ flex: 1 }}>
                     <div
                       style={{
-                        width: `${holdPct * 100}%`,
-                        height: "100%",
-                        background: ACCENT,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: 12,
                       }}
-                    />
+                    >
+                      <span style={{ color: MUTED, fontSize: 15 }}>
+                        {labels.window}
+                      </span>
+                      <span
+                        style={{
+                          color: TEXT,
+                          fontWeight: 700,
+                          fontSize: 18,
+                          fontVariantNumeric: "tabular-nums",
+                        }}
+                      >
+                        {Math.round(holdPct * 100)}%
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        height: 12,
+                        background: "rgba(0,0,0,0.35)",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: `${holdPct * 100}%`,
+                          height: "100%",
+                          background: ACCENT,
+                        }}
+                      />
+                    </div>
+                    <p
+                      style={{
+                        margin: "18px 0 0",
+                        color: ACCENT,
+                        fontSize: 16,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {labels.freeExit}: {labels.blocked}
+                    </p>
                   </div>
-                  <p
-                    style={{
-                      margin: "14px 0 0",
-                      color: ACCENT,
-                      fontSize: 14,
-                      fontWeight: 700,
-                    }}
-                  >
-                    {labels.freeExit}: {labels.blocked}
-                  </p>
                 </div>
-              </div>
+              </Stage>
             </Scene>
 
             {/* —— CHOOSE —— */}
             <Scene opacity={choose}>
-              <Kicker>{labels.chooseKicker}</Kicker>
-              <Title>{labels.chooseTitle}</Title>
-              <Body>{labels.chooseBody}</Body>
-              <div style={{ marginTop: 32, display: "flex", gap: 16 }}>
-                <ChoiceCard
-                  active={frame >= 168}
-                  label={labels.settled}
-                  hint="1:1 unwrap"
-                  tone="steel"
-                />
-                <ChoiceCard
-                  active={frame >= 178}
-                  label={labels.claim}
-                  hint="on-rail breach"
-                  tone="accent"
-                />
-              </div>
+              <Copy>
+                <Kicker>{labels.chooseKicker}</Kicker>
+                <Title>{labels.chooseTitle}</Title>
+                <Body>{labels.chooseBody}</Body>
+              </Copy>
+              <Stage>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 20,
+                    width: "100%",
+                    height: "100%",
+                    maxHeight: 280,
+                    alignItems: "stretch",
+                  }}
+                >
+                  <ChoiceCard
+                    active={frame >= 168}
+                    label={labels.settled}
+                    hint="1:1 unwrap"
+                    tone="steel"
+                  />
+                  <ChoiceCard
+                    active={frame >= 178}
+                    label={labels.claim}
+                    hint="on-rail breach"
+                    tone="accent"
+                  />
+                </div>
+              </Stage>
             </Scene>
 
             {/* —— SETTLE —— */}
             <Scene opacity={settle}>
-              <Kicker>{labels.settled}</Kicker>
-              <Title>{labels.settleTitle}</Title>
-              <Body>{labels.settleBody}</Body>
-              <div
-                style={{
-                  marginTop: 32,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: 12,
-                }}
-              >
-                <NodeBox label="Cover" value="100" tone="accent" active />
-                <FlowTrack progress={1} accent />
-                <NodeBox label="Wallet" value="100 USDC" tone="steel" active />
-              </div>
+              <Copy>
+                <Kicker>{labels.settled}</Kicker>
+                <Title>{labels.settleTitle}</Title>
+                <Body>{labels.settleBody}</Body>
+              </Copy>
+              <Stage>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 16,
+                    width: "100%",
+                    maxWidth: 980,
+                  }}
+                >
+                  <NodeBox label="Cover" value="100" tone="accent" active />
+                  <FlowTrack progress={1} accent />
+                  <NodeBox label="Wallet" value="100 USDC" tone="steel" active />
+                </div>
+              </Stage>
               <Stats
                 items={[
                   { k: "USDC", v: "100" },
@@ -314,45 +341,51 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
 
             {/* —— CLAIM —— */}
             <Scene opacity={claim}>
-              <Kicker>{labels.claim}</Kicker>
-              <Title>{labels.claimTitle}</Title>
-              <Body>{labels.claimBody}</Body>
-              <div
-                style={{
-                  marginTop: 28,
-                  border: `1px solid ${ACCENT}66`,
-                  background: `${ACCENT}14`,
-                  padding: "20px 22px",
-                  display: "flex",
-                  gap: 24,
-                  alignItems: "center",
-                }}
-              >
+              <Copy>
+                <Kicker>{labels.claim}</Kicker>
+                <Title>{labels.claimTitle}</Title>
+                <Body>{labels.claimBody}</Body>
+              </Copy>
+              <Stage>
                 <div
                   style={{
-                    width: 56,
-                    height: 56,
-                    border: `2px solid ${ACCENT}`,
+                    border: `1px solid ${ACCENT}66`,
+                    background: `${ACCENT}14`,
+                    padding: "36px 40px",
                     display: "flex",
+                    gap: 28,
                     alignItems: "center",
-                    justifyContent: "center",
-                    color: ACCENT,
-                    fontWeight: 800,
-                    fontSize: 12,
-                    letterSpacing: "0.06em",
+                    width: "100%",
+                    maxWidth: 920,
                   }}
                 >
-                  LOCK
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ color: TEXT, fontWeight: 700, fontSize: 18 }}>
-                    Lot frozen · claim open
+                  <div
+                    style={{
+                      width: 72,
+                      height: 72,
+                      border: `2px solid ${ACCENT}`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: ACCENT,
+                      fontWeight: 800,
+                      fontSize: 14,
+                      letterSpacing: "0.06em",
+                      flexShrink: 0,
+                    }}
+                  >
+                    LOCK
                   </div>
-                  <div style={{ color: MUTED, marginTop: 6, fontSize: 14 }}>
-                    {labels.freeExit}: {labels.blocked}
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: TEXT, fontWeight: 700, fontSize: 22 }}>
+                      Lot frozen · claim open
+                    </div>
+                    <div style={{ color: MUTED, marginTop: 8, fontSize: 16 }}>
+                      {labels.freeExit}: {labels.blocked}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Stage>
             </Scene>
           </div>
         </div>
@@ -371,11 +404,12 @@ function beat(frame: number, start: number, end: number) {
   );
 }
 
+/** Full-bleed scene: copy on top, expanding stage, optional footer. */
 function Scene({
   children,
   opacity,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   opacity: number;
 }) {
   if (opacity <= 0.02) return null;
@@ -385,7 +419,10 @@ function Scene({
         position: "absolute",
         inset: 0,
         opacity,
-        transform: `translateY(${(1 - opacity) * 14}px)`,
+        transform: `translateY(${(1 - opacity) * 10}px)`,
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
       }}
     >
       {children}
@@ -393,7 +430,30 @@ function Scene({
   );
 }
 
-function Kicker({ children }: { children: React.ReactNode }) {
+function Copy({ children }: { children: ReactNode }) {
+  return <div style={{ flexShrink: 0 }}>{children}</div>;
+}
+
+/** Grows to eat leftover vertical space and centers the beat visual. */
+function Stage({ children }: { children: ReactNode }) {
+  return (
+    <div
+      style={{
+        flex: 1,
+        minHeight: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 20,
+        marginBottom: 8,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Kicker({ children }: { children: ReactNode }) {
   return (
     <p
       style={{
@@ -410,12 +470,12 @@ function Kicker({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Title({ children }: { children: React.ReactNode }) {
+function Title({ children }: { children: ReactNode }) {
   return (
     <h3
       style={{
-        margin: "16px 0 0",
-        fontSize: 36,
+        margin: "14px 0 0",
+        fontSize: 34,
         fontWeight: 800,
         letterSpacing: "-0.03em",
         color: TEXT,
@@ -427,15 +487,15 @@ function Title({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Body({ children }: { children: React.ReactNode }) {
+function Body({ children }: { children: ReactNode }) {
   return (
     <p
       style={{
-        margin: "16px 0 0",
+        margin: "12px 0 0",
         fontSize: 17,
         lineHeight: 1.55,
         color: MUTED,
-        maxWidth: 640,
+        maxWidth: 680,
       }}
     >
       {children}
@@ -451,7 +511,8 @@ function Stats({
   return (
     <div
       style={{
-        marginTop: 28,
+        flexShrink: 0,
+        marginTop: "auto",
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr",
         gap: 12,
@@ -504,10 +565,11 @@ function NodeBox({
   return (
     <div
       style={{
-        flex: "0 0 240px",
+        flex: "1 1 200px",
+        maxWidth: 280,
         border: `1px solid ${active ? c : LINE}`,
         background: active ? `${c}18` : "rgba(0,0,0,0.25)",
-        padding: "20px 22px",
+        padding: "28px 24px",
         textAlign: "center",
       }}
     >
@@ -523,8 +585,8 @@ function NodeBox({
       </div>
       <div
         style={{
-          marginTop: 10,
-          fontSize: 24,
+          marginTop: 12,
+          fontSize: 26,
           fontWeight: 800,
           color: active ? c : TEXT,
         }}
@@ -540,11 +602,12 @@ function FlowTrack({ progress, accent }: { progress: number; accent?: boolean })
   return (
     <div
       style={{
-        flex: 1,
-        height: 3,
+        flex: "1 1 120px",
+        height: 4,
         background: "rgba(255,255,255,0.08)",
         position: "relative",
-        margin: "0 4px",
+        margin: "0 8px",
+        maxWidth: 280,
       }}
     >
       <div
@@ -560,10 +623,10 @@ function FlowTrack({ progress, accent }: { progress: number; accent?: boolean })
       <div
         style={{
           position: "absolute",
-          left: `calc(${progress * 100}% - 9px)`,
+          left: `calc(${progress * 100}% - 10px)`,
           top: -8,
-          width: 18,
-          height: 18,
+          width: 20,
+          height: 20,
           borderRadius: 999,
           background: c,
           boxShadow: `0 0 16px ${c}`,
@@ -574,36 +637,36 @@ function FlowTrack({ progress, accent }: { progress: number; accent?: boolean })
 }
 
 function TimerRing({ pct }: { pct: number }) {
-  const r = 36;
+  const r = 48;
   const c = 2 * Math.PI * r;
   const dash = c * pct;
   return (
-    <svg width="96" height="96" viewBox="0 0 96 96">
+    <svg width="128" height="128" viewBox="0 0 128 128" style={{ flexShrink: 0 }}>
       <circle
-        cx="48"
-        cy="48"
+        cx="64"
+        cy="64"
         r={r}
         fill="none"
         stroke="rgba(255,255,255,0.08)"
-        strokeWidth="6"
+        strokeWidth="7"
       />
       <circle
-        cx="48"
-        cy="48"
+        cx="64"
+        cy="64"
         r={r}
         fill="none"
         stroke={ACCENT}
-        strokeWidth="6"
+        strokeWidth="7"
         strokeLinecap="butt"
         strokeDasharray={`${dash} ${c}`}
-        transform="rotate(-90 48 48)"
+        transform="rotate(-90 64 64)"
       />
       <text
-        x="48"
-        y="52"
+        x="64"
+        y="70"
         textAnchor="middle"
         fill={TEXT}
-        fontSize="16"
+        fontSize="22"
         fontWeight="700"
         fontFamily="system-ui, sans-serif"
       >
@@ -625,19 +688,22 @@ function ChoiceCard({
   tone: "steel" | "accent";
 }) {
   const c = tone === "accent" ? ACCENT : STEEL;
+  const style: CSSProperties = {
+    flex: 1,
+    border: `1px solid ${active ? c : LINE}`,
+    padding: "32px 28px",
+    color: active ? TEXT : MUTED,
+    background: active ? `${c}18` : "rgba(0,0,0,0.25)",
+    transform: `scale(${active ? 1 : 0.98})`,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    minHeight: 160,
+  };
   return (
-    <div
-      style={{
-        flex: 1,
-        border: `1px solid ${active ? c : LINE}`,
-        padding: "20px 18px",
-        color: active ? TEXT : MUTED,
-        background: active ? `${c}18` : "rgba(0,0,0,0.25)",
-        transform: `scale(${active ? 1 : 0.97})`,
-      }}
-    >
-      <div style={{ fontSize: 16, fontWeight: 700 }}>{label}</div>
-      <div style={{ marginTop: 8, fontSize: 13, color: MUTED }}>{hint}</div>
+    <div style={style}>
+      <div style={{ fontSize: 20, fontWeight: 700 }}>{label}</div>
+      <div style={{ marginTop: 12, fontSize: 15, color: MUTED }}>{hint}</div>
     </div>
   );
 }

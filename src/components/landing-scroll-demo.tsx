@@ -90,7 +90,7 @@ export function LandingScrollDemo() {
         Large player: ~full content width, tall enough to read the beats.
         sticky top ≈ 50vh − half card so it stays centered while scrubbing.
       */}
-      <div className="sticky top-[max(4.25rem,calc(50dvh-18rem))] z-10 mx-auto flex w-full max-w-6xl justify-center px-3 sm:px-5 md:top-[max(4.25rem,calc(50dvh-20rem))] md:px-8">
+      <div className="sticky top-[max(4rem,calc(50dvh-20rem))] z-10 mx-auto flex w-full max-w-6xl justify-center px-3 sm:px-5 md:top-[max(4rem,calc(50dvh-22rem))] md:px-8">
         <Player
           ref={playerRef}
           component={BindDemo}
@@ -103,7 +103,9 @@ export function LandingScrollDemo() {
           style={{
             width: "100%",
             maxWidth: 1120,
-            maxHeight: "min(78dvh, 680px)",
+            /* Prefer height so the card eats the lower viewport */
+            height: "min(78dvh, 700px)",
+            maxHeight: "min(78dvh, 700px)",
             aspectRatio: `${BIND_DEMO_WIDTH} / ${BIND_DEMO_HEIGHT}`,
             background: "transparent",
           }}
