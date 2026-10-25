@@ -39,8 +39,8 @@ export type BindDemoLabels = {
   claim: string;
 };
 
-const SURFACE = "rgba(14, 16, 13, 0.48)";
-const LINE = "rgba(123, 164, 178, 0.45)";
+const SURFACE = "rgba(18, 20, 17, 0.94)";
+const LINE = "rgba(123, 164, 178, 0.38)";
 const MUTED = "#A8ABA2";
 const TEXT = "#F4F1EA";
 const ACCENT = "#F54307";
@@ -103,7 +103,7 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
             WebkitBackdropFilter: "blur(14px)",
             padding: "28px 40px 32px",
             boxShadow:
-              "0 28px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)",
+              "0 24px 64px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
             overflow: "hidden",
             display: "flex",
             flexDirection: "column",

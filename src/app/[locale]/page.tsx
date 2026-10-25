@@ -25,18 +25,11 @@ export default async function HomePage({ params }: Props) {
       <SiteHeader />
 
       <main>
-        {/*
-          One continuous stage: aurora fills this whole block,
-          hero copy on top, Remotion demo sits on the sea (no gap).
-        */}
+        {/* Hero only — aurora lives here and dies before the demo scrub */}
         <section className="relative overflow-x-clip">
-          {/*
-            Sticky viewport aurora: horizon maps to the SCREEN.
-            Bottom mask fades the sea into #0E100D before the next section.
-          */}
           <div
             aria-hidden
-            className="pointer-events-none sticky top-0 z-0 h-[100dvh] -mb-[100dvh]"
+            className="pointer-events-none absolute inset-0 z-0"
           >
             <VoxelArc
               className="absolute inset-0 h-full w-full min-h-0"
@@ -46,26 +39,24 @@ export default async function HomePage({ params }: Props) {
               density={1.15}
               voxelSize={0.68}
               roundness={0.08}
-              /* Crest just under CTA row — brushes buttons from behind */
               horizon={0.42}
               curvature={0.65}
               waveHeight={1.2}
               waveLength={0.9}
               speed={0.32}
               turbulence={0.4}
-              glow={1.4}
+              glow={1.12}
               haze={0.38}
-              bloom={0.72}
-              brightness={1.22}
+              bloom={0.58}
+              brightness={0.98}
               interactive={false}
             />
-            {/* Light sky wash + bottom fade — don't erase the crest */}
             <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-[var(--color-bg)] to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-b from-transparent via-[var(--color-bg)]/40 to-[var(--color-bg)]" />
+            {/* Soft handoff into solid demo stage */}
+            <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-transparent via-[var(--color-bg)]/55 to-[var(--color-bg)]" />
           </div>
 
-          {/* Hero above the sea — airy type rhythm so the title can breathe */}
-          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-6 pt-10 text-center sm:px-5 sm:pb-6 sm:pt-12 md:px-10 md:pb-8 md:pt-16">
+          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-10 pt-10 text-center sm:px-5 sm:pb-12 sm:pt-12 md:px-10 md:pb-14 md:pt-16">
             <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
               {t("eyebrow")}
             </p>
@@ -100,21 +91,11 @@ export default async function HomePage({ params }: Props) {
               </Button>
             </div>
           </div>
+        </section>
 
-          {/* Demo under CTAs — large stage fills the lower half */}
-          <div className="relative z-10 mt-1 sm:mt-2">
-            <LandingScrollDemo />
-          </div>
-
-          {/*
-            Tall curtain over the sticky aurora: as the scrub ends,
-            solid #0E100D rises so the next section never sits on the sea.
-          */}
-          <div
-            aria-hidden
-            className="pointer-events-none relative z-20 h-[55vh] bg-gradient-to-b from-transparent from-0% via-[var(--color-bg)]/70 via-45% to-[var(--color-bg)] to-85%"
-          />
-          <div aria-hidden className="relative z-20 h-16 bg-[var(--color-bg)] sm:h-20" />
+        {/* Demo scrub — solid stage, no aurora behind the card */}
+        <section className="relative z-10 bg-[var(--color-bg)]">
+          <LandingScrollDemo />
         </section>
 
         <section className="relative z-10 -mt-px border-t border-[var(--color-line)] bg-[var(--color-bg)] px-5 py-16 sm:py-20 md:px-10 md:py-24">

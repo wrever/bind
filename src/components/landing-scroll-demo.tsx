@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Player, type PlayerRef } from "@remotion/player";
 import { useTranslations } from "next-intl";
 import {
@@ -13,14 +13,20 @@ import {
 } from "@/remotion/bind-demo";
 
 /**
- * Scroll-scrubbed Remotion story — large stage so the beats are readable.
- * Sticky top keeps the card optically centered while scrubbing.
+ * Scroll-scrubbed Remotion story.
+ * Sticky band = remaining viewport under the header; Player scales to fill
+ * that band (width + height) while keeping the composition aspect ratio.
  */
 export function LandingScrollDemo() {
   const t = useTranslations("QuickDemo");
   const trackRef = useRef<HTMLElement>(null);
   const playerRef = useRef<PlayerRef>(null);
   const lastFrame = useRef(-1);
+  // Remotion Player touches window — mount after hydration
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    setReady(true);
+  }, []);
 
   const labels: BindDemoLabels = useMemo(
     () => ({
@@ -83,39 +89,52 @@ export function LandingScrollDemo() {
     <section
       id="quick-demo"
       ref={trackRef}
-      className="relative h-[240vh] bg-transparent sm:h-[280vh] md:h-[320vh]"
+      className="relative h-[240vh] bg-[var(--color-bg)] sm:h-[280vh] md:h-[320vh]"
       aria-label="Bind demo"
     >
-      {/*
-        Large player: ~full content width, tall enough to read the beats.
-        sticky top ≈ 50vh − half card so it stays centered while scrubbing.
-      */}
-      <div className="sticky top-[max(4rem,calc(50dvh-20rem))] z-10 mx-auto flex w-full max-w-6xl justify-center px-3 sm:px-5 md:top-[max(4rem,calc(50dvh-22rem))] md:px-8">
-        <Player
-          ref={playerRef}
-          component={BindDemo}
-          inputProps={{ labels }}
-          durationInFrames={BIND_DEMO_DURATION}
-          compositionWidth={BIND_DEMO_WIDTH}
-          compositionHeight={BIND_DEMO_HEIGHT}
-          fps={BIND_DEMO_FPS}
-          className="!h-auto w-full overflow-hidden"
+      <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-center justify-center px-3 py-3 sm:px-5 sm:py-4 md:px-8">
+        {/*
+          Fit sticky band: width capped by 1120 / parent / height budget × aspect.
+          Remotion Player then paints absolute fill inside.
+        */}
+        <div
+          className="relative overflow-hidden"
           style={{
-            width: "100%",
-            maxWidth: 1120,
-            /* Prefer height so the card eats the lower viewport */
-            height: "min(78dvh, 700px)",
-            maxHeight: "min(78dvh, 700px)",
             aspectRatio: `${BIND_DEMO_WIDTH} / ${BIND_DEMO_HEIGHT}`,
-            background: "transparent",
+            width:
+              "min(100%, 1120px, calc((100dvh - 60px - 1.5rem) * 1280 / 900))",
+            maxHeight: "calc(100dvh - 60px - 1.5rem)",
           }}
-          controls={false}
-          loop={false}
-          autoPlay={false}
-          clickToPlay={false}
-          doubleClickToFullscreen={false}
-          acknowledgeRemotionLicense
-        />
+        >
+          {ready ? (
+            <Player
+              ref={playerRef}
+              component={BindDemo}
+              inputProps={{ labels }}
+              durationInFrames={BIND_DEMO_DURATION}
+              compositionWidth={BIND_DEMO_WIDTH}
+              compositionHeight={BIND_DEMO_HEIGHT}
+              fps={BIND_DEMO_FPS}
+              className="absolute inset-0"
+              style={{
+                width: "100%",
+                height: "100%",
+                background: "transparent",
+              }}
+              controls={false}
+              loop={false}
+              autoPlay={false}
+              clickToPlay={false}
+              doubleClickToFullscreen={false}
+              acknowledgeRemotionLicense
+            />
+          ) : (
+            <div
+              aria-hidden
+              className="absolute inset-0 border border-[var(--color-line)] bg-[var(--color-bg)]/80"
+            />
+          )}
+        </div>
       </div>
     </section>
   );
