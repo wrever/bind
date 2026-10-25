@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 600 130">
+<g>
+<path fill="#F5F4F0" fill-rule="evenodd" d="M8 3 H52 C75 3 89 15 89 33 C89 44 83 51 73 56 C88 60 98 70 98 86 C98 106 83 117 59 117 H8 Z M29 23 V46 H51 C62 46 68 42 68 35 C68 28 62 23 51 23 Z M29 69 V96 H57 C68 96 75 91 75 82 C75 73 68 69 57 69 Z"/>
+<path fill="#F54307" d="M8 65 L90 35 L90 52 L8 83 Z"/>
+</g><text x="122" y="96" font-family="Arial, Helvetica, sans-serif" font-size="96" font-weight="800" letter-spacing="-5" fill="#F5F4F0">Bind</text></svg>

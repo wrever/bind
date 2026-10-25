@@ -1,0 +1,18 @@
+/* Fuzz · American Dynamism — Keel maps these into --keel-* aliases in globals.css */
+:root {
+  --color-bg: #0e100d;
+  --color-surface: #22211e;
+  --color-line: #3a3934;
+  --color-line-strong: #71706c;
+  --color-text: #f5f5f2;
+  --color-muted: #afafac;
+  --color-accent: #f54307;
+  --color-accent-hover: #f65f2c;
+  --color-accent2: #01e4fd;
+  --color-alert: #f12a02;
+  --color-on-accent: #000000;
+  --font-heading: "Inter Tight", Geist, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Inter Tight", Geist, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", "SF Mono", Menlo, monospace;
+  --radius: 4px;
+}

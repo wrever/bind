@@ -1,0 +1,64 @@
+{
+  "network": "testnet",
+  "networkPassphrase": "Test SDF Network ; September 2015",
+  "rpcUrl": "https://soroban-testnet.stellar.org",
+  "horizonUrl": "https://horizon-testnet.stellar.org",
+  "deployedAt": "2026-10-18T02:30:00Z",
+  "windowSecs": 60,
+  "exitFeeBps": 30,
+  "assetCode": "TUSDC",
+  "asset": "TUSDC:GAPCON7NQZ4ZCVSEM47NGKJZBPZAQPLKF3IMVXC4K2NIMKY452AVWNEC",
+  "tusdcSac": "CAHA2THSZSMX4FGDTRHWOCPPQZ6BPFVZ33IRG5OGCKQ7MCZ7U7HJ5WUS",
+  "circleUsdcSac": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
+  "circleUsdcIssuer": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+  "vault": "CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J",
+  "admin": "GAPCON7NQZ4ZCVSEM47NGKJZBPZAQPLKF3IMVXC4K2NIMKY452AVWNEC",
+  "arbiter": "GBFN2LAEJT622PU76AX7N4MEM4PYLTQT4XEKOJMJDRWXRGL6JAVNEQHD",
+  "alice": "GAUEWPJQMHNHEIHATNW2R4LDKBEQ36EZFWVHGDZXHTPRYHJEZH6JKYQO",
+  "bob": "GDDN2NMBQYF63RKMJTUZZFK2XFEGCL2DUQS3JOGBJHVLRGZJNITQYTQF",
+  "explorer": {
+    "vault": "https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J",
+    "tusdc": "https://stellar.expert/explorer/testnet/contract/CAHA2THSZSMX4FGDTRHWOCPPQZ6BPFVZ33IRG5OGCKQ7MCZ7U7HJ5WUS",
+    "deployTx": "https://stellar.expert/explorer/testnet/tx/30d08e65218d424acf2a685d574ac9a949b3b62acdf6b0bb06503acb20282368"
+  },
+  "status": "live",
+  "smoke": {
+    "deposit": true,
+    "transfer": true,
+    "disputeResolve": true,
+    "exit": true,
+    "porFullyBacked": true
+  },
+  "notes": "TUSDC is Keel testnet stand-in for Circle USDC. Vault holds internal rUSDC credits (settled/unsettled); recover is on-contract burn/remint. Secrets stay in local stellar CLI keystore (keel-admin/arbiter/alice/bob).",
+  "cover": {
+    "assetCode": "COVER",
+    "asset": "COVER:GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P",
+    "issuer": "GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P",
+    "sac": "CAZGFSWXBWZIOZGRV42GXEKLZTP7MCJ74LVJZ6UYLHAOVHT52NMNP5Z2",
+    "holder": "GCNBR5N57T35FA4OXMQKIW744MKWU45VJ3EW57WRVKCUHR3OCHQPFUXY",
+    "claimant": "GAEWXJMWXXU4RPTGN5KF7XVJQZFZ3G7TQAHYAYV5LQDZ2Z2BNALYK3JT",
+    "flags": [
+      "AUTH_REQUIRED",
+      "AUTH_REVOCABLE",
+      "AUTH_CLAWBACK_ENABLED"
+    ],
+    "smoke": {
+      "mintToHolder": true,
+      "clawbackClaim": true,
+      "remintToClaimant": true,
+      "holderBalanceAfter": "0",
+      "claimantBalanceAfter": "100000000"
+    },
+    "explorer": {
+      "sac": "https://stellar.expert/explorer/testnet/contract/CAZGFSWXBWZIOZGRV42GXEKLZTP7MCJ74LVJZ6UYLHAOVHT52NMNP5Z2",
+      "issuer": "https://stellar.expert/explorer/testnet/account/GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P"
+    },
+    "updatedAt": "2026-10-25T11:50:00Z",
+    "notes": "COVER = Unlocked claims rail. Product = transfer insurance indemnity via L1 clawback + remint."
+  },
+  "hackathon": {
+    "category": "Genesis",
+    "track": "Stellar Unlocked",
+    "product": "transfer-insurance"
+  }
+}

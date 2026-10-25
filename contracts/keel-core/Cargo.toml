@@ -1,0 +1,12 @@
+[package]
+name = "keel-core"
+version = "0.1.0"
+edition = "2021"
+publish = false
+description = "Pure Keel accounting logic (parity with TypeScript engine)"
+
+[lib]
+name = "keel_core"
+path = "src/lib.rs"
+
+[dependencies]

@@ -1,0 +1,121 @@
+{
+  "slug": "american-dynamism",
+  "name": "American Dynamism",
+  "palette": [
+    "#0E100D",
+    "#22211E",
+    "#3A3934",
+    "#AFAFAC",
+    "#F5F5F2",
+    "#F54307",
+    "#01E4FD",
+    "#F12A02",
+    "#071207",
+    "#16271A",
+    "#2D554B",
+    "#50958C",
+    "#C98F42",
+    "#010101",
+    "#17512E",
+    "#0DF802",
+    "#E7F403",
+    "#161513",
+    "#165E68",
+    "#139AAB",
+    "#E5E6E7",
+    "#55401E",
+    "#7F6A50",
+    "#A39981",
+    "#445C5E",
+    "#D79258",
+    "#D3D3D3",
+    "#6B6B6A",
+    "#111110",
+    "#000000",
+    "#F65F2C",
+    "#27E8FD",
+    "#FFFFFF",
+    "#71706C"
+  ],
+  "accent": "#F54307",
+  "bg": "#0E100D",
+  "fonts": [
+    "Inter Tight",
+    "Geist",
+    "SF Pro Display",
+    "Helvetica Neue",
+    "Arial",
+    "sans-serif",
+    "JetBrains Mono",
+    "IBM Plex Mono",
+    "SF Mono",
+    "Menlo",
+    "monospace"
+  ],
+  "headingFont": "Inter Tight",
+  "bodyFont": "Inter Tight",
+  "monoFont": "JetBrains Mono",
+  "faces": ["Inter Tight", "JetBrains Mono"],
+  "radius": "4px",
+  "radii": [0, 9999, 2, 4],
+  "spacing": [0, 4, 8, 12, 16, 24, 32, 48, 64, 96],
+  "gradientsAllowed": false,
+  "blurAllowed": false,
+  "elevationNone": false,
+  "dosDonts": {
+    "do": [
+      "One accent on a black field.",
+      "Bracketed designations, tracked caps mono.",
+      "Hairline dividers.",
+      "Abstract flag: stripes + field."
+    ],
+    "dont": [
+      "Rainbow gradients or mixed accents.",
+      "Emoji, exclamations, serif italics.",
+      "Soft drop shadows, big radii.",
+      "Literal eagles, stars, flag clip-art."
+    ]
+  },
+  "checklist": [
+    "Field Black is ≥ 70% of the surface",
+    "Exactly one accent color per artifact",
+    "Cyan only for live data; red only for alerts",
+    "Every page has an ID · TITLE · STATUS meta row",
+    "Headlines heavy, tight, ≤ 3 words/line",
+    "All mono text in caps, tracked +8%",
+    "Numbers zero-padded and tabular",
+    "Elements snap to 12-col grid and 4px base",
+    "Hairlines instead of shadows; radius ≤ 4px",
+    "Every object has a designation (XX-001)",
+    "Max one sensor effect, under opacity limits",
+    "Flag abstracted — no clip-art",
+    "Marks pass 1-color + 16px + embroidery test",
+    "Motion mechanical, no bounce; Reduce Motion honored",
+    "Contrast ≥ AA for all text",
+    "Copy declarative, ≤ 6-word headlines, no emoji"
+  ],
+  "accessibility": {
+    "minTapTarget": 44
+  },
+  "paywall": {
+    "hardChecks": {
+      "billedPriceMostProminent": "full billed price most prominent",
+      "termsLegible": "terms legible",
+      "closeVisibleTopCorner": "close visible",
+      "ctaBottom": "cta bottom",
+      "billedPriceAdjacentCta": "price above cta",
+      "annualDefault": "annual default"
+    }
+  },
+  "icons": {
+    "primary": {
+      "library": "Tabler Icons",
+      "package": "@tabler/icons",
+      "version": "3.49.0"
+    },
+    "fallback": {
+      "library": "Lucide",
+      "package": "lucide-static"
+    }
+  }
+}
