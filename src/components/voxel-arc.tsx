@@ -262,21 +262,22 @@ export function VoxelArc({
         ctx!.fillRect(0, hz - h * 0.2, w, h * 0.45);
       }
 
-      // soft top vignette — keep aurora under the hero
-      const vig = ctx!.createLinearGradient(0, 0, 0, h * 0.28);
-      vig.addColorStop(0, rgb(bg, 0.28));
+      // Top vignette — clear sky for headline; stop before the crest
+      const vigEnd = Math.min(hz * 0.95, h * 0.34);
+      const vig = ctx!.createLinearGradient(0, 0, 0, vigEnd);
+      vig.addColorStop(0, rgb(bg, 0.75));
+      vig.addColorStop(0.65, rgb(bg, 0.2));
       vig.addColorStop(1, "rgba(0,0,0,0)");
       ctx!.fillStyle = vig;
-      ctx!.fillRect(0, 0, w, h * 0.28);
+      ctx!.fillRect(0, 0, w, vigEnd);
 
       // Deep bottom fade — handoff into page bg / next section
-      const bot = ctx!.createLinearGradient(0, h * 0.62, 0, h);
+      const bot = ctx!.createLinearGradient(0, h * 0.68, 0, h);
       bot.addColorStop(0, "rgba(0,0,0,0)");
-      bot.addColorStop(0.45, rgb(bg, 0.35));
-      bot.addColorStop(0.75, rgb(bg, 0.78));
+      bot.addColorStop(0.5, rgb(bg, 0.4));
       bot.addColorStop(1, rgb(bg, 1));
       ctx!.fillStyle = bot;
-      ctx!.fillRect(0, h * 0.62, w, h * 0.38);
+      ctx!.fillRect(0, h * 0.68, w, h * 0.32);
 
       // prune old ripples
       const pr = ripplesRef.current;

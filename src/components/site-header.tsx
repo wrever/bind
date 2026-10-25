@@ -15,7 +15,7 @@ export async function SiteHeader() {
   ];
 
   return (
-    <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-bg)]">
+    <header className="sticky top-0 z-30 border-b border-[var(--color-line)] bg-[var(--color-bg)]/95 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 md:px-10 md:py-4">
         <div className="flex min-w-0 items-center gap-6 md:gap-8">
           <Link

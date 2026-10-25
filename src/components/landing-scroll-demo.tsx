@@ -13,8 +13,10 @@ import {
 } from "@/remotion/bind-demo";
 
 /**
- * Scroll-scrubbed Remotion story — sits on the hero aurora (no black gap).
- * Sticky height is viewport-aware so mobile doesn't crush the card.
+ * Scroll-scrubbed Remotion story on the aurora.
+ *
+ * Sticky top ≈ optical middle of the viewport (never glued under the navbar).
+ * In document flow it still starts right under the hero CTAs.
  */
 export function LandingScrollDemo() {
   const t = useTranslations("QuickDemo");
@@ -87,10 +89,10 @@ export function LandingScrollDemo() {
       aria-label="Bind demo"
     >
       {/*
-        Sticky band sized to remaining viewport under the header.
-        Player uses width + max-height so 16:9 never overflows short phones.
+        top = max(header, 50vh − half card) → pins centered while scrubbing.
+        Height follows the Player (no tall empty sticky band).
       */}
-      <div className="sticky top-[56px] flex h-[min(360px,calc(100dvh-8rem))] w-full items-start justify-center px-3 pt-2 sm:top-[60px] sm:h-[min(440px,calc(100dvh-7rem))] sm:px-4 sm:pt-1 md:h-[min(500px,calc(100dvh-5.5rem))] md:px-8 md:pt-0">
+      <div className="sticky top-[max(5rem,calc(50dvh-11rem))] z-10 mx-auto flex w-full max-w-[860px] justify-center px-3 sm:px-4 md:top-[max(5rem,calc(50dvh-12.5rem))] md:px-6">
         <Player
           ref={playerRef}
           component={BindDemo}
@@ -99,10 +101,10 @@ export function LandingScrollDemo() {
           compositionWidth={BIND_DEMO_WIDTH}
           compositionHeight={BIND_DEMO_HEIGHT}
           fps={BIND_DEMO_FPS}
-          className="overflow-hidden rounded-none shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+          className="!h-auto max-h-[min(48dvh,420px)] w-full overflow-hidden"
           style={{
-            width: "min(100%, 860px)",
-            maxHeight: "100%",
+            width: "100%",
+            maxWidth: 820,
             aspectRatio: `${BIND_DEMO_WIDTH} / ${BIND_DEMO_HEIGHT}`,
             background: "transparent",
           }}

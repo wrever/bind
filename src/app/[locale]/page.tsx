@@ -43,26 +43,28 @@ export default async function HomePage({ params }: Props) {
               color="#243038"
               accentColor="#7BA4B2"
               backgroundColor="#0E100D"
-              density={1.2}
-              voxelSize={0.7}
+              density={1.15}
+              voxelSize={0.68}
               roundness={0.08}
-              horizon={0.18}
-              curvature={0.68}
-              waveHeight={1.3}
-              waveLength={0.88}
-              speed={0.34}
-              turbulence={0.45}
-              glow={1.5}
-              haze={0.4}
-              bloom={0.8}
-              brightness={1.25}
+              /* Crest just under CTA row — brushes buttons from behind */
+              horizon={0.42}
+              curvature={0.65}
+              waveHeight={1.2}
+              waveLength={0.9}
+              speed={0.32}
+              turbulence={0.4}
+              glow={1.4}
+              haze={0.38}
+              bloom={0.72}
+              brightness={1.22}
               interactive={false}
             />
-            {/* Soft bottom fade on the sticky aurora itself */}
-            <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-transparent via-[var(--color-bg)]/50 to-[var(--color-bg)]" />
+            {/* Light sky wash + bottom fade — don't erase the crest */}
+            <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-[var(--color-bg)] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-b from-transparent via-[var(--color-bg)]/40 to-[var(--color-bg)]" />
           </div>
 
-          {/* Compact hero — breathing room under CTAs before the demo card */}
+          {/* Hero above the sea (z > aurora). CTAs sit where the crest brushes. */}
           <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-5 pt-8 text-center sm:px-5 sm:pb-4 sm:pt-10 md:px-10 md:pb-5 md:pt-14">
             <p className="animate-keel-rise text-xs text-[var(--color-muted)] sm:text-sm">
               {t("eyebrow")}
@@ -92,15 +94,15 @@ export default async function HomePage({ params }: Props) {
                 asChild
                 size="lg"
                 variant="outline"
-                className="w-full border-[var(--color-line)] bg-[var(--color-bg)]/55 backdrop-blur-sm sm:w-auto"
+                className="w-full border-[var(--color-line)] bg-[var(--color-bg)]/85 backdrop-blur-md sm:w-auto"
               >
                 <Link href="#quick-demo">{t("ctaDemo")}</Link>
               </Button>
             </div>
           </div>
 
-          {/* Demo immediately under CTAs, mid-aurora */}
-          <div className="relative z-10">
+          {/* Demo under CTAs — slight pull so card peeks on first paint */}
+          <div className="relative z-10 -mt-1 sm:mt-0">
             <LandingScrollDemo />
           </div>
 
