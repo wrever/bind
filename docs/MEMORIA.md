@@ -19,9 +19,9 @@
 | DocsSite + llms.txt | **Lista** | EN/ES/PT |
 | Faucet + resolve ops | **Lista en main** | `/api/v1/chain/faucet`, `/tx/resolve` |
 | `testnet:e2e` | **Verde** | mint→dispute→resolve→settle→unwrap |
-| Repo público | **Pendiente** | API GitHub: `private: true` |
-| Video / deck | **Pendiente** | no hay Loom/deck en repo |
-| Deploy = main | **Acción** | redeploy Vercel tras push; health debe reportar `tracks.chain` |
+| Repo público | **Hecho** | https://github.com/wrever/bind |
+| Deploy prod | **Hecho** | https://bind-beta.vercel.app · vault `CDGNKK…` · faucet OK |
+| Video / deck | **Pendiente** | Loom 2–3 min (script en HACKATHON) |
 
 ---
 
@@ -33,9 +33,9 @@
 | Prior work mal declarado | Crítica | **Mitigado en docs** | PRIOR_WORK + EVIDENCE + `retiredPrior` JSON; vault live = 25 Oct |
 | Sin atribución IA | Alta | **Mitigado** | [`AI_ATTRIBUTION.md`](./AI_ATTRIBUTION.md) + README/HACKATHON |
 | Sin video ni deck | Alta | **Abierto** | Grabar Loom 2–3 min: landing → demo → live faucet → por |
-| Deploy ≠ repo | Alta | Código faucet/e2e **ya en main** local; Vercel puede estar stale | Push + redeploy; verificar `/api/v1/chain/por` → `CDGNKK…` |
-| Vaults inconsistentes | Media | **Local OK** (JSON + API leen CDGNKK) | Si prod muestra CCQEAW → redeploy; no mezclar retired |
-| Jurado no completa `/live` | Media | Faucet + trustline en UI | Prod necesita `BIND_*` + `NEXT_PUBLIC_BIND_OPS_TOKEN` (demo) o faucet pre-mint a wallet juez |
+| Deploy ≠ repo | Alta | **Mitigado** | `bind-beta` en commit reciente + env BIND_* + faucet prod OK |
+| Vaults inconsistentes | Media | **Mitigado** | prod `/chain/por` → `CDGNKK…` fullyBacked |
+| Jurado no completa `/live` | Media | **Mitigado en prod** | faucet+trustline + `NEXT_PUBLIC_BIND_OPS_TOKEN` en Vercel |
 | Demo principal simulada | Media | **Honesto** | `/health` expone `tracks.simulator` vs `tracks.chain` |
 | Claim centralizado | Media | **Declarado** | single arbiter secret; multisig en roadmap |
 | Higiene | Baja | **Parcial** | LICENSE MIT; curl `$HOST`; ops token vacío en `.env.example`; health `service: bind` |
@@ -73,10 +73,10 @@ npm run dev                # :3847 → /en/live
 
 ## Próximos movimientos (orden submit)
 
-1. **P0:** repo **público** + push + **redeploy Vercel** (mismas env BIND_* / vault CDGNKK).
-2. **P0:** video Loom (script en HACKATHON.md) + link en form.
-3. **P1:** faucet prod con token rotado o prefund wallet Freighter del pitch.
-4. **P2:** multisig arbiter; Circle USDC; unificar sessions≠vault (seguir dual-track).
+1. **P0:** video Loom (script HACKATHON) + link en form — **único bloqueo submit fuerte**.
+2. **P0 seguridad:** rotar token Vercel (quedó expuesto en chat) y rotar `BIND_OPS_TOKEN` si el form es público.
+3. **P1:** prefund wallet Freighter del presentador; multisig arbiter.
+4. **P2:** Circle USDC; partner API keys; unificar sessions≠vault (dual-track OK).
 
 ---
 
@@ -87,3 +87,4 @@ npm run dev                # :3847 → /en/live
 | 2026-10-25u | P0 perfection vault CDGNKK + e2e |
 | 2026-10-25v | Prior disclosure CCQEAW vs CDGNKK |
 | 2026-10-25w | Risk board: AI_ATTRIBUTION, LICENSE, health tracks, hygiene curl/ops token |
+| 2026-10-25x | Vercel `bind-beta`: env BIND_* + redeploy; faucet prod OK; repo público. |
