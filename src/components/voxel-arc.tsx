@@ -271,13 +271,12 @@ export function VoxelArc({
       ctx!.fillStyle = vig;
       ctx!.fillRect(0, 0, w, vigEnd);
 
-      // Deep bottom fade — handoff into page bg / next section
-      const bot = ctx!.createLinearGradient(0, h * 0.68, 0, h);
+      // Thin floor fade — keep the sea visible to the bottom edge
+      const bot = ctx!.createLinearGradient(0, h * 0.88, 0, h);
       bot.addColorStop(0, "rgba(0,0,0,0)");
-      bot.addColorStop(0.5, rgb(bg, 0.4));
-      bot.addColorStop(1, rgb(bg, 1));
+      bot.addColorStop(1, rgb(bg, 0.9));
       ctx!.fillStyle = bot;
-      ctx!.fillRect(0, h * 0.68, w, h * 0.32);
+      ctx!.fillRect(0, h * 0.88, w, h * 0.12);
 
       // prune old ripples
       const pr = ripplesRef.current;

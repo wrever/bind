@@ -92,12 +92,13 @@ export function LandingScrollDemo() {
       className="relative h-[240vh] bg-transparent sm:h-[280vh] md:h-[320vh]"
       aria-label="Bind demo"
     >
-      {/* Solid Bind bg resumes under the card so scrub stays clean */}
+      {/* Solid Bind bg resumes under the aurora wash */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-[22%] bottom-0 z-0 bg-[var(--color-bg)]"
+        className="pointer-events-none absolute inset-x-0 top-[18%] bottom-0 z-0 bg-[var(--color-bg)]"
       />
-      <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-center justify-center px-3 py-3 sm:px-5 sm:py-4 md:px-8">
+      {/* items-end + pad: card sits lower (~20%) while size stays the same */}
+      <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-end justify-center px-3 pb-5 pt-8 sm:px-5 sm:pb-6 sm:pt-10 md:px-8 md:pb-8">
         {/*
           Fit sticky band: width capped by 1120 / parent / height budget × aspect.
           Remotion Player then paints absolute fill inside.

@@ -26,13 +26,13 @@ export default async function HomePage({ params }: Props) {
 
       <main>
         {/*
-          Hero + aurora. Crest sits at the CTA band and may spill ~¼ under
-          the demo card — Remotion sticky/size untouched.
+          Hero + aurora. Crest sits low (under CTAs → floor), may wash the
+          top of the demo; Remotion card size unchanged — only nudged down.
         */}
         <section className="relative overflow-x-clip overflow-y-visible">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(100%+28vh)]"
+            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(100%+48vh)]"
           >
             <VoxelArc
               className="absolute inset-0 h-full w-full min-h-0"
@@ -42,26 +42,26 @@ export default async function HomePage({ params }: Props) {
               density={1.15}
               voxelSize={0.68}
               roundness={0.08}
-              /* ~20% lower crest → brushes CTAs, can sit under demo top */
-              horizon={0.54}
-              curvature={0.65}
-              waveHeight={1.15}
+              /* Crest near the floor — sky clear for title, sea under CTAs+demo */
+              horizon={0.64}
+              curvature={0.62}
+              waveHeight={1.1}
               waveLength={0.9}
               speed={0.32}
-              turbulence={0.4}
-              glow={1.12}
-              haze={0.38}
-              bloom={0.58}
-              brightness={0.98}
+              turbulence={0.38}
+              glow={1.05}
+              haze={0.35}
+              bloom={0.52}
+              brightness={0.95}
               interactive={false}
             />
-            {/* Clear sky for eyebrow + headline */}
-            <div className="absolute inset-x-0 top-0 h-[36%] bg-gradient-to-b from-[var(--color-bg)] via-[var(--color-bg)]/85 to-transparent" />
-            {/* Soft fade only at the very bottom of the spill */}
-            <div className="absolute inset-x-0 bottom-0 h-[22%] bg-gradient-to-b from-transparent to-[var(--color-bg)]" />
+            {/* Deep sky wash so headline stays crisp */}
+            <div className="absolute inset-x-0 top-0 h-[48%] bg-gradient-to-b from-[var(--color-bg)] via-[var(--color-bg)]/90 to-transparent" />
+            {/* Thin floor fade — sea reaches the end */}
+            <div className="absolute inset-x-0 bottom-0 h-[12%] bg-gradient-to-b from-transparent to-[var(--color-bg)]" />
           </div>
 
-          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-8 pt-10 text-center sm:px-5 sm:pb-10 sm:pt-12 md:px-10 md:pb-12 md:pt-16">
+          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-6 pt-10 text-center sm:px-5 sm:pb-8 sm:pt-12 md:px-10 md:pb-10 md:pt-16">
             <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
               {t("eyebrow")}
             </p>
@@ -98,8 +98,8 @@ export default async function HomePage({ params }: Props) {
           </div>
         </section>
 
-        {/* Demo scrub — transparent top so aurora can sit under ~¼ of the card */}
-        <section className="relative z-10 bg-transparent">
+        {/* Demo — same card size; starts ~20% lower in the first viewport */}
+        <section className="relative z-10 bg-transparent pt-[12vh] sm:pt-[14vh] md:pt-[16vh]">
           <LandingScrollDemo />
         </section>
 
