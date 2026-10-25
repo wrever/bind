@@ -26,86 +26,83 @@ export default async function HomePage({ params }: Props) {
 
       <main>
         {/*
-          One stage: sticky FULL-VIEWPORT aurora (not a short hero strip).
-          Horizon maps to the screen → sea fills most of the background.
+          React Bits Voxel Arc pattern: real 100dvh sticky plane + content
+          pulled over it. Sea fills the parent — never a short mid strip.
         */}
-        <section className="relative overflow-x-clip">
-          <div
-            aria-hidden
-            className="pointer-events-none sticky top-0 z-0 h-[100dvh] -mb-[100dvh]"
-          >
+        <section className="relative">
+          <div className="sticky top-0 z-0 h-[100dvh] w-full">
             <VoxelArc
-              className="absolute inset-0 h-full w-full min-h-0"
-              color="#243038"
-              accentColor="#7BA4B2"
+              className="h-full w-full"
+              color="#2A3A42"
+              accentColor="#8BB8C4"
               backgroundColor="#0E100D"
-              density={1.2}
-              voxelSize={0.7}
-              roundness={0.08}
-              /* Crest mid-upper: sea occupies ~70% of the viewport */
-              horizon={0.28}
-              curvature={0.68}
-              waveHeight={1.25}
-              waveLength={0.88}
-              speed={0.34}
-              turbulence={0.42}
-              glow={1.1}
-              haze={0.4}
-              bloom={0.55}
-              brightness={0.95}
+              density={1.15}
+              voxelSize={0.58}
+              roundness={0.12}
+              tilt={1}
+              /* Default RB-ish crest — sea occupies the lower half+ of the screen */
+              horizon={0.48}
+              curvature={0.55}
+              waveHeight={1}
+              waveLength={1}
+              speed={0.42}
+              turbulence={0.38}
+              glow={1}
+              haze={0.65}
+              bloom={0.5}
+              brightness={1}
               interactive={false}
+              intro
             />
-            {/* Soft sky only — do NOT wipe the sea into a franja */}
-            <div className="absolute inset-x-0 top-0 h-[14%] bg-gradient-to-b from-[var(--color-bg)] to-transparent" />
           </div>
 
-          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-6 pt-10 text-center sm:px-5 sm:pb-8 sm:pt-12 md:px-10 md:pb-10 md:pt-16">
-            <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
-              {t("eyebrow")}
-            </p>
-            <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] [text-shadow:0_2px_24px_rgba(14,16,13,0.85)] sm:mt-6 md:mt-7">
-              {t("headline")}
-            </h1>
-            <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] [text-shadow:0_1px_16px_rgba(14,16,13,0.8)] sm:mt-6 sm:text-[15px] md:mt-7 md:text-base md:leading-relaxed">
-              {t("subhead")}
-            </p>
-            <div className="animate-keel-rise-delay-2 relative z-20 mt-7 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-8 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3 md:mt-9">
-              <Button
-                asChild
-                size="lg"
-                className="w-full shadow-[0_12px_40px_rgba(0,0,0,0.55)] ring-1 ring-black/40 sm:w-auto"
-              >
-                <Link href="/integrate">
-                  {t("ctaTalk")}
-                  <ArrowRight
-                    className="size-4"
-                    strokeWidth={1.5}
-                    aria-hidden
-                  />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="w-full border-[var(--color-line)] bg-[var(--color-bg)]/85 backdrop-blur-md sm:w-auto"
-              >
-                <Link href="#quick-demo">{t("ctaDemo")}</Link>
-              </Button>
+          <div className="relative z-10 -mt-[100dvh]">
+            <div className="mx-auto flex min-h-[58dvh] max-w-3xl flex-col items-center justify-center px-4 pb-4 pt-10 text-center sm:px-5 sm:pt-12 md:px-10 md:pt-14">
+              <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
+                {t("eyebrow")}
+              </p>
+              <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:mt-6">
+                {t("headline")}
+              </h1>
+              <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] sm:mt-6 sm:text-[15px] md:text-base md:leading-relaxed">
+                {t("subhead")}
+              </p>
+              <div className="animate-keel-rise-delay-2 mt-7 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-8 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
+                <Button
+                  asChild
+                  size="lg"
+                  className="w-full shadow-[0_12px_40px_rgba(0,0,0,0.55)] ring-1 ring-black/40 sm:w-auto"
+                >
+                  <Link href="/integrate">
+                    {t("ctaTalk")}
+                    <ArrowRight
+                      className="size-4"
+                      strokeWidth={1.5}
+                      aria-hidden
+                    />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="w-full border-[var(--color-line)] bg-[var(--color-bg)]/85 backdrop-blur-md sm:w-auto"
+                >
+                  <Link href="#quick-demo">{t("ctaDemo")}</Link>
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {/* Demo rides the same full-bleed aurora */}
-          <div className="relative z-10 pt-[10vh] sm:pt-[12vh] md:pt-[14vh]">
-            <LandingScrollDemo />
-          </div>
+            <div className="pt-2 sm:pt-4">
+              <LandingScrollDemo />
+            </div>
 
-          {/* Curtain out of the sea into solid content */}
-          <div
-            aria-hidden
-            className="pointer-events-none relative z-20 h-[40vh] bg-gradient-to-b from-transparent via-[var(--color-bg)]/75 to-[var(--color-bg)]"
-          />
-          <div aria-hidden className="relative z-20 h-12 bg-[var(--color-bg)]" />
+            <div
+              aria-hidden
+              className="pointer-events-none h-[36vh] bg-gradient-to-b from-transparent via-[var(--color-bg)]/70 to-[var(--color-bg)]"
+            />
+            <div aria-hidden className="h-10 bg-[var(--color-bg)]" />
+          </div>
         </section>
 
         <section className="relative z-10 -mt-px border-t border-[var(--color-line)] bg-[var(--color-bg)] px-5 py-16 sm:py-20 md:px-10 md:py-24">
