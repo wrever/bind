@@ -50,8 +50,8 @@
   },
   "Home": {
     "eyebrow": "Bind",
-    "headline": "DeFi deposit insurance: a short protected window before withdrawal, and payout if funds are stolen while still covered.",
-    "subhead": "Your protocol buys the cover. Bind sits under your product; users do not download another app.",
+    "headline": "Insurance for DeFi deposits.",
+    "subhead": "A short protected window before withdrawal. If funds are stolen while still covered, Bind pays.",
     "ctaTalk": "Talk to Bind",
     "ctaDemo": "See the demo",
     "flowTitle": "Cover your protocol buys, not an app users download.",
