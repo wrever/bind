@@ -67,9 +67,6 @@ export default async function HomePage({ params }: Props) {
               <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] sm:mt-6 sm:text-[15px] md:text-base md:leading-relaxed">
                 {t("subhead")}
               </p>
-              <p className="animate-keel-rise-delay-2 mt-3 max-w-xl text-xs leading-relaxed text-[var(--color-muted)]/90 sm:text-[13px]">
-                {t("unlockLine")}
-              </p>
               <div className="animate-keel-rise-delay-2 mt-7 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-8 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
                 <Button
                   asChild

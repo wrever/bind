@@ -49,10 +49,9 @@
     "docs": "Docs"
   },
   "Home": {
-    "eyebrow": "Bind · Stellar Unlocked",
+    "eyebrow": "Bind",
     "headline": "Insurance for DeFi deposits.",
-    "subhead": "Your protocol buys cover. Users wait a short window before withdrawing, and Bind pays if funds are stolen while still protected.",
-    "unlockLine": "Powered by Stellar clawback + a Soroban policy vault: core protocol features, not a mashup of other apps.",
+    "subhead": "Your protocol contracts Bind: users get a short protected window before withdrawing, and Bind pays if funds are stolen while still covered.",
     "ctaTalk": "Talk to Bind",
     "ctaDemo": "See the demo",
     "flowTitle": "Cover your protocol buys, not an app users download.",

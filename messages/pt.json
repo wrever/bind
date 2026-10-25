@@ -49,10 +49,9 @@
     "docs": "Docs"
   },
   "Home": {
-    "eyebrow": "Bind · Stellar Unlocked",
+    "eyebrow": "Bind",
     "headline": "Seguro para depósitos DeFi.",
-    "subhead": "Seu protocolo compra a cobertura. O usuário espera uma janela curta antes de sacar, e a Bind paga se os fundos forem roubados enquanto ainda estão protegidos.",
-    "unlockLine": "Sobre clawback da Stellar + vault Soroban: features do protocolo, não um mashup de outros apps.",
+    "subhead": "Seu protocolo contrata a Bind: o usuário ganha uma janela protegida antes de sacar, e a Bind paga se os fundos forem roubados enquanto ainda estão cobertos.",
     "ctaTalk": "Falar com a Bind",
     "ctaDemo": "Ver a demo",
     "flowTitle": "A cobertura é comprada pelo seu protocolo, não um app que o usuário baixa.",
