@@ -42,7 +42,6 @@ Source of truth: [`testnet.addresses.json`](./testnet.addresses.json)
 | Component | Notes |
 |-----------|--------|
 | Policy vault | `vault` field — **CDGNKK…** created **2026-10-25** |
-| Prior vault (retired) | `retiredPrior.vault` — **CCQEAW…** created **2026-10-18** |
 | COVER SAC / issuer | `cover.*` — clawback smoke **2026-10-25** |
 | Network | Testnet · `https://soroban-testnet.stellar.org` |
 

@@ -15,7 +15,6 @@ Product language = insurance; clawback stays claims ops.
 | Repo | https://github.com/wrever/bind |
 | Live demo | https://bind-beta.vercel.app |
 | Why Unlocked | [`docs/UNLOCKED.md`](./docs/UNLOCKED.md) |
-| Prior work | [`docs/PRIOR_WORK.md`](./docs/PRIOR_WORK.md) |
 | AI tooling | [`docs/AI_ATTRIBUTION.md`](./docs/AI_ATTRIBUTION.md) |
 | Architecture | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) |
 
@@ -39,8 +38,6 @@ Product language = insurance; clawback stays claims ops.
 | Bob (demo counterparty) | [`GDMSZX33BT3WDDQNFGY4HYHWKN532WWADL3FO6YZ7Z3XBWM2TZMXEFDH`](https://stellar.expert/explorer/testnet/account/GDMSZX33BT3WDDQNFGY4HYHWKN532WWADL3FO6YZ7Z3XBWM2TZMXEFDH) |
 | Live PoR JSON | https://bind-beta.vercel.app/api/v1/chain/por |
 | Live UI | https://bind-beta.vercel.app/en/live · https://bind-beta.vercel.app/en/por |
-
-Retired prior vault (do **not** demo): [`CCQEAW…HL5J`](https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J) — see [`docs/PRIOR_WORK.md`](./docs/PRIOR_WORK.md).
 
 ### Signed e2e txs (mint → claim → settle → unwrap)
 

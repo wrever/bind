@@ -13,7 +13,6 @@
 - Prefer **live browser capture** of the URLs below. If a Freighter wallet is unavailable, still open `/en/live` and `/en/por`, then cut to **README on-chain proof** (tx explorer links) for proof of real testnet activity.
 - On screen, **never** claim `/demo` is the vault. Say “simulator” every time you open it.
 - Vault ID to flash once: `CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ` (Stellar Testnet).
-- Do **not** show the retired prior vault `CCQEAW…` except optionally as a 2-second disclosure slide.
 - Brand language: insurance, cover, retention, claim, proof of reserves. Clawback = claims ops under the hood.
 
 ---

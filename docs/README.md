@@ -23,6 +23,6 @@
 | [HACKATHON.md](./HACKATHON.md) | Genesis / Unlocked checklist + pitch |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | How Stellar is used + IDs/APIs |
 | [EVIDENCE.md](./EVIDENCE.md) | On-chain Testnet proof links |
-| [PRIOR_WORK.md](./PRIOR_WORK.md) | Prior vs built during event |
+| [DEMO_VIDEO_SCRIPT.md](./DEMO_VIDEO_SCRIPT.md) | Guion demo EN para video |
 | [CHAINLINK.md](./CHAINLINK.md) | Oráculos en Stellar — útil later, no core |
 | [STRATEGY.md](./STRATEGY.md) | Investigación ecosistema Stellar / SCF |

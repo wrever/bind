@@ -1,7 +1,7 @@
 # On-chain evidence (Stellar Testnet)
 
 **Updated:** 2026-10-25  
-**Submission vault created:** 2026-10-25 21:10 UTC (not the 18 Oct prior vault).  
+**Vault created:** 2026-10-25 21:10 UTC  
 **Last signed e2e:** 2026-10-25 22:58 UTC (hashes below + mirrored in [`README.md`](../README.md)).
 
 ## Policy vault (LIVE — use this)
@@ -33,16 +33,6 @@ bash scripts/sync-testnet-env.sh
 npm run testnet:smoke
 npm run testnet:e2e
 ```
-
-## Retired prior vault (disclose only — do not demo)
-
-| Item | Value |
-|------|-------|
-| Contract | [`CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J`](https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J) |
-| Created | **2026-10-18** 02:27:47 UTC |
-| Role | Early scaffold / prior work — superseded 2026-10-25 |
-
-Full disclosure: [`PRIOR_WORK.md`](./PRIOR_WORK.md).
 
 ## COVER claims rail (Unlocked)
 

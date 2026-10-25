@@ -22,8 +22,7 @@
 | Architecture + Stellar use | Done | [`ARCHITECTURE.md`](./ARCHITECTURE.md) · [`UNLOCKED.md`](./UNLOCKED.md) |
 | Live demo URL | **Done** | https://bind-beta.vercel.app `/en/live` `/en/por` |
 | Video walkthrough | **Still add Loom to form** | script below |
-| On-chain evidence | Done | [`EVIDENCE.md`](./EVIDENCE.md) — vault **25 Oct** |
-| Prior work disclosure | Done | [`PRIOR_WORK.md`](./PRIOR_WORK.md) — `CCQEAW…` = 18 Oct prior |
+| On-chain evidence | Done | [`EVIDENCE.md`](./EVIDENCE.md) — vault **CDGNKK…** |
 | AI tooling disclosure | Done | [`AI_ATTRIBUTION.md`](./AI_ATTRIBUTION.md) |
 
 ## Pitch (say this)
@@ -41,12 +40,20 @@
 4. **`/en/por`** — `fullyBacked` + COVER clawback evidence  
 5. Optional: `/en/demo` — say **“simulator only”**
 
-### Loom script (≈2–3 min)
+### Product-flow clip (Protected Deposit)
+
+Rendered Remotion walkthrough (deposit → hold → settle / claim):
+
+- Local: [`docs/assets/bind-demo-flow.mp4`](./assets/bind-demo-flow.mp4) · also `public/bind-demo-flow.mp4`
+- Rebuild: `npm run demo:render`
+
+### Loom script (≈2–3 min live rail)
 
 1. Open https://bind-beta.vercel.app — “insurance for DeFi deposits”  
-2. “Unlocked: clawback + Soroban vault” → `/en/live` → real tx  
+2. `/en/live` → Freighter → real vault tx  
 3. `/en/por` PoR + COVER  
-4. Explicit: `/demo` = simulator; `/live` = real vault; prior vault 18 Oct retired  
+4. Explicit: `/demo` = simulator; `/live` = real vault  
+
 
 ## Known limits (say out loud — removes doubt)
 

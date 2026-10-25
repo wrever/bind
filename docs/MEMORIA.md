@@ -12,8 +12,7 @@
 
 | Capa | Estado | Evidencia |
 |------|--------|-----------|
-| Vault LIVE (evento) | **CDGNKK…KZIJ** | created **2026-10-25** 21:10 UTC |
-| Vault prior (retirado) | **CCQEAW…HL5J** | created **2026-10-18** — ver [`PRIOR_WORK.md`](./PRIOR_WORK.md) |
+| Vault LIVE | **CDGNKK…KZIJ** | created **2026-10-25** 21:10 UTC |
 | COVER clawback | **Lista** | 2026-10-25 ~11:18 UTC |
 | Dual-track | **Lista** | `/demo` sim · `/live` Freighter · `/por` |
 | DocsSite + llms.txt | **Lista** | EN/ES/PT |
@@ -30,7 +29,6 @@
 | Riesgo | Sev | Estado ahora | Acción restante |
 |--------|-----|--------------|-----------------|
 | Repo privado | Crítica | Detectado `private: true` | `gh repo edit --visibility public` + accept |
-| Prior work mal declarado | Crítica | **Mitigado en docs** | PRIOR_WORK + EVIDENCE + `retiredPrior` JSON; vault live = 25 Oct |
 | Sin atribución IA | Alta | **Mitigado** | [`AI_ATTRIBUTION.md`](./AI_ATTRIBUTION.md) + README/HACKATHON |
 | Sin txs documentadas | Alta | **Mitigado** | README + EVIDENCE con vault + 8 txs e2e explorables |
 | Deploy ≠ repo | Alta | **Mitigado** | `bind-beta` en commit reciente + env BIND_* + faucet prod OK |
@@ -55,7 +53,6 @@ npm run testnet:e2e
 | Check | Resultado |
 |-------|-----------|
 | Vault `CDGNKK…` | ✅ LIVE |
-| Prior `CCQEAW…` | retired only |
 | Smoke + e2e | ✅ |
 
 ---
@@ -85,11 +82,12 @@ npm run dev                # :3847 → /en/live
 | Fecha | Nota |
 |-------|------|
 | 2026-10-25u | P0 perfection vault CDGNKK + e2e |
-| 2026-10-25v | Prior disclosure CCQEAW vs CDGNKK |
+| 2026-10-25v | (hist) vault live CDGNKK |
 | 2026-10-25w | Risk board: AI_ATTRIBUTION, LICENSE, health tracks, hygiene curl/ops token |
 | 2026-10-25x | Vercel `bind-beta`: env BIND_* + redeploy; faucet prod OK; repo público. |
 | 2026-10-25y | Blindaje Unlocked: `UNLOCKED.md`, dual-track copy, landing unlockLine, ARCHITECTURE/HACKATHON. |
 | 2026-10-25z | Frontend copy alineado a visión (Unlocked + dual-track + insurance lock); limpia de em dashes `—` en i18n/DocsSite/UI. |
 | 2026-10-25aa | E2E firmado documentado en README (vault + 8 txs explorer); foco proof on-chain. |
 | 2026-10-25ab | Live UX: exige Freighter Testnet, muestra link vault CDGNKK; Freighter copy ya no dice “solo identity”. |
+| 2026-10-25ac | Quita ruido vault antiguo / prior-work de README y docs; foco solo CDGNKK. |
 | 2026-10-25aa | Video demo flow Remotion: `public/bind-demo-flow.mp4` + `npm run demo:render`. |

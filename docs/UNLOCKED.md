@@ -28,7 +28,7 @@ This is **not** Stellar Composed: we do not combine two ecosystem products (anch
 | `/live` + `/api/v1/chain/*` | **Real** testnet vault txs | The off-chain engine |
 | `/por` | Live `por()` + COVER evidence | Fake marketing numbers |
 
-Prior vault `CCQEAW…` (**18 Oct**) = early scaffold only. Submission vault = `CDGNKK…` (**25 Oct**). Details: [`PRIOR_WORK.md`](./PRIOR_WORK.md).
+Live vault = `CDGNKK…` (**25 Oct**). See [`EVIDENCE.md`](./EVIDENCE.md).
 
 ## Known limits (stated, not hidden)
 

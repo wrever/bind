@@ -76,11 +76,5 @@
     "category": "Genesis",
     "track": "Stellar Unlocked",
     "product": "transfer-insurance"
-  },
-  "retiredPrior": {
-    "vault": "CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J",
-    "deployedAt": "2026-10-18T02:27:47Z",
-    "note": "Prior-work testnet vault only. Not used by /live, /por, or submission demos. See PRIOR_WORK.md.",
-    "explorer": "https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J"
   }
 }
