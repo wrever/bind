@@ -2,17 +2,20 @@
 
 **Updated:** 2026-10-25
 
-**DeFi protocol insurance on Stellar.**
+**DeFi deposit insurance on Stellar** · Genesis · **Stellar Unlocked**
 
-Protocols (Blend-like) **contract Bind**; their users get Protected Deposit — policy window → claim or settle → unwrap.  
-Claims execution may use clawback L1 under the hood (Unlocked); the product is **insurance for protocols**, not “a clawback app.”
+Protocols **contract Bind**; users get a timed protected window before free exit.  
+**Unlocked thesis:** Stellar clawback + Soroban policy vault = claims rail + retention — not a Composed mashup. See [`docs/UNLOCKED.md`](./docs/UNLOCKED.md).  
+Product language = insurance; clawback stays claims ops.
 
 | Field | Value |
 |-------|-------|
 | Product | **Bind** |
 | Category / track | **Genesis** · **Stellar Unlocked** |
 | Repo | https://github.com/wrever/bind (**public for submission**) |
-| Live vault (25 Oct) | see [`docs/EVIDENCE.md`](./docs/EVIDENCE.md) — **not** the 18 Oct prior vault |
+| Live demo | https://bind-beta.vercel.app |
+| Why Unlocked | [`docs/UNLOCKED.md`](./docs/UNLOCKED.md) |
+| Live vault (25 Oct) | [`docs/EVIDENCE.md`](./docs/EVIDENCE.md) — **not** the 18 Oct prior vault |
 | Prior work | [`docs/PRIOR_WORK.md`](./docs/PRIOR_WORK.md) |
 | AI tooling | [`docs/AI_ATTRIBUTION.md`](./docs/AI_ATTRIBUTION.md) |
 | Business model | [`docs/BIND_BUSINESS.md`](./docs/BIND_BUSINESS.md) |

@@ -200,6 +200,13 @@ export function DualTrackNote() {
       >
         {t("por")}
       </Link>
+      {" · "}
+      <Link
+        href="/docs/testnet"
+        className="text-[var(--color-accent2)] underline underline-offset-4"
+      >
+        Unlocked
+      </Link>
     </aside>
   );
 }

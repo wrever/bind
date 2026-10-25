@@ -49,9 +49,10 @@
     "docs": "Docs"
   },
   "Home": {
-    "eyebrow": "Bind",
+    "eyebrow": "Bind · Stellar Unlocked",
     "headline": "Seguro para depósitos DeFi.",
     "subhead": "Seu protocolo compra a cobertura. O usuário espera uma janela curta antes de sacar — e a Bind paga se os fundos forem roubados enquanto ainda estão protegidos.",
+    "unlockLine": "Sobre clawback da Stellar + vault Soroban — features do protocolo, não um mashup de outros apps.",
     "ctaTalk": "Falar com a Bind",
     "ctaDemo": "Ver a demo",
     "flowTitle": "A cobertura é comprada pelo seu protocolo — não um app que o usuário baixa.",
@@ -61,7 +62,7 @@
     "flow2Title": "Retenção antes da saída livre",
     "flow2Body": "Depósitos cobertos ficam numa janela temporal. Unwrap e swap permanecem bloqueados enquanto unsettled.",
     "flow3Title": "Claim enquanto os fundos estão on-rail",
-    "flow3Body": "Se houver breach dentro da janela, a Bind paga claims aprovados. Drenagens off-rail exigem capital Tier 3.",
+    "flow3Body": "Claims aprovados pagam no rail da Bind. Por baixo: clawback + remint da Stellar — ops, não a marca. Off-rail exige capital Tier 3.",
     "lanesTitle": "Pague com tempo, ou com KYC.",
     "lanesBody": "Retenção é finality diferida — um hold protegido e documentado, não um bloqueio misterioso.",
     "standardName": "Standard",
@@ -301,8 +302,8 @@
   "Live": {
     "meta": "Testnet",
     "title": "Rail de cover ao vivo",
-    "body": "Assine movimentos reais do vault com Freighter na Stellar testnet. Precisa de rede Testnet e TUSDC. O simulador local fica em Demo.",
-    "demoLink": "Abrir Demo",
+    "body": "Assine movimentos reais do vault com Freighter na Stellar testnet (vault de 25 out). Use Obter TUSDC aqui — Demo é só o simulador de apólice.",
+    "demoLink": "Abrir Demo (simulador)",
     "walletOn": "Wallet conectada",
     "walletOff": "Conectar Freighter",
     "noAccount": "Conta ainda não na testnet",
@@ -365,8 +366,8 @@
     "coverLoading": "Carregando…"
   },
   "DualTrack": {
-    "title": "Dois tracks.",
-    "body": "Demo simula a apólice. Live assina txs reais do vault na testnet. Reservas mostra ambos.",
+    "title": "Simulador ≠ vault.",
+    "body": "Demo só ensina a apólice. Live assina txs reais do vault na testnet. Reservas lê PoR on-chain. A API de sessions nunca é custódia.",
     "live": "Live",
     "por": "Reservas"
   },

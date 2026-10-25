@@ -49,9 +49,10 @@
     "docs": "Docs"
   },
   "Home": {
-    "eyebrow": "Bind",
+    "eyebrow": "Bind · Stellar Unlocked",
     "headline": "Insurance for DeFi deposits.",
     "subhead": "Your protocol buys cover. Users wait a short window before withdrawing — and Bind pays if funds are stolen while still protected.",
+    "unlockLine": "Powered by Stellar clawback + a Soroban policy vault — core protocol features, not a mashup of other apps.",
     "ctaTalk": "Talk to Bind",
     "ctaDemo": "See the demo",
     "flowTitle": "Cover your protocol buys — not an app users download.",
@@ -61,7 +62,7 @@
     "flow2Title": "Retention before free exit",
     "flow2Body": "Covered deposits sit in a timed window. Unwrap and swap stay blocked while unsettled.",
     "flow3Title": "Claim while funds are on-rail",
-    "flow3Body": "If a breach hits inside the window, Bind pays approved claims. Off-rail drains need Tier 3 capital.",
+    "flow3Body": "Approved claims pay on the Bind rail. Under the hood that uses Stellar clawback + remint — ops, not the consumer brand. Off-rail drains need Tier 3 capital.",
     "lanesTitle": "Pay with time, or with KYC.",
     "lanesBody": "Retention is deferred finality — a documented protected hold, not a mystery lock.",
     "standardName": "Standard",
@@ -301,8 +302,8 @@
   "Live": {
     "meta": "Testnet",
     "title": "Live cover rail",
-    "body": "Sign real vault moves with Freighter on Stellar testnet. Need Testnet network and TUSDC. The local simulator stays on Demo.",
-    "demoLink": "Open Demo",
+    "body": "Sign real vault moves with Freighter on Stellar testnet (vault deployed 25 Oct). Use Get TUSDC here — Demo is only the policy simulator.",
+    "demoLink": "Open Demo (simulator)",
     "walletOn": "Wallet connected",
     "walletOff": "Connect Freighter",
     "noAccount": "Account not on testnet yet",
@@ -365,8 +366,8 @@
     "coverLoading": "Loading…"
   },
   "DualTrack": {
-    "title": "Two tracks.",
-    "body": "Demo simulates policy. Live signs real testnet vault txs. Reserves shows both.",
+    "title": "Simulator ≠ vault.",
+    "body": "Demo only teaches the policy. Live signs real testnet vault transactions. Reserves reads on-chain PoR. The sessions API is never custody.",
     "live": "Live",
     "por": "Reserves"
   },
