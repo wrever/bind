@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { HeroVoxelBackground } from "@/components/hero-voxel-background";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { LandingRail } from "@/components/landing-rail";
 import { Button } from "@/components/ui/button";
 
 const FLOW = [
@@ -29,45 +29,39 @@ export default function HomePage() {
       <SiteHeader />
 
       <main>
-        {/* Hero */}
-        <section className="px-5 pb-16 pt-16 md:px-10 md:pb-24 md:pt-24">
-          <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-12 lg:items-center lg:gap-12">
-            <div className="lg:col-span-5">
-              <p className="animate-keel-rise text-sm text-[var(--color-muted)]">
-                Bind · Security insurance for DeFi on Stellar
-              </p>
-              <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(2.25rem,5.5vw,3.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)]">
-                Insurance protocols can contract.
-              </h1>
-              <p className="animate-keel-rise-delay-2 mt-6 max-w-md text-base leading-relaxed text-[var(--color-muted)] md:text-lg">
-                Bind holds covered deposits in a timed retention window before
-                free exit — and pays claims if a breach hits while funds stay
-                on the Bind rail.
-              </p>
-              <div className="animate-keel-rise-delay-2 mt-9 flex flex-wrap gap-3">
-                <Button asChild size="lg">
-                  <Link href="/integrate">
-                    Talk to Bind
-                    <ArrowRight
-                      className="size-4"
-                      strokeWidth={1.5}
-                      aria-hidden
-                    />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link href="/demo">See the demo</Link>
-                </Button>
-              </div>
-            </div>
+        <section className="relative isolate overflow-hidden px-5 pb-24 pt-20 md:px-10 md:pb-32 md:pt-28">
+          <HeroVoxelBackground />
 
-            <div className="animate-keel-rise-delay-2 lg:col-span-7">
-              <LandingRail />
+          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center text-center">
+            <p className="animate-keel-rise text-sm text-[var(--color-muted)]">
+              Bind · Security insurance for DeFi on Stellar
+            </p>
+            <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)]">
+              Insurance protocols can contract.
+            </h1>
+            <p className="animate-keel-rise-delay-2 mt-6 max-w-xl text-base leading-relaxed text-[var(--color-muted)] md:text-lg">
+              Bind holds covered deposits in a timed retention window before
+              free exit — and pays claims if a breach hits while funds stay on
+              the Bind rail.
+            </p>
+            <div className="animate-keel-rise-delay-2 mt-10 flex flex-wrap items-center justify-center gap-3">
+              <Button asChild size="lg">
+                <Link href="/integrate">
+                  Talk to Bind
+                  <ArrowRight
+                    className="size-4"
+                    strokeWidth={1.5}
+                    aria-hidden
+                  />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/demo">See the demo</Link>
+              </Button>
             </div>
           </div>
         </section>
 
-        {/* How it works */}
         <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="max-w-2xl">
@@ -101,7 +95,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Lanes */}
         <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
             <h2 className="max-w-xl font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-[2.5rem] md:leading-tight">
@@ -131,7 +124,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Partner CTA */}
         <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl bg-[var(--color-surface)] px-6 py-12 md:px-12 md:py-16">
             <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
