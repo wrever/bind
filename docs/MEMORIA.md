@@ -18,7 +18,7 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | Motor TS settled/unsettled | **Lista** | `src/lib/keel/engine.ts` · `npm run test:engine` ✅ |
 | Retention Standard / Fast Lane | **Lista** | `retention.ts` + demo lanes + `set_retention` |
 | API partner `/api/v1/*` | **Lista (simulador)** | No es custodia; ver hardening abajo |
-| UI storefront institucional | **Lista (pass 1)** | Sin `[SI-001]` en landing; footer pro; nav corta |
+| UI storefront institucional | **Lista (pass 2 · Grok layout)** | Hero copy + Protected Deposit diagram + lanes visual; sin HUD codes |
 | Brand assets Bind | **Integrados** | `src/img/` + `public/brand/` + `BrandMark` |
 | Freighter | **Identity only** | `FreighterConnect` en `/demo` + `/integrate` |
 | SDK `@keel/sdk` / BindClient | **Lista (surface)** | Safe Mode + HTTP thin; sin Soroban client |
@@ -193,3 +193,4 @@ BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
 | 2026-10-25j | Repo `wrever/bind` = origin; brand `src/img` + `public/brand`; footer pro; quit status bar BD-001. |
 | 2026-10-25k | Freighter identity; docs apuntan a bind; UI storefront anti-HUD (nav/CTA/copy). |
 | 2026-10-25l | **Audit arch/sec** + hardening API (actor, UUID, clamp, PoR demo flag, headers, RL). Gap #1: API≠vault. |
+| 2026-10-25m | Landing alineada a mock Grok (hero headline, Protected Deposit flow, lanes visual, footer PoR live). |

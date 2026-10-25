@@ -2,23 +2,22 @@ import Link from "next/link";
 import { BrandMark } from "@/components/brand-mark";
 
 const PRODUCT = [
-  { href: "/demo", label: "Console" },
   { href: "/integrate", label: "Integrate" },
   { href: "/cover", label: "Cover schedule" },
   { href: "/por", label: "Proof of reserves" },
+  { href: "/demo", label: "Demo" },
 ] as const;
 
 const RESOURCES = [
   { href: "/docs", label: "Documentation" },
   { href: "/policy", label: "Claims policy" },
-  { href: "/ops", label: "Claims ops" },
   { href: "/terms", label: "Terms of service" },
 ] as const;
 
-const COMPANY = [
+const PROTOCOL = [
   { href: "/cover", label: "What Bind covers" },
   { href: "/integrate", label: "For protocols" },
-  { href: "/docs", label: "Vision & threat model" },
+  { href: "/docs", label: "Threat model & vision" },
 ] as const;
 
 function FooterColumn({
@@ -30,7 +29,9 @@ function FooterColumn({
 }) {
   return (
     <div>
-      <p className="keel-meta text-[var(--color-text)]">{title}</p>
+      <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-text)]">
+        {title}
+      </p>
       <ul className="mt-4 space-y-3">
         {links.map((l) => (
           <li key={`${title}-${l.href}-${l.label}`}>
@@ -60,18 +61,24 @@ export function SiteFooter() {
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--color-muted)]">
               DeFi security insurance on Stellar. Protocols contract Bind;
-              depositors get a retention window and in-rail claims — not a
-              wallet, not a money market.
+              depositors get a protected retention window and in-window claims.
             </p>
-            <p className="keel-meta mt-6">
-              Peg invariant · vault ≥ supply
-            </p>
+            <Link
+              href="/por"
+              className="mt-6 inline-flex items-center gap-2 text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
+            >
+              <span
+                className="size-1.5 rounded-full bg-[var(--color-accent2)]"
+                aria-hidden
+              />
+              Proof of reserves is public
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:col-span-7 md:gap-8 lg:col-span-8 lg:pl-8">
             <FooterColumn title="Product" links={PRODUCT} />
             <FooterColumn title="Resources" links={RESOURCES} />
-            <FooterColumn title="Protocol" links={COMPANY} />
+            <FooterColumn title="Protocol" links={PROTOCOL} />
           </div>
         </div>
       </div>
@@ -87,19 +94,19 @@ export function SiteFooter() {
           >
             <Link
               href="/terms"
-              className="text-sm text-[var(--color-muted)] transition-colors duration-[var(--motion-quick)] hover:text-[var(--color-text)]"
+              className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
               Terms
             </Link>
             <Link
               href="/policy"
-              className="text-sm text-[var(--color-muted)] transition-colors duration-[var(--motion-quick)] hover:text-[var(--color-text)]"
+              className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
               Claims
             </Link>
             <Link
               href="/docs"
-              className="text-sm text-[var(--color-muted)] transition-colors duration-[var(--motion-quick)] hover:text-[var(--color-text)]"
+              className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
               Docs
             </Link>

@@ -1,104 +1,100 @@
-/** Product visual for Bind landing — retention cover, partner-readable. */
+/** Protected Deposit diagram — Grok landing visual, Bind-accurate lanes. */
 
 export function LandingRail() {
   return (
     <aside
-      aria-label="Retention cover summary"
-      className="relative w-full border border-[var(--color-line)] bg-[var(--color-surface)]"
+      aria-label="Protected Deposit"
+      className="w-full border border-[var(--color-line)] bg-[var(--color-surface)]"
     >
-      <div className="flex items-center justify-between border-b border-[var(--color-line)] px-5 py-4">
-        <p className="text-sm font-medium text-[var(--color-text)]">
-          Retention cover
-        </p>
-        <p className="text-xs tracking-[0.04em] text-[var(--color-muted)]">
-          Vault ≥ supply
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-[var(--color-line)] px-5 py-4 md:px-6">
+        <div>
+          <p className="font-[family-name:var(--font-display)] text-base font-extrabold tracking-tight text-[var(--color-text)]">
+            Protected Deposit
+          </p>
+          <p className="mt-1 text-xs text-[var(--color-muted)]">
+            Timed retention before free exit
+          </p>
+        </div>
+        <p className="text-xs text-[var(--color-muted)]">
+          Standard · No KYC ·{" "}
+          <span className="font-medium text-[var(--color-text)]">12h</span>
         </p>
       </div>
 
-      <div className="grid gap-0 md:grid-cols-12">
-        <div className="border-b border-[var(--color-line)] p-6 md:col-span-7 md:border-b-0 md:border-r md:p-8">
-          <p className="text-xs uppercase tracking-[0.08em] text-[var(--color-muted)]">
-            Protected window
-          </p>
-          <p className="mt-3 font-[family-name:var(--font-display)] text-5xl font-extrabold tracking-[-0.03em] text-[var(--color-text)] md:text-6xl">
-            12<span className="text-[var(--color-accent)]">h</span>
-          </p>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-[var(--color-muted)]">
-            Default without KYC. Free unwrap and swap stay blocked while funds
-            are unsettled.
-          </p>
-
-          <div className="mt-8 space-y-3">
-            <div className="flex items-center justify-between gap-2 text-xs text-[var(--color-muted)]">
-              <span>Deposit</span>
-              <span>Settle</span>
+      <div className="space-y-0 p-5 md:p-6">
+        <FlowRow
+          label="Deposit"
+          body="USDC enters the Bind rail as covered credit."
+        />
+        <div className="relative border-l border-[var(--color-line)] py-5 pl-5 ml-2">
+          <div
+            aria-hidden
+            className="absolute -left-px top-0 h-full w-px bg-[var(--color-accent)] opacity-80"
+          />
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-[0.08em] text-[var(--color-muted)]">
+                Hold
+              </p>
+              <p className="mt-1 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
+                12<span className="text-[var(--color-accent)]">h</span>
+              </p>
+              <p className="mt-2 max-w-xs text-sm text-[var(--color-muted)]">
+                Protected retention window. Unwrap and swap stay blocked while
+                unsettled.
+              </p>
             </div>
-            <div className="relative h-1.5 overflow-hidden bg-[var(--color-bg)]">
-              <div className="absolute inset-y-0 left-0 w-[68%] bg-[var(--color-accent)] animate-keel-fill" />
+            <div className="min-w-[7rem] flex-1 max-w-[11rem]">
+              <div className="h-1.5 overflow-hidden bg-[var(--color-bg)]">
+                <div className="h-full w-[72%] bg-[var(--color-accent)] animate-keel-fill" />
+              </div>
+              <p className="mt-2 text-[11px] text-[var(--color-muted)]">
+                Free exit blocked in window
+              </p>
             </div>
-            <ul className="mt-4 space-y-2 text-sm text-[var(--color-muted)]">
-              <li className="flex justify-between gap-4">
-                <span>Free exit</span>
-                <span className="font-medium text-[var(--color-accent)]">
-                  Blocked in window
-                </span>
-              </li>
-              <li className="flex justify-between gap-4">
-                <span>Exit pool</span>
-                <span className="font-medium text-[var(--color-text)]">
-                  Available
-                </span>
-              </li>
-              <li className="flex justify-between gap-4">
-                <span>Claim</span>
-                <span className="font-medium text-[var(--color-text)]">
-                  While on-rail
-                </span>
-              </li>
-            </ul>
           </div>
         </div>
 
-        <div className="grid grid-rows-3 md:col-span-5">
-          <Step
-            n="1"
-            title="Deposit"
-            body="USDC becomes covered credit"
-          />
-          <Step n="2" title="Hold" body="Risk window stays open" />
-          <Step
-            n="3"
-            title="Settle or claim"
-            body="Unwrap 1:1, or indemnify"
-            last
-          />
+        <div className="grid gap-0 border border-[var(--color-line)] sm:grid-cols-2">
+          <div className="border-b border-[var(--color-line)] p-4 sm:border-b-0 sm:border-r">
+            <p className="text-xs uppercase tracking-[0.08em] text-[var(--color-muted)]">
+              Settle
+            </p>
+            <p className="mt-2 font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+              Free exit opens
+            </p>
+            <p className="mt-1 text-sm text-[var(--color-muted)]">
+              Unwrap 1:1 when the window ends — no breach.
+            </p>
+          </div>
+          <div className="p-4">
+            <p className="text-xs uppercase tracking-[0.08em] text-[var(--color-muted)]">
+              Claim
+            </p>
+            <p className="mt-2 font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+              Breach in window
+            </p>
+            <p className="mt-1 text-sm text-[var(--color-muted)]">
+              Bind pays approved claims while funds stay on-rail.
+            </p>
+          </div>
         </div>
+
+        <p className="pt-4 text-xs text-[var(--color-muted)]">
+          Peg · vault ≥ supply · KYC Fast Lane shortens hold to ~1h
+        </p>
       </div>
     </aside>
   );
 }
 
-function Step({
-  n,
-  title,
-  body,
-  last,
-}: {
-  n: string;
-  title: string;
-  body: string;
-  last?: boolean;
-}) {
+function FlowRow({ label, body }: { label: string; body: string }) {
   return (
-    <div
-      className={`flex gap-4 px-6 py-5 ${last ? "" : "border-b border-[var(--color-line)]"}`}
-    >
-      <span className="font-[family-name:var(--font-mono)] text-xs tabular-nums text-[var(--color-muted)]">
-        {n}
-      </span>
+    <div className="flex gap-4 pb-4">
+      <span className="mt-1 size-2 shrink-0 rounded-full bg-[var(--color-accent)]" />
       <div>
-        <p className="font-[family-name:var(--font-display)] text-base font-extrabold tracking-tight text-[var(--color-text)]">
-          {title}
+        <p className="font-[family-name:var(--font-display)] text-sm font-extrabold text-[var(--color-text)]">
+          {label}
         </p>
         <p className="mt-1 text-sm text-[var(--color-muted)]">{body}</p>
       </div>
