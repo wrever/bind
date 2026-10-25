@@ -60,10 +60,10 @@ export function GET() {
           ?.cover?.smoke?.clawbackClaim,
       ),
       next: [
-        "Wire Freighter-signed vault deposit (identity-only today)",
-        "Cable /api/v1 actions → Soroban vault (today: simulator)",
+        "Public repo + Vercel redeploy aligned to main (CDGNKK vault)",
         "Optional: swap TUSDC → Circle USDC SAC when faucet-funded",
-        "Public demo URL (Vercel)",
+        "Arbiter multisig (today: single BIND_ARBITER_SECRET for resolve)",
+        "Partner API keys (sessions API remains a simulator)",
       ],
     },
   });

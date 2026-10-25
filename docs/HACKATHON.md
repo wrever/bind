@@ -15,12 +15,13 @@
 
 | Requirement | Status | Where |
 |-------------|--------|-------|
-| Public GitHub with source | **Repo ready** — set visibility public before submit | https://github.com/wrever/bind |
+| Public GitHub with source | **Must flip public** before submit | https://github.com/wrever/bind |
 | README: summary, problem, setup, env, demo | Done | [`README.md`](../README.md) |
 | Architecture: how Stellar is used, IDs, APIs | Done | [`ARCHITECTURE.md`](./ARCHITECTURE.md) |
-| Working live demo **or** video walkthrough | Local demo ready; **need** public URL or video link in form | `/demo`, `/ops` |
-| On-chain Testnet evidence | Done | [`EVIDENCE.md`](./EVIDENCE.md) |
-| Disclose prior work vs event work | Done | [`PRIOR_WORK.md`](./PRIOR_WORK.md) |
+| Working live demo **or** video walkthrough | App ready; **need** Vercel = `main` + **Loom video** in form | `/live`, `/por` |
+| On-chain Testnet evidence | Done (vault **25 Oct** `CDGNKK…`) | [`EVIDENCE.md`](./EVIDENCE.md) |
+| Disclose prior work vs event work | Done — `CCQEAW…` = **18 Oct prior**; live = **25 Oct** | [`PRIOR_WORK.md`](./PRIOR_WORK.md) |
+| Disclose AI tooling | Done | [`AI_ATTRIBUTION.md`](./AI_ATTRIBUTION.md) |
 
 ## Pitch
 
@@ -44,6 +45,19 @@ npm run dev   # :3847 → open /en/…
 5. **Terminal** — `npm run testnet:smoke` / `npm run testnet:e2e` for hashes  
 
 Vault + TUSDC: see [`testnet.addresses.json`](./testnet.addresses.json) / [`TESTNET.md`](./TESTNET.md).
+
+### Loom script (≈2–3 min) — still required for form
+
+1. Landing one-liner → open `/en/live`  
+2. Connect Freighter Testnet → Add trustline → Get TUSDC → deposit → transfer → explorer tx  
+3. `/en/por` fully backed + COVER note  
+4. Say clearly: `/demo` is the policy simulator; `/live` is the real vault  
+
+## Known limits (say out loud)
+
+- Claims `resolve` uses a single arbiter key (multisig planned).  
+- `/api/v1/sessions` is **not** wired to the vault (dual-track).  
+- Prior vault `CCQEAW…` (18 Oct) is retired — demo only `CDGNKK…` (25 Oct).
 
 ## Out of scope
 

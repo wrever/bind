@@ -1,5 +1,7 @@
 # Agents working on Bind
 
+Human product owner: **wrever**. AI-assisted implementation — see [`docs/AI_ATTRIBUTION.md`](docs/AI_ATTRIBUTION.md).
+
 ## Vision lock
 
 Read `docs/VISION.md` and `docs/BIND_BUSINESS.md` before large changes.  

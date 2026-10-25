@@ -11,10 +11,11 @@ Claims execution may use clawback L1 under the hood (Unlocked); the product is *
 |-------|-------|
 | Product | **Bind** |
 | Category / track | **Genesis** · **Stellar Unlocked** |
-| Repo | https://github.com/wrever/bind |
+| Repo | https://github.com/wrever/bind (**public for submission**) |
+| Live vault (25 Oct) | see [`docs/EVIDENCE.md`](./docs/EVIDENCE.md) — **not** the 18 Oct prior vault |
+| Prior work | [`docs/PRIOR_WORK.md`](./docs/PRIOR_WORK.md) |
+| AI tooling | [`docs/AI_ATTRIBUTION.md`](./docs/AI_ATTRIBUTION.md) |
 | Business model | [`docs/BIND_BUSINESS.md`](./docs/BIND_BUSINESS.md) |
-| Cover schedule | [`docs/COVER_SCHEDULE.md`](./docs/COVER_SCHEDULE.md) |
-| Terms (demo) | [`docs/TOS.md`](./docs/TOS.md) |
 | Architecture | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) |
 | On-chain evidence | [`docs/EVIDENCE.md`](./docs/EVIDENCE.md) |
 
@@ -52,20 +53,21 @@ npm run test:persist   # needs dev server + .env.local
 npm run build
 ```
 
-## Demo
+## Demo (dual-track)
 
-| URL | What |
-|-----|------|
-| `/demo` | Cover console |
-| `/ops` | Claims console |
-| `/cover` | Cover schedule |
-| `/integrate` | Partner + Safe Deposit |
-| `/api/v1/network` | Testnet IDs |
+| URL | What | Truth |
+|-----|------|-------|
+| `/demo` | Policy simulator | **Not** custody / not the vault |
+| `/live` | Freighter → vault (faucet TUSDC, deposit…dispute) | **Testnet** vault `CDGNKK…` |
+| `/por` | Local + live `por()` + COVER evidence | On-chain readable |
+| `/docs` | Product docs + search | EN/ES/PT |
+| `/api/v1/chain/por` | Live PoR JSON | Must return vault `CDGNKK…` |
 
 ```bash
 npm run demo:hackathon
+npm run testnet:smoke
 ```
 
 ## License
 
-Private until published / hackathon rules allow public release.
+MIT — see [`LICENSE`](./LICENSE).

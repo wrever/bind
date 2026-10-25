@@ -596,10 +596,10 @@ claimSafeDeposit(state, "alice", "blend_pool", lotId);`,
         {
           type: "code",
           language: "bash",
-          text: `curl -s -X POST http://127.0.0.1:3847/api/v1/sessions \\
+          text: `curl -s -X POST $HOST/api/v1/sessions \\
   -H 'content-type: application/json' -d '{"windowMs":45000}'
 
-curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
+curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
   -H 'content-type: application/json' \\
   -d '{"action":"deposit","address":"alice","amount":100}'`,
         },
@@ -628,7 +628,7 @@ curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
         {
           type: "code",
           language: "bash",
-          text: `curl -s -X POST http://127.0.0.1:3847/api/v1/sessions \\
+          text: `curl -s -X POST $HOST/api/v1/sessions \\
   -H 'content-type: application/json' -d '{"windowMs":45000}'`,
         },
         { type: "h2", id: "chain", text: "Chain live" },
@@ -656,7 +656,7 @@ curl -s -X POST http://127.0.0.1:3847/api/v1/sessions/$ID/actions \\
         {
           type: "code",
           language: "bash",
-          text: `curl -s -X POST http://127.0.0.1:3847/api/v1/sessions \\
+          text: `curl -s -X POST $HOST/api/v1/sessions \\
   -H 'content-type: application/json' -d '{"windowMs":45000}'`,
         },
         { type: "h2", id: "chain", text: "Chain live" },
