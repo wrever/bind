@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { HeroVoxelBackground } from "@/components/hero-voxel-background";
 import { LandingQuickDemo } from "@/components/landing-quick-demo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
+import { VoxelArc } from "@/components/voxel-arc";
 
 const FLOW = [
   {
@@ -30,37 +30,55 @@ export default function HomePage() {
       <SiteHeader />
 
       <main>
-        <section className="relative isolate overflow-hidden px-5 pb-24 pt-20 md:px-10 md:pb-32 md:pt-28">
-          <HeroVoxelBackground />
-
-          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center text-center">
-            <p className="animate-keel-rise text-sm text-[var(--color-muted)]">
-              Bind · Security insurance for DeFi on Stellar
-            </p>
-            <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)]">
-              Insurance protocols can contract.
-            </h1>
-            <p className="animate-keel-rise-delay-2 mt-6 max-w-xl text-base leading-relaxed text-[var(--color-muted)] md:text-lg">
-              Bind holds covered deposits in a timed retention window before
-              free exit — and pays claims if a breach hits while funds stay on
-              the Bind rail.
-            </p>
-            <div className="animate-keel-rise-delay-2 mt-10 flex flex-wrap items-center justify-center gap-3">
-              <Button asChild size="lg">
-                <Link href="/integrate">
-                  Talk to Bind
-                  <ArrowRight
-                    className="size-4"
-                    strokeWidth={1.5}
-                    aria-hidden
-                  />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="#quick-demo">See the demo</Link>
-              </Button>
+        <section className="relative isolate overflow-hidden">
+          <VoxelArc
+            className="min-h-[78vh] md:min-h-[86vh]"
+            color="#22211E"
+            accentColor="#F54307"
+            backgroundColor="#0E100D"
+            density={1.05}
+            voxelSize={0.58}
+            roundness={0.12}
+            horizon={0.48}
+            curvature={0.6}
+            waveHeight={1.05}
+            waveLength={0.95}
+            speed={0.42}
+            turbulence={0.38}
+            glow={1.1}
+            haze={0.8}
+            bloom={0.55}
+            interactive
+          >
+            <div className="mx-auto flex min-h-[78vh] max-w-3xl flex-col items-center justify-center px-5 pb-28 pt-16 text-center md:min-h-[86vh] md:px-10 md:pb-36 md:pt-20">
+              <p className="animate-keel-rise text-sm text-[var(--color-muted)]">
+                Bind · Security insurance for DeFi on Stellar
+              </p>
+              <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(2.25rem,6vw,3.75rem)] font-extrabold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)]">
+                Insurance protocols can contract.
+              </h1>
+              <p className="animate-keel-rise-delay-2 mt-6 max-w-xl text-base leading-relaxed text-[var(--color-muted)] md:text-lg">
+                Bind holds covered deposits in a timed retention window before
+                free exit — and pays claims if a breach hits while funds stay on
+                the Bind rail.
+              </p>
+              <div className="animate-keel-rise-delay-2 mt-10 flex flex-wrap items-center justify-center gap-3">
+                <Button asChild size="lg">
+                  <Link href="/integrate">
+                    Talk to Bind
+                    <ArrowRight
+                      className="size-4"
+                      strokeWidth={1.5}
+                      aria-hidden
+                    />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                  <Link href="#quick-demo">See the demo</Link>
+                </Button>
+              </div>
             </div>
-          </div>
+          </VoxelArc>
         </section>
 
         <LandingQuickDemo />
