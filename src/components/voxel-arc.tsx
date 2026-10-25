@@ -159,10 +159,29 @@ export function VoxelArc({
         sky.addColorStop(0, rgb(bg, 1));
         sky.addColorStop(
           1,
-          `rgba(${mix(bg, accent, 0.08 * glow).join(",")},${0.35 * haze})`,
+          `rgba(${mix(bg, accent, 0.12 * glow).join(",")},${0.4 * haze})`,
         );
         ctx!.fillStyle = sky;
         ctx!.fillRect(0, 0, w, hz + 2);
+      }
+
+      // Continuous sea wash under the crest — kills the “floating strip” look
+      {
+        const sea = ctx!.createLinearGradient(0, hz, 0, h);
+        sea.addColorStop(
+          0,
+          `rgba(${mix(bg, accent, 0.42 * glow).join(",")},${0.55 * introK})`,
+        );
+        sea.addColorStop(
+          0.4,
+          `rgba(${mix(bg, accent, 0.22).join(",")},${0.38 * introK})`,
+        );
+        sea.addColorStop(
+          1,
+          `rgba(${mix(bg, base, 0.55).join(",")},${0.22 * introK})`,
+        );
+        ctx!.fillStyle = sea;
+        ctx!.fillRect(0, hz - 2, w, h - hz + 2);
       }
 
       const nx = cols();
@@ -171,7 +190,11 @@ export function VoxelArc({
       const far = 7.2;
       const worldW = 5.8;
       const focal = h * 0.92;
-      const camY = 1.15 + tilt * 0.35;
+      const camY = 1.05 + tilt * 0.28;
+      // Stretch near field so voxels reach ~bottom of the canvas (full sea)
+      const nearScale = focal / (near * 55 + 40);
+      const vMul =
+        (h * (0.96 - horizon)) / Math.max(0.001, camY * nearScale);
 
       type Point = {
         sx: number;
@@ -194,19 +217,18 @@ export function VoxelArc({
           const depth = z;
           const scale = focal / (depth * 55 + 40);
           const sx = w * 0.5 + x * scale * 95;
-          // Vertical scale kept tighter so the near field stays on-canvas
           const sy =
             hz +
-            (camY - elev * 0.55 - bend) * scale * 48 +
+            (camY - elev * 0.55 - bend) * scale * vMul +
             (1 - introK) * h * 0.1;
           const size = Math.max(
-            1.4,
-            scale * 42 * voxelSize * (0.85 + elev * 0.08),
+            1.6,
+            scale * 48 * voxelSize * (0.9 + elev * 0.1),
           );
           const lit = clamp01(
-            0.2 +
-              elev * 0.55 +
-              (1 - zu) * 0.15 +
+            0.28 +
+              elev * 0.5 +
+              (1 - zu) * 0.22 +
               Math.max(0, elev) * 0.35 * glow,
           );
           pts.push({ sx, sy, size, lit: lit * brightness, depth: zu });
@@ -216,10 +238,10 @@ export function VoxelArc({
       // back → front already from iz loop; draw
       const r = Math.max(0, Math.min(1, roundness));
       for (const p of pts) {
-        const fog = clamp01((p.depth - 0.15) / 0.85);
-        const a = (0.35 + p.lit * 0.65) * (1 - fog * 0.55 * haze) * introK;
+        const fog = clamp01((p.depth - 0.12) / 0.88);
+        const a = (0.42 + p.lit * 0.58) * (1 - fog * 0.45 * haze) * introK;
         if (a < 0.04) continue;
-        const c = mix(base, accent, clamp01(p.lit * 1.15 - 0.15));
+        const c = mix(base, accent, clamp01(p.lit * 1.15 - 0.1));
         // bloom wash on bright crest
         if (bloom > 0 && p.lit > 0.72) {
           ctx!.fillStyle = `rgba(${accent.join(",")},${(p.lit - 0.72) * bloom * 0.45 * introK})`;
@@ -245,38 +267,30 @@ export function VoxelArc({
         ctx!.fill();
       }
 
-      // horizon glow arc
+      // Horizon glow — tall enough to wash the sea, not a thin band
       if (glow > 0) {
         const g = ctx!.createRadialGradient(
           w * 0.5,
           hz,
           w * 0.02,
           w * 0.5,
-          hz,
-          w * 0.55,
+          hz + h * 0.12,
+          w * 0.72,
         );
-        g.addColorStop(0, `rgba(${accent.join(",")},${0.22 * glow * introK})`);
-        g.addColorStop(0.45, `rgba(${accent.join(",")},${0.06 * glow * introK})`);
+        g.addColorStop(0, `rgba(${accent.join(",")},${0.28 * glow * introK})`);
+        g.addColorStop(0.4, `rgba(${accent.join(",")},${0.1 * glow * introK})`);
         g.addColorStop(1, "rgba(0,0,0,0)");
         ctx!.fillStyle = g;
-        ctx!.fillRect(0, hz - h * 0.2, w, h * 0.45);
+        ctx!.fillRect(0, hz - h * 0.15, w, h - hz + h * 0.15);
       }
 
-      // Top vignette — clear sky for headline; stop before the crest
-      const vigEnd = Math.min(hz * 0.95, h * 0.34);
+      // Soft sky only — leave the sea alone
+      const vigEnd = Math.min(hz * 0.75, h * 0.18);
       const vig = ctx!.createLinearGradient(0, 0, 0, vigEnd);
-      vig.addColorStop(0, rgb(bg, 0.75));
-      vig.addColorStop(0.65, rgb(bg, 0.2));
+      vig.addColorStop(0, rgb(bg, 0.5));
       vig.addColorStop(1, "rgba(0,0,0,0)");
       ctx!.fillStyle = vig;
       ctx!.fillRect(0, 0, w, vigEnd);
-
-      // Thin floor fade — keep the sea visible to the bottom edge
-      const bot = ctx!.createLinearGradient(0, h * 0.88, 0, h);
-      bot.addColorStop(0, "rgba(0,0,0,0)");
-      bot.addColorStop(1, rgb(bg, 0.9));
-      ctx!.fillStyle = bot;
-      ctx!.fillRect(0, h * 0.88, w, h * 0.12);
 
       // prune old ripples
       const pr = ripplesRef.current;

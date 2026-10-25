@@ -26,49 +26,47 @@ export default async function HomePage({ params }: Props) {
 
       <main>
         {/*
-          Hero + aurora. Crest sits low (under CTAs → floor), may wash the
-          top of the demo; Remotion card size unchanged — only nudged down.
+          One stage: sticky FULL-VIEWPORT aurora (not a short hero strip).
+          Horizon maps to the screen → sea fills most of the background.
         */}
-        <section className="relative overflow-x-clip overflow-y-visible">
+        <section className="relative overflow-x-clip">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(100%+48vh)]"
+            className="pointer-events-none sticky top-0 z-0 h-[100dvh] -mb-[100dvh]"
           >
             <VoxelArc
               className="absolute inset-0 h-full w-full min-h-0"
               color="#243038"
               accentColor="#7BA4B2"
               backgroundColor="#0E100D"
-              density={1.15}
-              voxelSize={0.68}
+              density={1.2}
+              voxelSize={0.7}
               roundness={0.08}
-              /* Crest near the floor — sky clear for title, sea under CTAs+demo */
-              horizon={0.64}
-              curvature={0.62}
-              waveHeight={1.1}
-              waveLength={0.9}
-              speed={0.32}
-              turbulence={0.38}
-              glow={1.05}
-              haze={0.35}
-              bloom={0.52}
+              /* Crest mid-upper: sea occupies ~70% of the viewport */
+              horizon={0.28}
+              curvature={0.68}
+              waveHeight={1.25}
+              waveLength={0.88}
+              speed={0.34}
+              turbulence={0.42}
+              glow={1.1}
+              haze={0.4}
+              bloom={0.55}
               brightness={0.95}
               interactive={false}
             />
-            {/* Deep sky wash so headline stays crisp */}
-            <div className="absolute inset-x-0 top-0 h-[48%] bg-gradient-to-b from-[var(--color-bg)] via-[var(--color-bg)]/90 to-transparent" />
-            {/* Thin floor fade — sea reaches the end */}
-            <div className="absolute inset-x-0 bottom-0 h-[12%] bg-gradient-to-b from-transparent to-[var(--color-bg)]" />
+            {/* Soft sky only — do NOT wipe the sea into a franja */}
+            <div className="absolute inset-x-0 top-0 h-[14%] bg-gradient-to-b from-[var(--color-bg)] to-transparent" />
           </div>
 
           <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-6 pt-10 text-center sm:px-5 sm:pb-8 sm:pt-12 md:px-10 md:pb-10 md:pt-16">
             <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
               {t("eyebrow")}
             </p>
-            <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:mt-6 md:mt-7">
+            <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] [text-shadow:0_2px_24px_rgba(14,16,13,0.85)] sm:mt-6 md:mt-7">
               {t("headline")}
             </h1>
-            <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] sm:mt-6 sm:text-[15px] md:mt-7 md:text-base md:leading-relaxed">
+            <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] [text-shadow:0_1px_16px_rgba(14,16,13,0.8)] sm:mt-6 sm:text-[15px] md:mt-7 md:text-base md:leading-relaxed">
               {t("subhead")}
             </p>
             <div className="animate-keel-rise-delay-2 relative z-20 mt-7 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-8 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3 md:mt-9">
@@ -96,11 +94,18 @@ export default async function HomePage({ params }: Props) {
               </Button>
             </div>
           </div>
-        </section>
 
-        {/* Demo — same card size; starts ~20% lower in the first viewport */}
-        <section className="relative z-10 bg-transparent pt-[12vh] sm:pt-[14vh] md:pt-[16vh]">
-          <LandingScrollDemo />
+          {/* Demo rides the same full-bleed aurora */}
+          <div className="relative z-10 pt-[10vh] sm:pt-[12vh] md:pt-[14vh]">
+            <LandingScrollDemo />
+          </div>
+
+          {/* Curtain out of the sea into solid content */}
+          <div
+            aria-hidden
+            className="pointer-events-none relative z-20 h-[40vh] bg-gradient-to-b from-transparent via-[var(--color-bg)]/75 to-[var(--color-bg)]"
+          />
+          <div aria-hidden className="relative z-20 h-12 bg-[var(--color-bg)]" />
         </section>
 
         <section className="relative z-10 -mt-px border-t border-[var(--color-line)] bg-[var(--color-bg)] px-5 py-16 sm:py-20 md:px-10 md:py-24">

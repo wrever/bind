@@ -92,12 +92,7 @@ export function LandingScrollDemo() {
       className="relative h-[240vh] bg-transparent sm:h-[280vh] md:h-[320vh]"
       aria-label="Bind demo"
     >
-      {/* Solid Bind bg resumes under the aurora wash */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-[18%] bottom-0 z-0 bg-[var(--color-bg)]"
-      />
-      {/* items-end + pad: card sits lower (~20%) while size stays the same */}
+      {/* Card lower in the viewport; aurora from the sticky stage shows through */}
       <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-end justify-center px-3 pb-5 pt-8 sm:px-5 sm:pb-6 sm:pt-10 md:px-8 md:pb-8">
         {/*
           Fit sticky band: width capped by 1120 / parent / height budget × aspect.
