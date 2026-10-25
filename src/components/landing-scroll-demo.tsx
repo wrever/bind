@@ -13,10 +13,8 @@ import {
 } from "@/remotion/bind-demo";
 
 /**
- * Scroll-scrubbed Remotion story on the aurora.
- *
- * Sticky top ≈ optical middle of the viewport (never glued under the navbar).
- * In document flow it still starts right under the hero CTAs.
+ * Scroll-scrubbed Remotion story — large stage so the beats are readable.
+ * Sticky top keeps the card optically centered while scrubbing.
  */
 export function LandingScrollDemo() {
   const t = useTranslations("QuickDemo");
@@ -85,14 +83,14 @@ export function LandingScrollDemo() {
     <section
       id="quick-demo"
       ref={trackRef}
-      className="relative h-[220vh] bg-transparent sm:h-[260vh] md:h-[300vh]"
+      className="relative h-[240vh] bg-transparent sm:h-[280vh] md:h-[320vh]"
       aria-label="Bind demo"
     >
       {/*
-        top = max(header, 50vh − half card) → pins centered while scrubbing.
-        Height follows the Player (no tall empty sticky band).
+        Large player: ~full content width, tall enough to read the beats.
+        sticky top ≈ 50vh − half card so it stays centered while scrubbing.
       */}
-      <div className="sticky top-[max(5rem,calc(50dvh-11rem))] z-10 mx-auto flex w-full max-w-[860px] justify-center px-3 sm:px-4 md:top-[max(5rem,calc(50dvh-12.5rem))] md:px-6">
+      <div className="sticky top-[max(4.25rem,calc(50dvh-18rem))] z-10 mx-auto flex w-full max-w-6xl justify-center px-3 sm:px-5 md:top-[max(4.25rem,calc(50dvh-20rem))] md:px-8">
         <Player
           ref={playerRef}
           component={BindDemo}
@@ -101,10 +99,11 @@ export function LandingScrollDemo() {
           compositionWidth={BIND_DEMO_WIDTH}
           compositionHeight={BIND_DEMO_HEIGHT}
           fps={BIND_DEMO_FPS}
-          className="!h-auto max-h-[min(48dvh,420px)] w-full overflow-hidden"
+          className="!h-auto w-full overflow-hidden"
           style={{
             width: "100%",
-            maxWidth: 820,
+            maxWidth: 1120,
+            maxHeight: "min(78dvh, 680px)",
             aspectRatio: `${BIND_DEMO_WIDTH} / ${BIND_DEMO_HEIGHT}`,
             background: "transparent",
           }}

@@ -64,18 +64,18 @@ export default async function HomePage({ params }: Props) {
             <div className="absolute inset-x-0 bottom-0 h-[32%] bg-gradient-to-b from-transparent via-[var(--color-bg)]/40 to-[var(--color-bg)]" />
           </div>
 
-          {/* Hero above the sea (z > aurora). CTAs sit where the crest brushes. */}
-          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-5 pt-8 text-center sm:px-5 sm:pb-4 sm:pt-10 md:px-10 md:pb-5 md:pt-14">
-            <p className="animate-keel-rise text-xs text-[var(--color-muted)] sm:text-sm">
+          {/* Hero above the sea — airy type rhythm so the title can breathe */}
+          <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center px-4 pb-6 pt-10 text-center sm:px-5 sm:pb-6 sm:pt-12 md:px-10 md:pb-8 md:pt-16">
+            <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
               {t("eyebrow")}
             </p>
-            <h1 className="animate-keel-rise-delay mt-2 font-[family-name:var(--font-display)] text-[clamp(1.65rem,6.5vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-[var(--color-text)] sm:mt-3">
+            <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:mt-6 md:mt-7">
               {t("headline")}
             </h1>
-            <p className="animate-keel-rise-delay-2 mt-2 max-w-xl text-[13px] leading-relaxed text-[var(--color-muted)] sm:mt-3 sm:text-sm md:text-[15px]">
+            <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] sm:mt-6 sm:text-[15px] md:mt-7 md:text-base md:leading-relaxed">
               {t("subhead")}
             </p>
-            <div className="animate-keel-rise-delay-2 relative z-20 mt-4 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-6 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
+            <div className="animate-keel-rise-delay-2 relative z-20 mt-7 flex w-full max-w-md flex-col items-stretch gap-2.5 sm:mt-8 sm:max-w-none sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-3 md:mt-9">
               <Button
                 asChild
                 size="lg"
@@ -101,8 +101,8 @@ export default async function HomePage({ params }: Props) {
             </div>
           </div>
 
-          {/* Demo under CTAs — slight pull so card peeks on first paint */}
-          <div className="relative z-10 -mt-1 sm:mt-0">
+          {/* Demo under CTAs — large stage fills the lower half */}
+          <div className="relative z-10 mt-1 sm:mt-2">
             <LandingScrollDemo />
           </div>
 

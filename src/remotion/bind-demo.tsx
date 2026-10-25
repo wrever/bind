@@ -12,7 +12,8 @@ import {
 export const BIND_DEMO_FPS = 30;
 export const BIND_DEMO_DURATION = 300;
 export const BIND_DEMO_WIDTH = 1280;
-export const BIND_DEMO_HEIGHT = 720;
+/** Taller stage so the landing Player reads clearly (not a tiny 16:9 stamp). */
+export const BIND_DEMO_HEIGHT = 900;
 
 export type BindDemoLabels = {
   depositKicker: string;
@@ -85,25 +86,29 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
     <AbsoluteFill style={{ backgroundColor: "transparent" }}>
       <AbsoluteFill
         style={{
-          justifyContent: "flex-start",
+          justifyContent: "center",
           alignItems: "center",
-          padding: "8px 28px 28px",
+          padding: "20px 36px 28px",
         }}
       >
         <div
           style={{
             position: "relative",
             width: "100%",
-            maxWidth: 840,
-            minHeight: 420,
+            maxWidth: 1180,
+            minHeight: 780,
+            height: "100%",
+            maxHeight: 860,
             border: `1px solid ${LINE}`,
             background: SURFACE,
             backdropFilter: "blur(14px)",
             WebkitBackdropFilter: "blur(14px)",
-            padding: "22px 32px 28px",
+            padding: "32px 44px 36px",
             boxShadow:
               "0 28px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)",
             overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {/* Step dots */}
@@ -149,7 +154,7 @@ export function BindDemo({ labels }: { labels: BindDemoLabels }) {
             />
           </div>
 
-          <div style={{ position: "relative", minHeight: 320 }}>
+          <div style={{ position: "relative", flex: 1, minHeight: 440 }}>
             {/* —— DEPOSIT —— */}
             <Scene opacity={deposit}>
               <Kicker>{labels.depositKicker}</Kicker>
@@ -393,7 +398,7 @@ function Kicker({ children }: { children: React.ReactNode }) {
     <p
       style={{
         margin: 0,
-        fontSize: 12,
+        fontSize: 14,
         letterSpacing: "0.12em",
         textTransform: "uppercase",
         color: STEEL,
@@ -409,12 +414,12 @@ function Title({ children }: { children: React.ReactNode }) {
   return (
     <h3
       style={{
-        margin: "12px 0 0",
-        fontSize: 30,
+        margin: "16px 0 0",
+        fontSize: 36,
         fontWeight: 800,
         letterSpacing: "-0.03em",
         color: TEXT,
-        lineHeight: 1.15,
+        lineHeight: 1.18,
       }}
     >
       {children}
@@ -426,11 +431,11 @@ function Body({ children }: { children: React.ReactNode }) {
   return (
     <p
       style={{
-        margin: "12px 0 0",
-        fontSize: 15,
-        lineHeight: 1.5,
+        margin: "16px 0 0",
+        fontSize: 17,
+        lineHeight: 1.55,
         color: MUTED,
-        maxWidth: 560,
+        maxWidth: 640,
       }}
     >
       {children}
@@ -446,20 +451,20 @@ function Stats({
   return (
     <div
       style={{
-        marginTop: 24,
+        marginTop: 28,
         display: "grid",
         gridTemplateColumns: "1fr 1fr 1fr",
-        gap: 10,
+        gap: 12,
         border: `1px solid ${LINE}`,
         background: "rgba(0,0,0,0.28)",
-        padding: 14,
+        padding: 18,
       }}
     >
       {items.map((s) => (
         <div key={s.k}>
           <div
             style={{
-              fontSize: 10,
+              fontSize: 12,
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               color: MUTED,
@@ -469,8 +474,8 @@ function Stats({
           </div>
           <div
             style={{
-              marginTop: 5,
-              fontSize: 17,
+              marginTop: 6,
+              fontSize: 20,
               fontWeight: 700,
               fontVariantNumeric: "tabular-nums",
               color: s.accent ? ACCENT : TEXT,
@@ -499,16 +504,16 @@ function NodeBox({
   return (
     <div
       style={{
-        flex: "0 0 200px",
+        flex: "0 0 240px",
         border: `1px solid ${active ? c : LINE}`,
         background: active ? `${c}18` : "rgba(0,0,0,0.25)",
-        padding: "16px 18px",
+        padding: "20px 22px",
         textAlign: "center",
       }}
     >
       <div
         style={{
-          fontSize: 11,
+          fontSize: 13,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
           color: MUTED,
@@ -518,8 +523,8 @@ function NodeBox({
       </div>
       <div
         style={{
-          marginTop: 8,
-          fontSize: 20,
+          marginTop: 10,
+          fontSize: 24,
           fontWeight: 800,
           color: active ? c : TEXT,
         }}
