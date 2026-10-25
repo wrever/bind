@@ -768,7 +768,7 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "callout",
           tone: "warn",
-          text: "Freighter debe estar en Testnet y tener TUSDC. Friendbot solo fondea XLM, usa Get TUSDC en /live.",
+          text: "Freighter debe estar en Testnet y tener TUSDC. Friendbot solo fondea XLM. Usa Get TUSDC en /live.",
         },
       ],
       [
@@ -800,7 +800,7 @@ curl -s -X POST $HOST/api/v1/sessions/$ID/actions \\
         {
           type: "callout",
           tone: "warn",
-          text: "Freighter deve estar na Testnet e ter TUSDC. Friendbot só financia XLM, use Obter TUSDC em /live.",
+          text: "Freighter deve estar na Testnet e ter TUSDC. Friendbot só financia XLM. Use Obter TUSDC em /live.",
         },
       ],
     ),
