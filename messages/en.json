@@ -36,11 +36,12 @@
     "liveRail": "Live cover rail",
     "demo": "Demo",
     "documentation": "Documentation",
+    "apiReference": "API reference",
     "claimsPolicy": "Claims policy",
     "termsOfService": "Terms of service",
     "whatBindCovers": "What Bind covers",
     "forProtocols": "For protocols",
-    "threatModel": "How Bind works",
+    "threatModel": "Claims policy",
     "rights": "© {year} Bind. All rights reserved.",
     "legalAria": "Legal",
     "terms": "Terms",
@@ -355,5 +356,16 @@
     "body": "Demo simulates policy. Live signs real testnet vault txs. Reserves shows both.",
     "live": "Live",
     "por": "Reserves"
+  },
+  "DocsSite": {
+    "meta": "Documentation",
+    "title": "Bind docs",
+    "body": "Product docs with search, quick nav, and LLM-ready summaries.",
+    "searchPlaceholder": "Search docs…",
+    "searchEmpty": "No matches",
+    "navAria": "Docs sections",
+    "onThisPage": "On this page",
+    "llmLabel": "LLM summary",
+    "notFound": "Page not found"
   }
 }

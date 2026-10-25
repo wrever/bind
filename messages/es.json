@@ -36,6 +36,7 @@
     "liveRail": "Rail en vivo",
     "demo": "Demo",
     "documentation": "Documentación",
+    "apiReference": "Referencia API",
     "claimsPolicy": "Política de claims",
     "termsOfService": "Términos de servicio",
     "whatBindCovers": "Qué cubre Bind",
@@ -355,5 +356,16 @@
     "body": "Demo simula la póliza. Live firma txs reales del vault en testnet. Reservas muestra ambos.",
     "live": "Live",
     "por": "Reservas"
+  },
+  "DocsSite": {
+    "meta": "Documentación",
+    "title": "Docs de Bind",
+    "body": "Documentación de producto con búsqueda, navegación rápida y resúmenes para LLMs.",
+    "searchPlaceholder": "Buscar en docs…",
+    "searchEmpty": "Sin resultados",
+    "navAria": "Secciones de docs",
+    "onThisPage": "En esta página",
+    "llmLabel": "Resumen para LLMs",
+    "notFound": "Página no encontrada"
   }
 }

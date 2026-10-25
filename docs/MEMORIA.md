@@ -90,6 +90,8 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | `public/brand/` + `BrandMark` | **Sí** |
 | Landing sin códigos `[ SI-001 ]` / grid HUD | **Sí** (pass institucional) |
 | Nav corta (Integrate · Cover · Docs · Reserves) | **Sí** |
+| DocsSite `/docs/*` (search + sidebar + TOC + LLM + `/llms.txt`) EN/ES/PT | **Sí** |
+| `localePrefix: always` (`/en|es|pt/*`) — evita 307 loop Next 16 `as-needed` | **Sí** |
 | `SiteFooter` multi-columna en páginas | **Sí** |
 | Botones sentence-case (no ALL CAPS mono) | **Sí** |
 | Freighter connect identity | **Sí** |
@@ -209,3 +211,4 @@ BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
 | 2026-10-25q | Dual-track completo: `/live` Freighter→vault, chain por/account/tx API, COVER evidence UI, PageShell internals. |
 | 2026-10-25q | i18n `next-intl`: locales en/es/pt, `messages/*`, `[locale]` routing, language switcher en header. |
 | 2026-10-25r | Hero voxel steel/teal; demo = Remotion Player scrubbed por scroll de página (`LandingScrollDemo`). |
+| 2026-10-25s | DocsSite product (sidebar/search/TOC/LLM/`llms.txt`); `localePrefix:always` fix EN 307; smoke RPC `por`. |

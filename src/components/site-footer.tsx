@@ -43,7 +43,8 @@ export async function SiteFooter() {
   ];
 
   const resources = [
-    { href: "/docs", label: t("documentation") },
+    { href: "/docs/introduction", label: t("documentation") },
+    { href: "/docs/api", label: t("apiReference") },
     { href: "/policy", label: t("claimsPolicy") },
     { href: "/terms", label: t("termsOfService") },
   ];
@@ -51,7 +52,7 @@ export async function SiteFooter() {
   const protocol = [
     { href: "/cover", label: t("whatBindCovers") },
     { href: "/integrate", label: t("forProtocols") },
-    { href: "/docs", label: t("threatModel") },
+    { href: "/docs/claims", label: t("claimsPolicy") },
   ];
 
   return (

@@ -10,7 +10,7 @@ export async function SiteHeader() {
   const links = [
     { href: "/integrate" as const, label: t("integrate") },
     { href: "/cover" as const, label: t("cover") },
-    { href: "/docs" as const, label: t("docs") },
+    { href: "/docs/introduction" as const, label: t("docs") },
     { href: "/por" as const, label: t("reserves"), live: true },
   ];
 
