@@ -10,77 +10,68 @@ const FLOW = [
   {
     id: "01",
     icon: ShieldCheck,
-    title: "Protocol buys Bind",
-    body: "Money markets keep lending. They contract Bind — premium in bps — and show Protected Deposit.",
+    title: "Your protocol contracts Bind",
+    body: "Keep your money market. Buy cover in basis points and show Protected Deposit to users.",
   },
   {
     id: "02",
     icon: Timer,
-    title: "Retention window",
-    body: "Without KYC, covered funds hold ~12h. Unwrap/swap blocked so attacks cannot cash out instantly.",
+    title: "Retention before free exit",
+    body: "Without KYC, covered funds hold about 12 hours. Unwrap and swap stay blocked while unsettled.",
   },
   {
     id: "03",
     icon: Lock,
-    title: "Indemnify in-window",
-    body: "Breach while funds stay on the Bind rail → claim pays. Off-rail drains need Tier 3 capital.",
+    title: "Claim while funds are on-rail",
+    body: "In-window breach on the Bind rail can be indemnified. Off-rail drains need Tier 3 capital.",
   },
 ] as const;
 
 const LANES = [
   {
-    id: "LN-01",
     name: "Standard",
-    badge: "NO KYC · 12H",
-    control: "Time + exit block",
-    window: "12h hold",
+    badge: "No KYC · 12h",
+    control: "Time hold + exit block",
+    window: "12 hours",
     note: "Default cover for depositors without identity.",
   },
   {
-    id: "LN-02",
     name: "Fast Lane",
-    badge: "KYC · 1H",
-    control: "Identity + recovery",
-    window: "~1h hold",
-    note: "Partner attestation unlocks shorter retention.",
+    badge: "KYC · ~1h",
+    control: "Partner attestation",
+    window: "~1 hour",
+    note: "Shorter retention when the partner attests KYC.",
   },
 ] as const;
 
 export default function HomePage() {
   return (
     <div className="keel-atmosphere min-h-screen">
-      <div className="keel-grid absolute inset-0 pointer-events-none" />
       <SiteHeader />
 
       <main className="relative">
-        {/* Hero — brand + one line + CTAs + product rail */}
-        <section className="relative overflow-hidden px-5 pb-16 pt-10 md:px-10 md:pb-20 md:pt-14">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[var(--color-line)]"
-          />
-          <div
-            aria-hidden
-            className="keel-stripe absolute bottom-0 left-0 right-0 h-10 opacity-90"
-          />
-
-          <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+        <section className="relative px-5 pb-20 pt-14 md:px-10 md:pb-28 md:pt-20">
+          <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-12 lg:items-center lg:gap-12">
             <div className="lg:col-span-6">
-              <p className="animate-keel-rise keel-meta">
-                [ SI-001 ] · DeFi protocol insurance · Stellar
+              <p className="animate-keel-rise text-sm font-medium tracking-[0.04em] text-[var(--color-muted)]">
+                DeFi protocol insurance on Stellar
               </p>
-              <h1 className="animate-keel-rise-delay mt-5">
+              <h1 className="animate-keel-rise-delay mt-6">
+                <span className="sr-only">Bind</span>
                 <BrandMark variant="hero" priority />
               </h1>
-              <div className="keel-rule mt-6 h-1 w-24 bg-[var(--color-accent)]" />
-              <p className="animate-keel-rise-delay-2 mt-6 max-w-md text-lg text-[var(--color-muted)] md:text-xl">
-                Security insurance protocols contract — retention before free
-                exit, claims under the hood.
+              <p className="animate-keel-rise-delay-2 mt-8 max-w-lg text-xl leading-relaxed text-[var(--color-text)] md:text-2xl md:leading-snug">
+                Security cover protocols contract — so depositors get a
+                retention window before free exit.
               </p>
-              <div className="animate-keel-rise-delay-2 mt-8 flex flex-wrap gap-3">
+              <p className="animate-keel-rise-delay-2 mt-4 max-w-md text-[var(--color-muted)]">
+                Claims stay under the hood. You keep the money market; Bind is
+                the insurance counterparty.
+              </p>
+              <div className="animate-keel-rise-delay-2 mt-10 flex flex-wrap gap-3">
                 <Button asChild size="lg">
-                  <Link href="/demo">
-                    Run the console
+                  <Link href="/integrate">
+                    Talk to Bind
                     <ArrowRight
                       className="size-4"
                       strokeWidth={1.5}
@@ -89,7 +80,7 @@ export default function HomePage() {
                   </Link>
                 </Button>
                 <Button asChild size="lg" variant="outline">
-                  <Link href="/integrate">Integrate</Link>
+                  <Link href="/demo">See the demo</Link>
                 </Button>
               </div>
             </div>
@@ -100,18 +91,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Flow — numbered rail, not card grid */}
-        <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10">
+        <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <p className="keel-meta">[ FL-001 ] · Cover flow</p>
-                <h2 className="mt-3 max-w-lg font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
-                  How cover binds
-                </h2>
-              </div>
-              <p className="max-w-sm text-sm text-[var(--color-muted)]">
-                One job per step. Clawback is claims ops — not the storefront.
+            <div className="max-w-2xl">
+              <h2 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
+                How cover works
+              </h2>
+              <p className="mt-4 text-[var(--color-muted)]">
+                Three steps. Clawback is claims infrastructure — not the product
+                you sell to users.
               </p>
             </div>
 
@@ -121,11 +109,11 @@ export default function HomePage() {
                 return (
                   <li
                     key={step.id}
-                    className={`relative p-6 ${i < FLOW.length - 1 ? "border-b border-[var(--color-line)] md:border-b-0 md:border-r" : ""}`}
+                    className={`relative p-7 md:p-8 ${i < FLOW.length - 1 ? "border-b border-[var(--color-line)] md:border-b-0 md:border-r" : ""}`}
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <span className="keel-meta tabular-nums">
-                        {step.id} / module
+                      <span className="font-[family-name:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--color-muted)]">
+                        {step.id}
                       </span>
                       <Icon
                         className="size-5 text-[var(--color-accent)]"
@@ -133,10 +121,12 @@ export default function HomePage() {
                         aria-hidden
                       />
                     </div>
-                    <h3 className="mt-6 font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight text-[var(--color-text)]">
+                    <h3 className="mt-8 font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight text-[var(--color-text)] md:text-2xl">
                       {step.title}
                     </h3>
-                    <p className="mt-3 text-[var(--color-muted)]">{step.body}</p>
+                    <p className="mt-3 text-[15px] leading-relaxed text-[var(--color-muted)]">
+                      {step.body}
+                    </p>
                   </li>
                 );
               })}
@@ -144,15 +134,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Lanes — retention vs KYC */}
-        <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10">
+        <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
-            <p className="keel-meta">[ LN-000 ] · Retention lanes</p>
-            <h2 className="mt-3 max-w-xl font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
-              Pay with time, or KYC
+            <h2 className="max-w-xl font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
+              Pay with time, or with KYC
             </h2>
             <p className="mt-4 max-w-xl text-[var(--color-muted)]">
-              Retention is deferred finality — documented as Protected hold, not
+              Retention is a documented protected hold — deferred finality, not
               a mystery lock.
             </p>
 
@@ -160,37 +148,44 @@ export default function HomePage() {
               <table className="w-full min-w-[560px] border-collapse text-left">
                 <thead>
                   <tr className="border-b border-[var(--color-line)] bg-[var(--color-surface)]">
-                    <th className="keel-meta px-4 py-3 font-medium">Lane</th>
-                    <th className="keel-meta px-4 py-3 font-medium">Badge</th>
-                    <th className="keel-meta px-4 py-3 font-medium">Control</th>
-                    <th className="keel-meta px-4 py-3 font-medium">Window</th>
-                    <th className="keel-meta px-4 py-3 font-medium">Note</th>
+                    <th className="px-5 py-3.5 text-xs font-medium uppercase tracking-[0.06em] text-[var(--color-muted)]">
+                      Lane
+                    </th>
+                    <th className="px-5 py-3.5 text-xs font-medium uppercase tracking-[0.06em] text-[var(--color-muted)]">
+                      Profile
+                    </th>
+                    <th className="px-5 py-3.5 text-xs font-medium uppercase tracking-[0.06em] text-[var(--color-muted)]">
+                      Control
+                    </th>
+                    <th className="px-5 py-3.5 text-xs font-medium uppercase tracking-[0.06em] text-[var(--color-muted)]">
+                      Window
+                    </th>
+                    <th className="px-5 py-3.5 text-xs font-medium uppercase tracking-[0.06em] text-[var(--color-muted)]">
+                      Note
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {LANES.map((lane) => (
                     <tr
-                      key={lane.id}
+                      key={lane.name}
                       className="border-b border-[var(--color-line)] last:border-b-0"
                     >
-                      <td className="px-4 py-4">
-                        <span className="keel-meta block">{lane.id}</span>
-                        <span className="mt-1 block font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
-                          {lane.name}
-                        </span>
+                      <td className="px-5 py-5 font-[family-name:var(--font-display)] text-lg font-extrabold text-[var(--color-text)]">
+                        {lane.name}
                       </td>
-                      <td className="px-4 py-4">
-                        <span className="inline-flex border border-[var(--color-line)] bg-[var(--color-bg)] px-2 py-1 font-[family-name:var(--font-mono)] text-[11px] font-medium tracking-[0.08em] text-[var(--color-accent2)]">
+                      <td className="px-5 py-5">
+                        <span className="inline-flex border border-[var(--color-line)] bg-[var(--color-bg)] px-2.5 py-1 text-xs font-medium text-[var(--color-text)]">
                           {lane.badge}
                         </span>
                       </td>
-                      <td className="px-4 py-4 text-sm text-[var(--color-muted)]">
+                      <td className="px-5 py-5 text-sm text-[var(--color-muted)]">
                         {lane.control}
                       </td>
-                      <td className="px-4 py-4 font-[family-name:var(--font-mono)] text-sm tabular-nums text-[var(--color-text)]">
+                      <td className="px-5 py-5 text-sm tabular-nums text-[var(--color-text)]">
                         {lane.window}
                       </td>
-                      <td className="px-4 py-4 text-sm text-[var(--color-muted)]">
+                      <td className="px-5 py-5 text-sm text-[var(--color-muted)]">
                         {lane.note}
                       </td>
                     </tr>
@@ -201,17 +196,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Partner CTA */}
-        <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10">
-          <div className="mx-auto flex max-w-6xl flex-col gap-8 border border-[var(--color-line)] bg-[var(--color-surface)] p-6 md:flex-row md:items-end md:justify-between md:p-10">
+        <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8 bg-[var(--color-surface)] px-6 py-10 md:flex-row md:items-end md:justify-between md:px-12 md:py-14">
             <div className="max-w-2xl">
-              <p className="keel-meta">[ PT-001 ] · Partners</p>
-              <h2 className="mt-3 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
-                Insurance your protocol contracts
+              <h2 className="font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
+                Insurance your protocol can contract
               </h2>
               <p className="mt-4 text-[var(--color-muted)]">
-                You keep the money market. Bind is the cover counterparty:
-                policy, claims desk, PoR, Safe Deposit.
+                Policy, claims desk, proof of reserves, and Safe Deposit — under
+                your brand, on your market.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -226,12 +219,11 @@ export default function HomePage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/terms">Terms</Link>
+                <Link href="/docs">Read the docs</Link>
               </Button>
             </div>
           </div>
         </section>
-
       </main>
 
       <SiteFooter />
