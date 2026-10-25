@@ -18,7 +18,7 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | Motor TS settled/unsettled | **Lista** | `src/lib/keel/engine.ts` · `npm run test:engine` ✅ |
 | Retention Standard / Fast Lane | **Lista** | `retention.ts` + demo lanes + `set_retention` |
 | API partner `/api/v1/*` | **Lista (simulador)** | No es custodia; ver hardening abajo |
-| UI storefront institucional | **Lista (pass 5)** | Hero + VoxelArc Canvas2D (sin licencia React Bits) + quick demo |
+| UI storefront institucional | **Lista (pass 6)** | Hero + VoxelArc + quick demo + i18n en/es/pt (`next-intl`) |
 | Brand assets Bind | **Integrados** | `src/img/` + `public/brand/` + `BrandMark` |
 | Freighter | **Identity only** | `FreighterConnect` en `/demo` + `/integrate` |
 | SDK `@keel/sdk` / BindClient | **Lista (surface)** | Safe Mode + HTTP thin; sin Soroban client |
@@ -197,3 +197,5 @@ BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
 | 2026-10-25n | Quit Protected Deposit card; hero centrado; shadcn MCP Cursor; fondo voxel-arc Bind (`three`/`r3f`). |
 | 2026-10-25o | Landing quick demo (`LandingQuickDemo`): deposit → hold → settle/claim en 4 taps bajo el hero. |
 | 2026-10-25p | Voxel Arc a medida (`voxel-arc.tsx` Canvas 2D): paleta Bind, sin licencia React Bits / sin WebGL. |
+| 2026-10-25q | i18n `next-intl`: locales en/es/pt, `messages/*`, `[locale]` routing, language switcher en header. |
+| 2026-10-25r | Hero voxel steel/teal; demo = Remotion Player scrubbed por scroll de página (`LandingScrollDemo`). |

@@ -6,6 +6,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
+import { cn } from "@/lib/utils";
 
 type VoxelArcProps = {
   children?: ReactNode;
@@ -87,6 +88,8 @@ export function VoxelArc({
       "(prefers-reduced-motion: reduce)",
     ).matches;
     const still = paused || reduceMotion;
+    // Skip intro fade — sea must be visible on first paint
+    introRef.current = 1;
 
     let raf = 0;
     let w = 0;
@@ -142,7 +145,7 @@ export function VoxelArc({
     function draw(now: number) {
       const t = now * 0.001;
       if (intro && introRef.current < 1) {
-        introRef.current = Math.min(1, introRef.current + 0.012);
+        introRef.current = Math.min(1, introRef.current + 0.028);
       }
       const introK = easeOut(introRef.current);
 
@@ -191,13 +194,14 @@ export function VoxelArc({
           const depth = z;
           const scale = focal / (depth * 55 + 40);
           const sx = w * 0.5 + x * scale * 95;
+          // Vertical scale kept tighter so the near field stays on-canvas
           const sy =
             hz +
-            (camY - elev * 0.55 - bend) * scale * 95 +
-            (1 - introK) * h * 0.18;
+            (camY - elev * 0.55 - bend) * scale * 48 +
+            (1 - introK) * h * 0.1;
           const size = Math.max(
-            1.2,
-            scale * 38 * voxelSize * (0.85 + elev * 0.08),
+            1.4,
+            scale * 42 * voxelSize * (0.85 + elev * 0.08),
           );
           const lit = clamp01(
             0.2 +
@@ -258,13 +262,19 @@ export function VoxelArc({
         ctx!.fillRect(0, hz - h * 0.2, w, h * 0.45);
       }
 
-      // top vignette so hero copy stays crisp
-      const vig = ctx!.createLinearGradient(0, 0, 0, h * 0.55);
-      vig.addColorStop(0, rgb(bg, 0.55));
-      vig.addColorStop(0.55, rgb(bg, 0.12));
+      // soft top vignette only — don't swallow the sea under the hero
+      const vig = ctx!.createLinearGradient(0, 0, 0, h * 0.28);
+      vig.addColorStop(0, rgb(bg, 0.28));
       vig.addColorStop(1, "rgba(0,0,0,0)");
       ctx!.fillStyle = vig;
-      ctx!.fillRect(0, 0, w, h * 0.55);
+      ctx!.fillRect(0, 0, w, h * 0.28);
+
+      // thin bottom fade when this canvas is the sticky viewport layer
+      const bot = ctx!.createLinearGradient(0, h * 0.92, 0, h);
+      bot.addColorStop(0, "rgba(0,0,0,0)");
+      bot.addColorStop(1, rgb(bg, 0.85));
+      ctx!.fillStyle = bot;
+      ctx!.fillRect(0, h * 0.92, w, h * 0.08);
 
       // prune old ripples
       const pr = ripplesRef.current;
@@ -366,7 +376,10 @@ export function VoxelArc({
   return (
     <div
       ref={rootRef}
-      className={`relative isolate min-h-[320px] w-full overflow-hidden ${className}`}
+      className={cn(
+        "relative isolate min-h-[320px] w-full overflow-hidden",
+        className,
+      )}
       style={{ backgroundColor, ...style }}
     >
       <canvas

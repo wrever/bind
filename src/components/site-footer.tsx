@@ -1,24 +1,6 @@
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { BrandMark } from "@/components/brand-mark";
-
-const PRODUCT = [
-  { href: "/integrate", label: "Integrate" },
-  { href: "/cover", label: "Cover schedule" },
-  { href: "/por", label: "Proof of reserves" },
-  { href: "/demo", label: "Demo" },
-] as const;
-
-const RESOURCES = [
-  { href: "/docs", label: "Documentation" },
-  { href: "/policy", label: "Claims policy" },
-  { href: "/terms", label: "Terms of service" },
-] as const;
-
-const PROTOCOL = [
-  { href: "/cover", label: "What Bind covers" },
-  { href: "/integrate", label: "For protocols" },
-  { href: "/docs", label: "Threat model & vision" },
-] as const;
+import { Link } from "@/i18n/navigation";
 
 function FooterColumn({
   title,
@@ -48,8 +30,28 @@ function FooterColumn({
   );
 }
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const t = await getTranslations("Footer");
   const year = new Date().getFullYear();
+
+  const product = [
+    { href: "/integrate", label: t("integrate") },
+    { href: "/cover", label: t("coverSchedule") },
+    { href: "/por", label: t("proofOfReserves") },
+    { href: "/demo", label: t("demo") },
+  ];
+
+  const resources = [
+    { href: "/docs", label: t("documentation") },
+    { href: "/policy", label: t("claimsPolicy") },
+    { href: "/terms", label: t("termsOfService") },
+  ];
+
+  const protocol = [
+    { href: "/cover", label: t("whatBindCovers") },
+    { href: "/integrate", label: t("forProtocols") },
+    { href: "/docs", label: t("threatModel") },
+  ];
 
   return (
     <footer className="border-t border-[var(--color-line)] bg-[var(--color-bg)]">
@@ -60,8 +62,7 @@ export function SiteFooter() {
               <BrandMark variant="footer" />
             </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-[var(--color-muted)]">
-              DeFi security insurance on Stellar. Protocols contract Bind;
-              depositors get a protected retention window and in-window claims.
+              {t("blurb")}
             </p>
             <Link
               href="/por"
@@ -71,14 +72,14 @@ export function SiteFooter() {
                 className="size-1.5 rounded-full bg-[var(--color-accent2)]"
                 aria-hidden
               />
-              Proof of reserves is public
+              {t("porPublic")}
             </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:col-span-7 md:gap-8 lg:col-span-8 lg:pl-8">
-            <FooterColumn title="Product" links={PRODUCT} />
-            <FooterColumn title="Resources" links={RESOURCES} />
-            <FooterColumn title="Protocol" links={PROTOCOL} />
+            <FooterColumn title={t("product")} links={product} />
+            <FooterColumn title={t("resources")} links={resources} />
+            <FooterColumn title={t("protocol")} links={protocol} />
           </div>
         </div>
       </div>
@@ -86,29 +87,29 @@ export function SiteFooter() {
       <div className="border-t border-[var(--color-line)]">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-10">
           <p className="text-sm text-[var(--color-muted)]">
-            © {year} Bind. All rights reserved.
+            {t("rights", { year })}
           </p>
           <nav
-            aria-label="Legal"
+            aria-label={t("legalAria")}
             className="flex flex-wrap items-center gap-x-5 gap-y-2"
           >
             <Link
               href="/terms"
               className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
-              Terms
+              {t("terms")}
             </Link>
             <Link
               href="/policy"
               className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
-              Claims
+              {t("claims")}
             </Link>
             <Link
               href="/docs"
               className="text-sm text-[var(--color-muted)] transition-colors hover:text-[var(--color-text)]"
             >
-              Docs
+              {t("docs")}
             </Link>
           </nav>
         </div>

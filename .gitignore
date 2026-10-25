@@ -51,3 +51,4 @@ contracts/**/target/
 # Rust
 contracts/**/target/
 /target/
+.cursor/

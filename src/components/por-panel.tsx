@@ -6,8 +6,8 @@ import type { KeelState } from "@/lib/keel/types";
 import { formatUsd } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/navigation";
 
 const STORAGE_KEY = "keel-demo-state-v1";
 
