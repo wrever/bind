@@ -30,6 +30,21 @@
     "creditsView": true,
     "lotsOfView": true
   },
+  "lastE2e": {
+    "ranAt": "2026-10-26T03:00:00Z",
+    "fullyBacked": true,
+    "path": "mint→deposit→transfer→dispute→resolve→transfer→settle→unwrap",
+    "txs": [
+      "https://stellar.expert/explorer/testnet/tx/3a41f41298e7ba86c4fdd2bb1a98284417e57b5241571d535b6f775440b03ecc",
+      "https://stellar.expert/explorer/testnet/tx/5bc631a213acc70a25fcd89649932708ea1d36582da3f6aa157d0d0c9634c71a",
+      "https://stellar.expert/explorer/testnet/tx/c5ed384611af02f4d3043fcf3a899730d0b56c175f706fbab61612e65d3dc254",
+      "https://stellar.expert/explorer/testnet/tx/ef8bad73d0bf04c5286a278b57c0c4edaede4cced407292a4c0b14e52748765e",
+      "https://stellar.expert/explorer/testnet/tx/5a4042262c99e30fb678dfa7077091ffc9a520de9281b66dbe4241169786fbca",
+      "https://stellar.expert/explorer/testnet/tx/e794f11794ed895f5e77ba9d22bed42cc04ef838644ba746a4b68bbc54e253ce",
+      "https://stellar.expert/explorer/testnet/tx/092d2d3926b78613a511756a9b6d98e2e34638194e1665a45517ab67db23e79a",
+      "https://stellar.expert/explorer/testnet/tx/62e6b8a97a45d01d0171585ee43ea901fec1f3e6e777125da66e01b9a7236675"
+    ]
+  },
   "notes": "TUSDC stand-in for Circle USDC. Sync secrets: bash scripts/sync-testnet-env.sh",
   "cover": {
     "assetCode": "COVER",

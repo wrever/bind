@@ -21,7 +21,7 @@
 | `testnet:e2e` | **Verde** | mint→dispute→resolve→settle→unwrap |
 | Repo público | **Hecho** | https://github.com/wrever/bind |
 | Deploy prod | **Hecho** | https://bind-beta.vercel.app · vault `CDGNKK…` · faucet OK |
-| Video / deck | **Pendiente** | Loom 2–3 min (script en HACKATHON) |
+| Tx proof in README | **Hecho** | e2e 2026-10-26 · links en README + EVIDENCE |
 
 ---
 
@@ -32,7 +32,7 @@
 | Repo privado | Crítica | Detectado `private: true` | `gh repo edit --visibility public` + accept |
 | Prior work mal declarado | Crítica | **Mitigado en docs** | PRIOR_WORK + EVIDENCE + `retiredPrior` JSON; vault live = 25 Oct |
 | Sin atribución IA | Alta | **Mitigado** | [`AI_ATTRIBUTION.md`](./AI_ATTRIBUTION.md) + README/HACKATHON |
-| Sin video ni deck | Alta | **Abierto** | Grabar Loom 2–3 min: landing → demo → live faucet → por |
+| Sin txs documentadas | Alta | **Mitigado** | README + EVIDENCE con vault + 8 txs e2e explorables |
 | Deploy ≠ repo | Alta | **Mitigado** | `bind-beta` en commit reciente + env BIND_* + faucet prod OK |
 | Vaults inconsistentes | Media | **Mitigado** | prod `/chain/por` → `CDGNKK…` fullyBacked |
 | Jurado no completa `/live` | Media | **Mitigado en prod** | faucet+trustline + `NEXT_PUBLIC_BIND_OPS_TOKEN` en Vercel |
@@ -73,8 +73,8 @@ npm run dev                # :3847 → /en/live
 
 ## Próximos movimientos (orden submit)
 
-1. **P0:** video Loom (script HACKATHON) + link en form — **único bloqueo submit fuerte**.
-2. **P0 seguridad:** rotar token Vercel (quedó expuesto en chat) y rotar `BIND_OPS_TOKEN` si el form es público.
+1. **P0 seguridad:** rotar token Vercel (quedó expuesto en chat) y rotar `BIND_OPS_TOKEN` si el form es público.
+2. **P1:** re-correr `npm run testnet:e2e` antes del submit y pegar hashes frescos en README si hace falta.
 3. **P1:** prefund wallet Freighter del presentador; multisig arbiter.
 4. **P2:** Circle USDC; partner API keys; unificar sessions≠vault (dual-track OK).
 
@@ -90,3 +90,5 @@ npm run dev                # :3847 → /en/live
 | 2026-10-25x | Vercel `bind-beta`: env BIND_* + redeploy; faucet prod OK; repo público. |
 | 2026-10-25y | Blindaje Unlocked: `UNLOCKED.md`, dual-track copy, landing unlockLine, ARCHITECTURE/HACKATHON. |
 | 2026-10-25z | Frontend copy alineado a visión (Unlocked + dual-track + insurance lock); limpia de em dashes `—` en i18n/DocsSite/UI. |
+| 2026-10-26a | E2E firmado documentado en README (vault + 8 txs explorer); foco proof on-chain, no video. |
+| 2026-10-25aa | Video demo flow Remotion: `public/bind-demo-flow.mp4` + `npm run demo:render`. |

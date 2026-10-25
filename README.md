@@ -5,22 +5,70 @@
 **DeFi deposit insurance on Stellar** · Genesis · **Stellar Unlocked**
 
 Protocols **contract Bind**; users get a timed protected window before free exit.  
-**Unlocked thesis:** Stellar clawback + Soroban policy vault = claims rail + retention — not a Composed mashup. See [`docs/UNLOCKED.md`](./docs/UNLOCKED.md).  
+**Unlocked thesis:** Stellar clawback + Soroban policy vault = claims rail + retention. See [`docs/UNLOCKED.md`](./docs/UNLOCKED.md).  
 Product language = insurance; clawback stays claims ops.
 
 | Field | Value |
 |-------|-------|
 | Product | **Bind** |
 | Category / track | **Genesis** · **Stellar Unlocked** |
-| Repo | https://github.com/wrever/bind (**public for submission**) |
+| Repo | https://github.com/wrever/bind |
 | Live demo | https://bind-beta.vercel.app |
 | Why Unlocked | [`docs/UNLOCKED.md`](./docs/UNLOCKED.md) |
-| Live vault (25 Oct) | [`docs/EVIDENCE.md`](./docs/EVIDENCE.md) — **not** the 18 Oct prior vault |
 | Prior work | [`docs/PRIOR_WORK.md`](./docs/PRIOR_WORK.md) |
 | AI tooling | [`docs/AI_ATTRIBUTION.md`](./docs/AI_ATTRIBUTION.md) |
-| Business model | [`docs/BIND_BUSINESS.md`](./docs/BIND_BUSINESS.md) |
 | Architecture | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) |
-| On-chain evidence | [`docs/EVIDENCE.md`](./docs/EVIDENCE.md) |
+
+---
+
+## On-chain proof (Stellar Testnet) — keep this handy
+
+**Last signed e2e:** 2026-10-26 · `fully_backed: true` · vault `CDGNKK…`
+
+### Contracts & accounts
+
+| What | ID / link |
+|------|-----------|
+| **Policy vault (LIVE)** | [`CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ`](https://stellar.expert/explorer/testnet/contract/CDGNKKYHIERBJ7CGXUIKFALRPIFF44T5ZKIRIMKQGCYRLJWO7MYNKZIJ) |
+| TUSDC SAC (collateral) | [`CBTMLE4GB2JGXPW4IQKK3XHFDRQMTSOI2IQ4DG5REP4WPWRD54GTMYKO`](https://stellar.expert/explorer/testnet/contract/CBTMLE4GB2JGXPW4IQKK3XHFDRQMTSOI2IQ4DG5REP4WPWRD54GTMYKO) |
+| COVER SAC (claims rail) | [`CAZGFSWXBWZIOZGRV42GXEKLZTP7MCJ74LVJZ6UYLHAOVHT52NMNP5Z2`](https://stellar.expert/explorer/testnet/contract/CAZGFSWXBWZIOZGRV42GXEKLZTP7MCJ74LVJZ6UYLHAOVHT52NMNP5Z2) |
+| COVER issuer | [`GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P`](https://stellar.expert/explorer/testnet/account/GCIYYORXS2E3LVSEZTVTVUNQQVX5YIJFNQFJCGR73GY234OBU3MPYC4P) |
+| Admin / TUSDC issuer | [`GCNPSYT4C5DOYXHYPFZ6ZJJPE7ER7I2Y63UJKYDKRD6GSA3NRBE4KD7X`](https://stellar.expert/explorer/testnet/account/GCNPSYT4C5DOYXHYPFZ6ZJJPE7ER7I2Y63UJKYDKRD6GSA3NRBE4KD7X) |
+| Arbiter | [`GDPQVHY2VUAOIZO2FTHELDVEXCBY5GGBHSVKDB5EDS7LLOMQ5OJN4PID`](https://stellar.expert/explorer/testnet/account/GDPQVHY2VUAOIZO2FTHELDVEXCBY5GGBHSVKDB5EDS7LLOMQ5OJN4PID) |
+| Alice (demo user) | [`GB5FFYJRMUWIVSSRQAGA36LQPLL7O5G36IBWQJO4YTSIMRHQ27FR7ABI`](https://stellar.expert/explorer/testnet/account/GB5FFYJRMUWIVSSRQAGA36LQPLL7O5G36IBWQJO4YTSIMRHQ27FR7ABI) |
+| Bob (demo counterparty) | [`GDMSZX33BT3WDDQNFGY4HYHWKN532WWADL3FO6YZ7Z3XBWM2TZMXEFDH`](https://stellar.expert/explorer/testnet/account/GDMSZX33BT3WDDQNFGY4HYHWKN532WWADL3FO6YZ7Z3XBWM2TZMXEFDH) |
+| Live PoR JSON | https://bind-beta.vercel.app/api/v1/chain/por |
+| Live UI | https://bind-beta.vercel.app/en/live · https://bind-beta.vercel.app/en/por |
+
+Retired prior vault (do **not** demo): [`CCQEAW…HL5J`](https://stellar.expert/explorer/testnet/contract/CCQEAW5T6LFIANNOYFVIATYYXBEOERAXGCGRLLSHBQDU6XSCCJCOHL5J) — see [`docs/PRIOR_WORK.md`](./docs/PRIOR_WORK.md).
+
+### Signed e2e txs (mint → claim → settle → unwrap)
+
+Path: mint TUSDC → deposit → transfer → **dispute** → **resolve (approve)** → transfer → settle → unwrap → `por()` peg OK.
+
+| Step | Explorer |
+|------|----------|
+| Mint 20 TUSDC → Alice | https://stellar.expert/explorer/testnet/tx/3a41f41298e7ba86c4fdd2bb1a98284417e57b5241571d535b6f775440b03ecc |
+| Deposit 15 | https://stellar.expert/explorer/testnet/tx/5bc631a213acc70a25fcd89649932708ea1d36582da3f6aa157d0d0c9634c71a |
+| Transfer 5 → Bob (open lot) | https://stellar.expert/explorer/testnet/tx/c5ed384611af02f4d3043fcf3a899730d0b56c175f706fbab61612e65d3dc254 |
+| Dispute lot | https://stellar.expert/explorer/testnet/tx/ef8bad73d0bf04c5286a278b57c0c4edaede4cced407292a4c0b14e52748765e |
+| Resolve approve (arbiter) | https://stellar.expert/explorer/testnet/tx/5a4042262c99e30fb678dfa7077091ffc9a520de9281b66dbe4241169786fbca |
+| Transfer 3 → Bob | https://stellar.expert/explorer/testnet/tx/e794f11794ed895f5e77ba9d22bed42cc04ef838644ba746a4b68bbc54e253ce |
+| Settle (Bob) | https://stellar.expert/explorer/testnet/tx/092d2d3926b78613a511756a9b6d98e2e34638194e1665a45517ab67db23e79a |
+| Unwrap 3 | https://stellar.expert/explorer/testnet/tx/62e6b8a97a45d01d0171585ee43ea901fec1f3e6e777125da66e01b9a7236675 |
+
+Reproduce anytime:
+
+```bash
+bash scripts/sync-testnet-env.sh
+npm run testnet:e2e      # signed path above (prints fresh explorer links)
+npm run testnet:smoke    # prepare deposit/transfer/settle + live por()
+npm run testnet:cover    # COVER clawback claims rail
+```
+
+Full dump: [`docs/testnet.addresses.json`](./docs/testnet.addresses.json) · narrative: [`docs/EVIDENCE.md`](./docs/EVIDENCE.md).
+
+---
 
 ## Problem
 
@@ -35,24 +83,16 @@ Stellar settles in seconds with **no chargeback**. Protocols and wallets absorb 
 
 ```bash
 npm install
-cp .env.example .env.local   # optional Supabase
-npm run dev                  # http://127.0.0.1:3847
+cp .env.example .env.local
+bash scripts/sync-testnet-env.sh   # local faucet / e2e secrets
+npm run dev                        # http://127.0.0.1:3847
 ```
-
-### Environment variables
-
-| Var | Required | Purpose |
-|-----|----------|---------|
-| `KEEL_POR_SECRET` | no | HMAC key for signed PoR |
-| `NEXT_PUBLIC_SUPABASE_URL` | no | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | no | Anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | no | Server persistence |
 
 ### Tests
 
 ```bash
 npm run test:engine
-npm run test:persist   # needs dev server + .env.local
+npm run test:persist
 npm run build
 ```
 
@@ -65,11 +105,6 @@ npm run build
 | `/por` | Local + live `por()` + COVER evidence | On-chain readable |
 | `/docs` | Product docs + search | EN/ES/PT |
 | `/api/v1/chain/por` | Live PoR JSON | Must return vault `CDGNKK…` |
-
-```bash
-npm run demo:hackathon
-npm run testnet:smoke
-```
 
 ## License
 
