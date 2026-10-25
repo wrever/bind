@@ -18,7 +18,7 @@ Este archivo es el orden de lo que **existe de verdad** vs lo que solo está en 
 | Motor TS settled/unsettled | **Lista** | `src/lib/keel/engine.ts` · `npm run test:engine` ✅ |
 | Retention Standard / Fast Lane | **Lista** | `retention.ts` + demo lanes + `set_retention` |
 | API partner `/api/v1/*` | **Lista (simulador)** | No es custodia; ver hardening abajo |
-| UI storefront institucional | **Lista (pass 3)** | Hero centrado + voxel arc R3F; sin panel Protected Deposit |
+| UI storefront institucional | **Lista (pass 4)** | Hero centrado + voxel arc + quick demo 4 taps + features |
 | Brand assets Bind | **Integrados** | `src/img/` + `public/brand/` + `BrandMark` |
 | Freighter | **Identity only** | `FreighterConnect` en `/demo` + `/integrate` |
 | SDK `@keel/sdk` / BindClient | **Lista (surface)** | Safe Mode + HTTP thin; sin Soroban client |
@@ -195,3 +195,4 @@ BIND_STRICT=1 KEEL_POR_SECRET='…largo…' npm run dev
 | 2026-10-25l | **Audit arch/sec** + hardening API (actor, UUID, clamp, PoR demo flag, headers, RL). Gap #1: API≠vault. |
 | 2026-10-25m | Landing alineada a mock Grok (hero headline, Protected Deposit flow, lanes visual, footer PoR live). |
 | 2026-10-25n | Quit Protected Deposit card; hero centrado; shadcn MCP Cursor; fondo voxel-arc Bind (`three`/`r3f`). |
+| 2026-10-25o | Landing quick demo (`LandingQuickDemo`): deposit → hold → settle/claim en 4 taps bajo el hero. |

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HeroVoxelBackground } from "@/components/hero-voxel-background";
+import { LandingQuickDemo } from "@/components/landing-quick-demo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
@@ -56,11 +57,13 @@ export default function HomePage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/demo">See the demo</Link>
+                <Link href="#quick-demo">See the demo</Link>
               </Button>
             </div>
           </div>
         </section>
+
+        <LandingQuickDemo />
 
         <section className="border-t border-[var(--color-line)] px-5 py-20 md:px-10 md:py-24">
           <div className="mx-auto max-w-6xl">
