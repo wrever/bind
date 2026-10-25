@@ -58,8 +58,9 @@ Auth partner real / API keys: **no** (SDK acepta Bearer futuro). Rate limit in-m
 ### Frontend
 
 - `/demo`, `/ops`, `/por`, `/integrate`, `/policy`, `/docs`, landing: **compilan**.
-- Freighter / wallet connect: **no**.
+- Freighter / wallet connect: **identity stub** (`FreighterConnect` en `/demo` + `/integrate`); sin firmas de cover aún.
 - URL pública hackathon: **no desplegada** (README lo declara).
+- Repo canónico: **https://github.com/wrever/bind** (privado hasta submit; falta `workflow` scope para CI).
 
 ### Contratos
 

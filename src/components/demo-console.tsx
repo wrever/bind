@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardBody, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { FreighterConnect } from "@/components/freighter-connect";
 import { PersistenceStatus } from "@/components/persistence-status";
 
 const STORAGE_KEY = "keel-demo-state-v1";
@@ -83,7 +84,7 @@ export function DemoConsole() {
   if (!state || !reserves || !account) {
     return (
       <div className="px-5 py-16 text-[var(--keel-mute)] md:px-10">
-        Loading Keel console…
+        Loading Bind console…
       </div>
     );
   }
@@ -96,6 +97,9 @@ export function DemoConsole() {
           <h1 className="mt-1 font-[family-name:var(--font-display)] text-3xl font-extrabold tracking-tight text-[var(--color-text)] md:text-4xl">
             Bind console
           </h1>
+          <div className="mt-3 md:hidden">
+            <FreighterConnect />
+          </div>
           <p className="mt-2 max-w-xl text-sm text-[var(--color-muted)]">
             {RETENTION_PROFILES[state.config.retentionProfile].blurb} Demo clock:{" "}
             {formatRetentionHuman(state.config.windowMs)} (prod{" "}
@@ -145,18 +149,23 @@ export function DemoConsole() {
             <PersistenceStatus />
           </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Badge tone="sea">
-            {RETENTION_PROFILES[state.config.retentionProfile].badge}
-          </Badge>
-          <Badge tone={reserves.fullyBacked ? "ok" : "warn"}>
-            {reserves.fullyBacked ? "Fully backed" : "Peg broken"}
-          </Badge>
-          {reserves.paused ? <Badge tone="warn">Paused</Badge> : null}
-          <Badge tone="mute">Vault {formatUsd(reserves.vaultUsdc)} USDC</Badge>
-          <Badge tone="mute">
-            Hold {formatRetentionHuman(state.config.windowMs)}
-          </Badge>
+        <div className="flex flex-col items-start gap-3 md:items-end">
+          <div className="hidden md:block">
+            <FreighterConnect />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Badge tone="sea">
+              {RETENTION_PROFILES[state.config.retentionProfile].badge}
+            </Badge>
+            <Badge tone={reserves.fullyBacked ? "ok" : "warn"}>
+              {reserves.fullyBacked ? "Fully backed" : "Peg broken"}
+            </Badge>
+            {reserves.paused ? <Badge tone="warn">Paused</Badge> : null}
+            <Badge tone="mute">Vault {formatUsd(reserves.vaultUsdc)} USDC</Badge>
+            <Badge tone="mute">
+              Hold {formatRetentionHuman(state.config.windowMs)}
+            </Badge>
+          </div>
         </div>
       </div>
 

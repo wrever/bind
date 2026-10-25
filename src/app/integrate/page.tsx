@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FreighterConnect } from "@/components/freighter-connect";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
@@ -9,16 +10,19 @@ export default function IntegratePage() {
     <div className="keel-atmosphere min-h-screen">
       <SiteHeader />
       <main className="mx-auto max-w-4xl space-y-10 px-5 pb-16 pt-4 md:px-10">
-        <header>
-          <p className="keel-meta">[ PT-002 ] · Partners</p>
-          <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
-            Contract Bind for your protocol
-          </h1>
-          <p className="mt-3 max-w-2xl text-[var(--color-muted)]">
-            You are the money market. Bind is the insurance counterparty you
-            buy: Protected Deposit for users, claims desk and PoR for you —
-            not a checkout, not another lending pool.
-          </p>
+        <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="keel-meta">[ PT-002 ] · Partners</p>
+            <h1 className="mt-2 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
+              Contract Bind for your protocol
+            </h1>
+            <p className="mt-3 max-w-2xl text-[var(--color-muted)]">
+              You are the money market. Bind is the insurance counterparty you
+              buy: Protected Deposit for users, claims desk and PoR for you —
+              not a checkout, not another lending pool.
+            </p>
+          </div>
+          <FreighterConnect />
         </header>
 
         <div className="grid gap-4 md:grid-cols-3">

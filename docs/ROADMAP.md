@@ -48,7 +48,7 @@ Leyenda: `[x]` hecho · `[~]` en curso · `[ ]` pendiente
 - [ ] `.env.local` service role en cada deploy
 - [ ] Auditoría scoped (antes de TVL real)
 - [ ] Circle USDC faucet wiring (swap SAC)
-- [ ] Freighter / partner wallet connect
+- [~] Freighter / partner wallet connect (identity + network on `/demo` + `/integrate`; cover signing TBD)
 - [ ] Deploy demo URL pública (submit hackathon)
 
 ## Fase 2 — Design partners

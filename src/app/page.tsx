@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Lock, ShieldCheck, Timer } from "lucide-react";
+import { BrandMark } from "@/components/brand-mark";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { LandingRail } from "@/components/landing-rail";
