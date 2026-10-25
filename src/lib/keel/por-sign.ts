@@ -8,15 +8,28 @@ export type SignedPor = ProofOfReserves & {
     keyId: string;
     sig: string;
     payload: string;
+    demo?: boolean;
   };
 };
 
+const DEMO_SECRET = "keel-demo-por-secret-v1";
+
 function secret() {
-  return process.env.KEEL_POR_SECRET ?? "keel-demo-por-secret-v1";
+  const s = process.env.KEEL_POR_SECRET;
+  if (s && s.length > 0) return s;
+  if (process.env.BIND_STRICT === "1" || process.env.KEEL_NETWORK === "mainnet") {
+    throw new Error("KEEL_POR_SECRET required when BIND_STRICT=1 or mainnet");
+  }
+  return DEMO_SECRET;
 }
 
 function keyId() {
   return process.env.KEEL_POR_KEY_ID ?? "demo";
+}
+
+function usingDemoSecret() {
+  const s = process.env.KEEL_POR_SECRET;
+  return !s || s.length === 0 || s === DEMO_SECRET;
 }
 
 /** Stable canonical JSON for signing (sorted keys, fixed fields). */
@@ -55,14 +68,24 @@ export function signPor(
       keyId: keyId(),
       sig,
       payload,
+      ...(usingDemoSecret() ? { demo: true } : {}),
     },
   };
 }
 
+/**
+ * Verify HMAC. Rejects client-supplied payloads when using the public demo
+ * secret unless explicitly allowed — otherwise anyone can forge {valid:true}.
+ */
 export function verifyPorSignature(signed: {
   signature: { alg: string; sig: string; payload: string };
 }): boolean {
   if (signed.signature.alg !== "HMAC-SHA256") return false;
+  if (usingDemoSecret()) {
+    // Demo secret is public in repo — cryptographic verify is theater.
+    // Still check format, but callers must treat demo:true as non-attestation.
+    if (process.env.BIND_STRICT === "1") return false;
+  }
   const expected = createHmac("sha256", secret())
     .update(signed.signature.payload)
     .digest("hex");
@@ -74,4 +97,8 @@ export function verifyPorSignature(signed: {
   } catch {
     return false;
   }
+}
+
+export function porIsDemoAttestation(): boolean {
+  return usingDemoSecret();
 }

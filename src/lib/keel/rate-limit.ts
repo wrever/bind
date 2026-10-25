@@ -30,6 +30,9 @@ export const DEFAULT_RULES: Record<string, RateLimitRule> = {
   dispute: { limit: 3, windowMs: 60_000 },
   transfer: { limit: 40, windowMs: 60_000 },
   resolve: { limit: 20, windowMs: 60_000 },
+  pause: { limit: 10, windowMs: 60_000 },
+  faucet: { limit: 20, windowMs: 60_000 },
+  session_create: { limit: 30, windowMs: 60_000 },
 };
 
 /**

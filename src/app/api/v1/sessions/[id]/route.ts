@@ -22,6 +22,9 @@ export async function GET(
     events: session.state.events.slice(0, 40),
     exitPoolUsdc: session.state.exitPoolUsdc,
     paused: session.state.paused,
-    roles: session.state.roles,
+    // Role map is not public — ops UI uses known demo actors.
+    mode: "demo-simulator",
+    disclaimer:
+      "Off-chain session simulator. Not custody. Spoofable until BIND_STRICT + Stellar auth.",
   });
 }

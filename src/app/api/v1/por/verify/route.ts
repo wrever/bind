@@ -1,4 +1,7 @@
-import { verifyPorSignature } from "@/lib/keel/por-sign";
+import {
+  porIsDemoAttestation,
+  verifyPorSignature,
+} from "@/lib/keel/por-sign";
 import { jsonError, jsonOk, readBody } from "@/lib/keel/http";
 
 export const dynamic = "force-dynamic";
@@ -17,6 +20,7 @@ export async function POST(req: Request) {
   ) {
     return jsonError("Body must include signature.{alg,sig,payload}", 400);
   }
+  const demo = porIsDemoAttestation();
   const valid = verifyPorSignature({
     signature: {
       alg: signature.alg,
@@ -24,5 +28,10 @@ export async function POST(req: Request) {
       payload: signature.payload,
     },
   });
-  return jsonOk({ valid, keyId: process.env.KEEL_POR_KEY_ID ?? "demo" });
+  return jsonOk({
+    valid,
+    demo,
+    attestation: demo ? "demo-hmac-not-custody-proof" : "hmac",
+    keyId: process.env.KEEL_POR_KEY_ID ?? "demo",
+  });
 }

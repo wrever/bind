@@ -258,16 +258,35 @@ export async function listClaimEvents(sessionId: string, limit = 40) {
 }
 
 function sid() {
-  return `sess_${Math.random().toString(36).slice(2, 10)}`;
+  return `sess_${crypto.randomUUID()}`;
+}
+
+/** Clamp client windowMs so retention cannot be zeroed via API. */
+function clampWindowMs(
+  requested: number | undefined,
+  profile: RetentionProfileId,
+  demoMode: boolean,
+): number | undefined {
+  if (requested === undefined) return undefined;
+  const p = RETENTION_PROFILES[profile];
+  const floor = 1_000; // 1s absolute minimum (demo clocks)
+  const ceiling = demoMode ? p.demoWindowMs : p.windowMs;
+  if (!Number.isFinite(requested)) return ceiling;
+  return Math.min(ceiling, Math.max(floor, Math.floor(requested)));
 }
 
 export async function createSession(
   opts?: number | CreateSessionOpts,
 ): Promise<SessionRecord> {
   await ensureStoreReady();
+  enforceRateLimit("global", "session_create", "ip");
   const normalized: CreateSessionOpts =
     typeof opts === "number" ? { windowMs: opts } : (opts ?? {});
   const profile = normalized.retentionProfile ?? "standard";
+  const demoMode = normalized.demoMode ?? true;
+  // Client cannot self-attest KYC — only Fast Lane profile implies attested in demo.
+  const kycAttested = profile === "kyc_fast_lane";
+  const windowMs = clampWindowMs(normalized.windowMs, profile, demoMode);
   const id = sid();
   const rec: SessionRecord = {
     id,
@@ -275,14 +294,11 @@ export async function createSession(
     updatedAt: Date.now(),
     state: createInitialState({
       retentionProfile: profile,
-      demoMode: normalized.demoMode ?? true,
-      kycAttested:
-        normalized.kycAttested ?? profile === "kyc_fast_lane",
+      demoMode,
+      kycAttested,
       allowExitPool:
         normalized.allowExitPool ?? RETENTION_PROFILES[profile].allowExitPool,
-      ...(normalized.windowMs !== undefined
-        ? { windowMs: normalized.windowMs }
-        : {}),
+      ...(windowMs !== undefined ? { windowMs } : {}),
     }),
   };
   sessions().set(id, rec);
@@ -356,11 +372,18 @@ function enforceRateLimit(
   }
 }
 
-function actorOf(body: Record<string, unknown>, fallback: string) {
+/**
+ * Ops actions require an explicit actor. Never silently default to ops_* —
+ * that made pause/resolve/freeze spoofable with an empty body.
+ */
+function requireActor(body: Record<string, unknown>, roleHint: string): string {
   const a = body.actor ?? body.as;
-  return a !== undefined && a !== null && String(a).length > 0
-    ? String(a)
-    : fallback;
+  if (a === undefined || a === null || String(a).length === 0) {
+    throw new Error(
+      `Unauthorized: actor required (expected ${roleHint} or ops_admin)`,
+    );
+  }
+  return String(a);
 }
 
 export async function applyAction(
@@ -373,6 +396,10 @@ export async function applyAction(
 
   switch (action) {
     case "faucet":
+      if (process.env.BIND_STRICT === "1" || process.env.KEEL_NETWORK === "mainnet") {
+        throw new Error("Faucet disabled outside demo");
+      }
+      enforceRateLimit(sessionId, "faucet", String(body.address ?? "any"));
       next = faucet(next, String(body.address), Number(body.amount));
       break;
     case "deposit":
@@ -409,7 +436,7 @@ export async function applyAction(
       break;
     }
     case "freeze": {
-      const actor = actorOf(body, DEFAULT_ROLES.freezer);
+      const actor = requireActor(body, DEFAULT_ROLES.freezer);
       enforceRateLimit(sessionId, "dispute", actor);
       next = freezeLot(
         next,
@@ -421,7 +448,7 @@ export async function applyAction(
       break;
     }
     case "resolve": {
-      const actor = actorOf(body, DEFAULT_ROLES.recoverer);
+      const actor = requireActor(body, DEFAULT_ROLES.recoverer);
       enforceRateLimit(sessionId, "resolve", actor);
       next = resolveDispute(
         next,
@@ -431,26 +458,27 @@ export async function applyAction(
       );
       break;
     }
-    case "pause":
-      next = setPaused(next, true, actorOf(body, DEFAULT_ROLES.pauser));
+    case "pause": {
+      const actor = requireActor(body, DEFAULT_ROLES.pauser);
+      enforceRateLimit(sessionId, "pause", actor);
+      next = setPaused(next, true, actor);
       break;
-    case "unpause":
-      next = setPaused(next, false, actorOf(body, DEFAULT_ROLES.pauser));
+    }
+    case "unpause": {
+      const actor = requireActor(body, DEFAULT_ROLES.pauser);
+      enforceRateLimit(sessionId, "pause", actor);
+      next = setPaused(next, false, actor);
       break;
+    }
     case "set_retention": {
       const profile = String(body.profile ?? body.retentionProfile) as RetentionProfileId;
       if (profile !== "standard" && profile !== "kyc_fast_lane") {
         throw new Error("retention profile must be standard | kyc_fast_lane");
       }
+      // Ignore client kycAttested / demoMode=false spoof — profile drives attestation.
       next = applyRetentionProfile(next, profile, {
-        kycAttested:
-          body.kycAttested === undefined
-            ? profile === "kyc_fast_lane"
-            : Boolean(body.kycAttested),
-        demoMode:
-          body.demoMode === undefined
-            ? next.config.demoMode
-            : Boolean(body.demoMode),
+        kycAttested: profile === "kyc_fast_lane",
+        demoMode: next.config.demoMode,
       });
       break;
     }

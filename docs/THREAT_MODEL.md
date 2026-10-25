@@ -30,10 +30,17 @@
 
 ## Controles ya en demo
 
-- Roles `pauser` / `recoverer` / `freezer` / `admin` en acciones ops (403 si no)
-- Rate limit en dispute / transfer / resolve (429)
-- PoR con HMAC-SHA256 verificable vía `/api/v1/por/verify`
+- Roles `pauser` / `recoverer` / `freezer` / `admin` — **strings demo**; actor **obligatorio** en freeze/resolve/pause (sin default silencioso)
+- Rate limit dispute / transfer / resolve / pause / faucet / session_create (in-memory; 429)
+- Session ids `crypto.randomUUID()`; `windowMs` clamp; KYC no self-attest por body
+- PoR HMAC — si usa secreto demo, respuesta marca `demo: true` (no es attestation de custodia)
 - Pause + supply cap + peg assert en motor
+- Headers Next: nosniff, frame deny, CSP básica
+- Vault Soroban: `require_auth` real (stack **separado** de `/api/v1`)
+
+## Honestidad de seguridad (2026-10-25)
+
+`/api/v1` es un **simulador de sesión**, no el rail de custodia. Cualquiera con `sessionId` puede jugar deposit/transfer/dispute. Ops roles son spoofables si conoces los nombres (`ops_recoverer`). La confianza de dinero debe vivir en **`keel-vault` + multisig**, no en esta API. `BIND_STRICT=1` desactiva faucet y exige `KEEL_POR_SECRET`.
 
 ## Controles demo vs prod
 
@@ -41,7 +48,9 @@
 |---------|------|------|
 | Peg assert | sí (engine + vault) | sí + monitors |
 | Multisig | roles mock + docs | obligatorio on-chain |
+| API auth | abierta + actor string | API keys + firmas Stellar |
 | Audit log | event log local | indexado público |
 | Caps TVL | `maxSupply` + rate limits | sí on-chain |
-| Signed PoR | HMAC demo | attestation on-chain |
+| Signed PoR | HMAC demo (marcado) | attestation on-chain |
 | Legal ToS | draft | firmado partners |
+| API ↔ vault | **no cableado** | una sola fuente de verdad |
