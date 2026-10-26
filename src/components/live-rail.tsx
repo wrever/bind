@@ -202,6 +202,12 @@ export function LiveRail() {
     const unsettledN = Number(account?.unsettled ?? 0);
     if (action === "unwrap" && settledN <= 0) return t("preflightNoSettled");
     if (action === "exit" && unsettledN <= 0) return t("preflightNoUnsettledExit");
+    if (action === "settle" && unsettledN <= 0) {
+      // Settle only matures lots on the signing wallet. Lots you Transfer'd sit on the recipient.
+      return sentLots.length > 0
+        ? t("preflightSettleAsSender")
+        : t("preflightNoUnsettledSettle");
+    }
     if (action === "transfer") {
       const dest = to.trim();
       if (!dest) return t("needTo");
@@ -289,6 +295,7 @@ export function LiveRail() {
         });
         setSentLots(loadSentLots(address));
       } else if (action === "settle" && isZeroReturn(sub.returnValue)) {
+        // Unsettled > 0 but window not elapsed yet (or frozen).
         detail = t("settleZero");
         setError(t("settleZero"));
       }
@@ -739,7 +746,10 @@ export function LiveRail() {
               </p>
             </div>
             <ul className="divide-y divide-[var(--color-line)] border border-[var(--color-line)]">
-              {sentLots.map((lot) => (
+              {sentLots.map((lot) => {
+                const wait = lotWaitSecs(lot.at, windowSecs, nowSec);
+                const ready = wait <= 0;
+                return (
                 <li
                   key={`sent-${lot.id}`}
                   className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
@@ -750,6 +760,8 @@ export function LiveRail() {
                     </span>
                     {" · "}
                     {lot.amount} cover → {lot.to.slice(0, 4)}…{lot.to.slice(-4)}
+                    {" · "}
+                    {ready ? t("sentLotReady") : t("lotWait", { secs: wait })}
                   </div>
                   <Button
                     size="sm"
@@ -760,7 +772,8 @@ export function LiveRail() {
                     {busy === `dispute${lot.id}` ? t("signing") : t("dispute")}
                   </Button>
                 </li>
-              ))}
+                );
+              })}
             </ul>
           </div>
         ) : null}
@@ -821,7 +834,15 @@ function lotWaitSecs(
   windowSecs: number,
   nowSec: number,
 ): number {
-  const received = Number(receivedAt);
+  const raw = receivedAt.trim();
+  let received = Number(raw);
+  // On-chain lots use unix secs; browser-tracked sent lots use ISO.
+  if (!Number.isFinite(received)) {
+    const ms = Date.parse(raw);
+    received = Number.isFinite(ms) ? Math.floor(ms / 1000) : NaN;
+  } else if (received > 1e12) {
+    received = Math.floor(received / 1000);
+  }
   if (!Number.isFinite(received)) return windowSecs;
   return Math.max(0, Math.ceil(received + windowSecs - nowSec));
 }
