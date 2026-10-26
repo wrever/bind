@@ -27,6 +27,7 @@
   "scripts": {
     "dev": "remotion studio",
     "build": "remotion bundle",
+    "render": "mkdir -p out && remotion render BindDemoFlow out/bind-demo-flow.mp4",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc"
   },

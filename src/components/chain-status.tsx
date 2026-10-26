@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { CountUp } from "@/components/motion/count-up";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { StatusMark } from "@/components/motion/status-mark";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -32,15 +35,13 @@ type State =
       explorer?: { vault: string; deployTx?: string };
     };
 
-function stroopsToUsdc(raw: string): string {
+function stroopsToNumber(raw: string): number {
   try {
     const n = BigInt(raw);
     const scale = BigInt(10_000_000);
-    const whole = n / scale;
-    const frac = (n % scale).toString().padStart(7, "0").slice(0, 2);
-    return `${whole.toLocaleString()}.${frac}`;
+    return Number(n) / Number(scale);
   } catch {
-    return raw;
+    return 0;
   }
 }
 
@@ -103,7 +104,10 @@ export function ChainStatus() {
 
       {state.status === "err" ? (
         <div className="border border-[var(--color-line)] bg-[var(--color-bg)] p-5">
-          <Badge tone="warn">{t("rpcOffline")}</Badge>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusMark status="failed" size={14} />
+            <FadeChip alert>{t("rpcOffline")}</FadeChip>
+          </div>
           <p className="mt-3 text-sm text-[var(--color-muted)]">{state.message}</p>
           {state.explorer?.vault ? (
             <a
@@ -120,10 +124,14 @@ export function ChainStatus() {
 
       {state.status === "ok" ? (
         <div className="space-y-6">
-          <div className="flex flex-wrap gap-2">
-            <Badge tone={state.data.por.fullyBacked ? "ok" : "warn"}>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusMark
+              status={state.data.por.fullyBacked ? "done" : "failed"}
+              size={16}
+            />
+            <FadeChip alert={!state.data.por.fullyBacked}>
               {state.data.por.fullyBacked ? t("pegOk") : t("underbacked")}
-            </Badge>
+            </FadeChip>
             <Badge tone="mute">
               {state.data.vault.slice(0, 4)}…{state.data.vault.slice(-4)}
             </Badge>
@@ -145,7 +153,12 @@ export function ChainStatus() {
                   {title}
                 </p>
                 <p className="mt-2 font-[family-name:var(--font-display)] text-xl font-extrabold text-[var(--color-text)]">
-                  {stroopsToUsdc(raw)}
+                  <CountUp
+                    to={stroopsToNumber(raw)}
+                    decimals={2}
+                    locale
+                    playKey={`${title}-${raw}`}
+                  />
                 </p>
               </div>
             ))}

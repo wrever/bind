@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   text: string;
-  as?: "h2" | "h3" | "p" | "span";
+  as?: "h1" | "h2" | "h3" | "p" | "span";
   className?: string;
   /** Replay key when step changes */
   playKey?: string | number;

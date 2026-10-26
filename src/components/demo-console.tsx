@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import {
   applyRetentionProfile,
@@ -22,10 +22,22 @@ import {
 import type { KeelState, RetentionProfileId } from "@/lib/keel/types";
 import { formatRetentionHuman } from "@/lib/keel/retention";
 import { formatUsd } from "@/lib/utils";
+import { CountUp } from "@/components/motion/count-up";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { FlatTimer } from "@/components/motion/flat-timer";
+import { StatusMark } from "@/components/motion/status-mark";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
+
+function msToHms(ms: number): string {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = total % 60;
+  return [h, m, s].map((n) => String(n).padStart(2, "0")).join(":");
+}
 
 const STORAGE_KEY = "keel-demo-state-v1";
 
@@ -146,14 +158,18 @@ export function DemoConsole() {
           >
             {t("laneFast")}
           </Button>
-          <Badge tone={reserves.fullyBacked ? "ok" : "warn"}>
+          <StatusMark
+            status={reserves.fullyBacked ? "done" : "failed"}
+            size={14}
+          />
+          <FadeChip alert={!reserves.fullyBacked}>
             {reserves.fullyBacked ? t("backed") : t("pegBroken")}
-          </Badge>
-          <Badge tone="mute">
+          </FadeChip>
+          <FadeChip>
             {t("hold", {
               time: formatRetentionHuman(state.config.windowMs),
             })}
-          </Badge>
+          </FadeChip>
         </div>
 
         <p className="mt-5 text-sm text-[var(--color-muted)]">
@@ -229,17 +245,39 @@ export function DemoConsole() {
               {actor} · {t("balances")}
             </h2>
             <div className="mt-4 space-y-3 text-sm">
-              <Row label={t("usdcFree")} value={formatUsd(account.usdc)} />
+              <Row
+                label={t("usdcFree")}
+                value={
+                  <CountUp
+                    to={account.usdc}
+                    decimals={2}
+                    locale
+                    playKey={`usdc-${actor}-${account.usdc}`}
+                  />
+                }
+              />
               <Row
                 label={t("settled")}
-                value={formatUsd(account.settled)}
+                value={
+                  <CountUp
+                    to={account.settled}
+                    decimals={2}
+                    locale
+                    playKey={`settled-${actor}-${account.settled}`}
+                  />
+                }
                 hint={t("hintUnwrap")}
               />
               <Row
                 label={t("unsettled")}
-                value={formatUsd(
-                  account.unsettled.reduce((s, l) => s + l.amount, 0),
-                )}
+                value={
+                  <CountUp
+                    to={account.unsettled.reduce((s, l) => s + l.amount, 0)}
+                    decimals={2}
+                    locale
+                    playKey={`unsettled-${actor}-${account.unsettled.length}`}
+                  />
+                }
                 hint={t("hintWindow")}
               />
             </div>
@@ -373,18 +411,25 @@ export function DemoConsole() {
                   >
                     <div className="text-sm">
                       <div className="flex flex-wrap items-center gap-2">
+                        <StatusMark
+                          status={
+                            lot.frozen ? "failed" : ready ? "done" : "running"
+                          }
+                          size={14}
+                        />
                         <span className="font-medium text-[var(--color-text)]">
                           {formatUsd(lot.amount)}
                         </span>
-                        <Badge tone={lot.frozen ? "warn" : ready ? "ok" : "sea"}>
-                          {lot.frozen
-                            ? t("frozen")
-                            : ready
-                              ? t("settleReadyBadge")
-                              : t("protectedSecs", {
-                                  secs: (rem / 1000).toFixed(0),
-                                })}
-                        </Badge>
+                        {lot.frozen ? (
+                          <FadeChip alert>{t("frozen")}</FadeChip>
+                        ) : ready ? (
+                          <FadeChip>{t("settleReadyBadge")}</FadeChip>
+                        ) : (
+                          <FlatTimer
+                            value={msToHms(rem)}
+                            className="text-[13px]"
+                          />
+                        )}
                       </div>
                       <p className="mt-1 text-xs text-[var(--color-muted)]">
                         {lot.from} → {acc.address}
@@ -500,7 +545,7 @@ function Row({
   hint,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   hint?: string;
 }) {
   return (

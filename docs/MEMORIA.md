@@ -90,4 +90,4 @@ npm run dev                # :3847 → /en/live
 | 2026-10-25aa | E2E firmado documentado en README (vault + 8 txs explorer); foco proof on-chain. |
 | 2026-10-25ab | Live UX: exige Freighter Testnet, muestra link vault CDGNKK; Freighter copy ya no dice “solo identity”. |
 | 2026-10-25ac | Quita ruido vault antiguo / prior-work de README y docs; foco solo CDGNKK. |
-| 2026-10-25aa | Video demo flow Remotion: `public/bind-demo-flow.mp4` + `npm run demo:render`. |
+| 2026-10-25ad | Quita mp4 del repo (`docs/assets` + `public`); render Remotion solo local en `remotion/out/` (gitignored). |

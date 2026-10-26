@@ -1,6 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CoverScrollDemo } from "@/components/cover-scroll-demo";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { SplitRise } from "@/components/motion/split-rise";
+import { StatusMark } from "@/components/motion/status-mark";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
@@ -61,9 +64,11 @@ export default async function HomePage({ params }: Props) {
               <p className="animate-keel-rise text-xs tracking-wide text-[var(--color-muted)] sm:text-sm">
                 {t("eyebrow")}
               </p>
-              <h1 className="animate-keel-rise-delay mt-5 font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:mt-6">
-                {t("headline")}
-              </h1>
+              <SplitRise
+                text={t("headline")}
+                as="h1"
+                className="animate-keel-rise-delay mt-5 text-center font-[family-name:var(--font-display)] text-[clamp(1.85rem,6.2vw,3.35rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)] sm:mt-6"
+              />
               <p className="animate-keel-rise-delay-2 mt-5 max-w-xl text-sm leading-relaxed text-[var(--color-muted)] sm:mt-6 sm:text-[15px] md:text-base md:leading-relaxed">
                 {t("subhead")}
               </p>
@@ -120,7 +125,8 @@ export default async function HomePage({ params }: Props) {
                   key={step.n}
                   className="grid gap-4 py-8 md:grid-cols-12 md:items-start md:gap-8"
                 >
-                  <span className="font-[family-name:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--color-muted)] md:col-span-1">
+                  <span className="flex items-center gap-2 font-[family-name:var(--font-mono)] text-xs tracking-[0.08em] text-[var(--color-muted)] md:col-span-1">
+                    <StatusMark status="done" size={12} />
                     {step.n}
                   </span>
                   <h3 className="font-[family-name:var(--font-display)] text-xl font-extrabold tracking-tight text-[var(--color-text)] md:col-span-4 md:text-2xl">
@@ -216,9 +222,7 @@ function LaneCard({
         <h3 className="font-[family-name:var(--font-display)] text-xl font-extrabold text-[var(--color-text)]">
           {name}
         </h3>
-        <span className="text-xs font-medium text-[var(--color-muted)]">
-          {badge}
-        </span>
+        <FadeChip>{badge}</FadeChip>
       </div>
       <p className="mt-6 font-[family-name:var(--font-display)] text-4xl font-extrabold tracking-tight text-[var(--color-text)]">
         {window}

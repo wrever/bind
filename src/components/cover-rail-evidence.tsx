@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Badge } from "@/components/ui/badge";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { StatusMark } from "@/components/motion/status-mark";
 
 type CoverBlock = {
   assetCode?: string;
@@ -50,10 +51,14 @@ export function CoverRailEvidence() {
         <p className="text-xs text-[var(--color-muted)]">{t("coverLoading")}</p>
       ) : (
         <div className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            <Badge tone={cover.smoke?.clawbackClaim ? "ok" : "mute"}>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusMark
+              status={cover.smoke?.clawbackClaim ? "done" : "pending"}
+              size={14}
+            />
+            <FadeChip>
               {cover.smoke?.clawbackClaim ? t("coverOk") : t("coverPending")}
-            </Badge>
+            </FadeChip>
           </div>
           {cover.explorer?.sac ? (
             <a

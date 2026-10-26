@@ -5,6 +5,9 @@ import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";
 import { ChainStatus } from "@/components/chain-status";
 import { FreighterConnect } from "@/components/freighter-connect";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { SplitRise } from "@/components/motion/split-rise";
+import { StatusMark } from "@/components/motion/status-mark";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -371,9 +374,11 @@ export function LiveRail() {
             <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
               {t("meta")}
             </p>
-            <h1 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)]">
-              {t("title")}
-            </h1>
+            <SplitRise
+              text={t("title")}
+              as="h1"
+              className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)]"
+            />
             <p className="mt-4 text-[15px] leading-relaxed text-[var(--color-muted)] md:text-base">
               {t("body")}{" "}
               <Link
@@ -389,12 +394,11 @@ export function LiveRail() {
       </header>
 
       <section className="relative space-y-4">
-        <div className="flex flex-wrap gap-2">
-          <Badge tone={address ? "ok" : "mute"}>
-            {address ? t("walletOn") : t("walletOff")}
-          </Badge>
+        <div className="flex flex-wrap items-center gap-2">
+          <StatusMark status={address ? "done" : "pending"} size={14} />
+          <FadeChip>{address ? t("walletOn") : t("walletOff")}</FadeChip>
           {account && !account.exists ? (
-            <Badge tone="warn">{t("noAccount")}</Badge>
+            <FadeChip alert>{t("noAccount")}</FadeChip>
           ) : null}
           {account?.tusdc ? (
             <Badge tone="sea">TUSDC {account.tusdc}</Badge>

@@ -40,13 +40,6 @@
 4. **`/en/por`** — `fullyBacked` + COVER clawback evidence  
 5. Optional: `/en/demo` — say **“simulator only”**
 
-### Product-flow clip (Protected Deposit)
-
-Rendered Remotion walkthrough (deposit → hold → settle / claim):
-
-- Local: [`docs/assets/bind-demo-flow.mp4`](./assets/bind-demo-flow.mp4) · also `public/bind-demo-flow.mp4`
-- Rebuild: `npm run demo:render`
-
 ### Loom script (≈2–3 min live rail)
 
 1. Open https://bind-beta.vercel.app — “insurance for DeFi deposits”  

@@ -7,7 +7,10 @@ import type { KeelState } from "@/lib/keel/types";
 import { formatUsd } from "@/lib/utils";
 import { ChainStatus } from "@/components/chain-status";
 import { CoverRailEvidence } from "@/components/cover-rail-evidence";
-import { Badge } from "@/components/ui/badge";
+import { CountUp } from "@/components/motion/count-up";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { SplitRise } from "@/components/motion/split-rise";
+import { StatusMark } from "@/components/motion/status-mark";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 
@@ -54,12 +57,12 @@ export function PorPanel() {
 
   const r = por(state);
   const stats = [
-    { title: t("vaultUsdc"), value: formatUsd(r.vaultUsdc) },
-    { title: t("supply"), value: formatUsd(r.rUsdcSupply) },
-    { title: t("settled"), value: formatUsd(r.settledSupply) },
-    { title: t("unsettled"), value: formatUsd(r.unsettledSupply) },
-    { title: t("exitPool"), value: formatUsd(r.exitPoolUsdc) },
-    { title: t("fees"), value: formatUsd(r.protocolFeesEarned) },
+    { title: t("vaultUsdc"), n: r.vaultUsdc },
+    { title: t("supply"), n: r.rUsdcSupply },
+    { title: t("settled"), n: r.settledSupply },
+    { title: t("unsettled"), n: r.unsettledSupply },
+    { title: t("exitPool"), n: r.exitPoolUsdc },
+    { title: t("fees"), n: r.protocolFeesEarned },
   ];
 
   return (
@@ -68,16 +71,22 @@ export function PorPanel() {
         <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
           {t("meta")}
         </p>
-        <h1 className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)]">
-          {t("title")}
-        </h1>
+        <SplitRise
+          text={t("title")}
+          as="h1"
+          className="mt-3 font-[family-name:var(--font-display)] text-[clamp(1.85rem,4.5vw,2.75rem)] font-extrabold leading-[1.12] tracking-[-0.03em] text-[var(--color-text)]"
+        />
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-[var(--color-muted)] md:text-base">
           {t("body")}
         </p>
-        <div className="mt-6 flex flex-wrap gap-2">
-          <Badge tone={r.fullyBacked ? "ok" : "warn"}>
+        <div className="mt-6 flex flex-wrap items-center gap-2">
+          <StatusMark
+            status={r.fullyBacked ? "done" : "failed"}
+            size={14}
+          />
+          <FadeChip alert={!r.fullyBacked}>
             {r.fullyBacked ? t("backed") : t("underbacked")}
-          </Badge>
+          </FadeChip>
         </div>
       </header>
 
@@ -95,7 +104,7 @@ export function PorPanel() {
                 {s.title}
               </p>
               <p className="mt-3 font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight text-[var(--color-text)] md:text-3xl">
-                {s.value}
+                <CountUp to={s.n} decimals={2} locale playKey={s.title} />
               </p>
             </div>
           ))}
@@ -107,7 +116,7 @@ export function PorPanel() {
           {t("ratioTitle")}
         </p>
         <p className="mt-3 font-[family-name:var(--font-display)] text-5xl font-extrabold tracking-tight text-[var(--color-accent2)] md:text-6xl">
-          {r.ratio.toFixed(4)}
+          <CountUp to={r.ratio} decimals={4} playKey="ratio" />
         </p>
         <p className="mt-4 max-w-lg text-sm leading-relaxed text-[var(--color-muted)]">
           {t("ratioBody", { pool: formatUsd(state.exitPoolUsdc) })}

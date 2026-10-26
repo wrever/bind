@@ -10,6 +10,8 @@ type Props = {
   reduceMotion?: boolean;
   /** Restart when this changes (e.g. step becomes active) */
   playKey?: string | number;
+  /** Use locale grouping (e.g. 1,234.00) */
+  locale?: boolean;
 };
 
 /** Simple ease-out count (Bind-native). */
@@ -20,6 +22,7 @@ export function CountUp({
   className,
   reduceMotion,
   playKey,
+  locale = false,
 }: Props) {
   const [n, setN] = useState(reduceMotion ? to : 0);
   const fromRef = useRef(0);
@@ -43,9 +46,12 @@ export function CountUp({
     return () => cancelAnimationFrame(raf);
   }, [to, durationMs, reduceMotion, playKey]);
 
-  return (
-    <span className={className}>
-      {n.toFixed(decimals)}
-    </span>
-  );
+  const text = locale
+    ? n.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      })
+    : n.toFixed(decimals);
+
+  return <span className={className}>{text}</span>;
 }

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { StatusMark } from "@/components/motion/status-mark";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -192,13 +194,21 @@ export function OpsConsole() {
 
       {view && (
         <>
-          <div className="flex flex-wrap gap-2">
-            <Badge tone={view.por?.fullyBacked ? "ok" : "warn"}>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusMark
+              status={view.por?.fullyBacked ? "done" : "failed"}
+              size={14}
+            />
+            <FadeChip alert={!view.por?.fullyBacked}>
               {view.por?.fullyBacked ? "Peg ok" : "Underbacked"}
-            </Badge>
-            <Badge tone={view.paused ? "warn" : "mute"}>
+            </FadeChip>
+            <StatusMark
+              status={view.paused ? "failed" : "done"}
+              size={14}
+            />
+            <FadeChip alert={!!view.paused}>
               {view.paused ? "Paused" : "Active"}
-            </Badge>
+            </FadeChip>
             <Badge tone="mute">
               vault {view.por?.vaultUsdc ?? "—"} / supply{" "}
               {view.por?.rUsdcSupply ?? "—"}

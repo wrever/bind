@@ -20,6 +20,7 @@
     "testnet:sync-env": "bash scripts/sync-testnet-env.sh",
     "testnet:cover": "bash scripts/cover-issuer-up.sh",
     "demo:hackathon": "bash scripts/demo-hackathon.sh",
+    "demo:render": "npm --prefix remotion run render",
     "push:github": "bash scripts/push-github.sh"
   },
   "dependencies": {
