@@ -10,7 +10,6 @@ import {
   type RefObject,
 } from "react";
 import { useTranslations } from "next-intl";
-import { CountUp } from "@/components/motion/count-up";
 import { FadeChip } from "@/components/motion/fade-chip";
 import { FlatTimer } from "@/components/motion/flat-timer";
 import { SplitRise } from "@/components/motion/split-rise";
@@ -121,6 +120,8 @@ export function CoverScrollDemo() {
     claimP,
   );
   const timer = holdTimer(progress);
+  // Deposit wraps 0→100 with scroll; peg stays vault = supply after that.
+  const peg = porPeg(progress, reduceMotion);
 
   return (
     <section
@@ -130,8 +131,13 @@ export function CoverScrollDemo() {
       aria-label={t("title")}
     >
       <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-stretch">
-        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-4 py-5 md:grid-cols-2 md:gap-10 md:px-8 md:py-8">
-          <div className="relative flex min-h-0 flex-col justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)]/92 p-4 md:p-6">
+        {/* Dim aurora behind the stage so diagram + copy stay readable */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(14,16,13,0.55)_0%,rgba(14,16,13,0.88)_58%,rgba(14,16,13,0.96)_100%)]"
+        />
+        <div className="relative z-[1] mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-4 py-5 md:grid-cols-2 md:gap-10 md:px-8 md:py-8">
+          <div className="relative flex min-h-0 flex-col justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)] p-4 shadow-[inset_0_1px_0_rgba(245,244,240,0.04)] md:p-6">
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
               {t("eyebrow")}
             </p>
@@ -154,56 +160,61 @@ export function CoverScrollDemo() {
                 className="mx-auto h-[min(44vh,360px)] w-full max-w-[300px] md:h-[min(52vh,440px)]"
                 aria-hidden
               >
+                {/* Connectors run between nodes so the head sits under boxes, not through them */}
                 <path
-                  d="M 40 40 L 40 112 L 40 186 L 40 248"
+                  d="M 40 60 L 40 93 L 40 131 L 40 161 L 40 214 L 40 228"
                   fill="none"
                   stroke="#3A3934"
                   strokeWidth={1}
                   strokeDasharray="4 4"
+                  strokeLinecap="round"
                 />
                 <path
-                  d="M 40 248 L 118 318"
+                  d="M 40 228 L 118 299"
                   fill="none"
                   stroke="#3A3934"
                   strokeWidth={1}
                   strokeDasharray="4 4"
+                  strokeLinecap="round"
                 />
                 <path
-                  d="M 40 248 L -38 318"
+                  d="M 40 228 L -38 299"
                   fill="none"
                   stroke="#3A3934"
                   strokeWidth={1}
                   strokeDasharray="4 4"
+                  strokeLinecap="round"
                 />
 
                 <path
                   ref={spineRef}
-                  d="M 40 40 L 40 112 L 40 186 L 40 248"
+                  d="M 40 60 L 40 93 L 40 131 L 40 161 L 40 214 L 40 228"
                   fill="none"
                   stroke="#F5F4F0"
                   strokeWidth={2}
-                  strokeLinecap="square"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   strokeDasharray={lens.spine}
                   strokeDashoffset={lens.spine * (1 - spineP)}
                 />
                 <path
                   ref={settleRef}
-                  d="M 40 248 L 118 318"
+                  d="M 40 228 L 118 299"
                   fill="none"
                   stroke="#F5F4F0"
                   strokeWidth={2}
-                  strokeLinecap="square"
+                  strokeLinecap="round"
                   strokeDasharray={lens.settle}
                   strokeDashoffset={lens.settle * (1 - settleP)}
                   opacity={settleP > 0 || active === "settle" ? 1 : 0.35}
                 />
                 <path
                   ref={claimRef}
-                  d="M 40 248 L -38 318"
+                  d="M 40 228 L -38 299"
                   fill="none"
                   stroke={claimP > 0 ? "#F5F4F0" : "#AFAFAC"}
                   strokeWidth={2}
-                  strokeLinecap="square"
+                  strokeLinecap="round"
                   strokeDasharray={lens.claim}
                   strokeDashoffset={lens.claim * (1 - claimP)}
                   opacity={claimP > 0 || active === "claim" ? 1 : 0.35}
@@ -262,10 +273,11 @@ export function CoverScrollDemo() {
 
                 {head ? (
                   <rect
-                    x={head.x - 5}
-                    y={head.y - 5}
-                    width={10}
-                    height={10}
+                    x={head.x - 4}
+                    y={head.y - 4}
+                    width={8}
+                    height={8}
+                    rx={2}
                     fill="#F54307"
                   />
                 ) : null}
@@ -274,23 +286,12 @@ export function CoverScrollDemo() {
 
             <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[var(--color-line)] pt-3 font-[family-name:var(--font-mono)] text-[12px] tabular-nums text-[var(--color-accent2)]">
               <span>
-                Vault{" "}
-                <CountUp
-                  to={100}
-                  decimals={2}
-                  playKey={active}
-                  reduceMotion={reduceMotion}
-                />
+                Vault <span className="tabular-nums">{peg.vault.toFixed(2)}</span>
               </span>
               <span className="text-[var(--color-muted)]">·</span>
               <span>
                 Supply{" "}
-                <CountUp
-                  to={100}
-                  decimals={2}
-                  playKey={active}
-                  reduceMotion={reduceMotion}
-                />
+                <span className="tabular-nums">{peg.supply.toFixed(2)}</span>
               </span>
             </div>
           </div>
@@ -378,19 +379,21 @@ function NodeBox({
       : status === "done"
         ? "#AFAFAC"
         : "#3A3934";
+  const h = sub ? 50 : 38;
   return (
     <g transform={`translate(${x}, ${y})`}>
       <rect
-        x={-54}
-        y={-18}
-        width={108}
-        height={sub ? 48 : 36}
-        rx={4}
-        fill="#22211E"
+        x={-56}
+        y={-h / 2}
+        width={112}
+        height={h}
+        rx={12}
+        ry={12}
+        fill="#0E100D"
         stroke={border}
-        strokeWidth={1}
+        strokeWidth={status === "running" || alert ? 1.25 : 1}
       />
-      <foreignObject x={-48} y={-12} width={16} height={16}>
+      <foreignObject x={-48} y={sub ? -14 : -8} width={16} height={16}>
         <div className="flex h-4 w-4 items-center justify-center">
           <StatusMark status={status} size={12} />
         </div>
@@ -398,7 +401,7 @@ function NodeBox({
       <text
         textAnchor="start"
         x={-28}
-        y={sub ? 2 : 5}
+        y={sub ? 0 : 4}
         fill="#F5F4F0"
         fontSize={11}
         fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
@@ -437,13 +440,25 @@ function headFor(
     }
     if (spine.current) {
       const len = spine.current.getTotalLength();
-      const pt = spine.current.getPointAtLength(len * Math.max(0.02, spineP));
+      // Keep head on the connector under Wallet at start (never mid-label)
+      const pt = spine.current.getPointAtLength(
+        len * Math.min(1, Math.max(0.001, spineP)),
+      );
       return { x: pt.x, y: pt.y };
     }
   } catch {
     return null;
   }
   return null;
+}
+
+/** Scroll-linked PoR strip: wrap-in on deposit, then peg holds 100 = 100. */
+function porPeg(progress: number, reduceMotion: boolean) {
+  if (reduceMotion) return { vault: 100, supply: 100 };
+  const wrap = Math.min(1, Math.max(0, progress / 0.22));
+  const eased = 1 - Math.pow(1 - wrap, 2);
+  const n = 100 * eased;
+  return { vault: n, supply: n };
 }
 
 function holdTimer(progress: number): string {
