@@ -131,13 +131,9 @@ export function CoverScrollDemo() {
       aria-label={t("title")}
     >
       <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-stretch">
-        {/* Dim aurora behind the stage so diagram + copy stay readable */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,rgba(14,16,13,0.55)_0%,rgba(14,16,13,0.88)_58%,rgba(14,16,13,0.96)_100%)]"
-        />
-        <div className="relative z-[1] mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-4 py-5 md:grid-cols-2 md:gap-10 md:px-8 md:py-8">
-          <div className="relative flex min-h-0 flex-col justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)] p-4 shadow-[inset_0_1px_0_rgba(245,244,240,0.04)] md:p-6">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-4 py-5 md:grid-cols-2 md:gap-10 md:px-8 md:py-8">
+          {/* Opaque plate only on the diagram — aurora stays visible around it */}
+          <div className="relative flex min-h-0 flex-col justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)]/95 p-4 shadow-[inset_0_1px_0_rgba(245,244,240,0.04)] md:p-6">
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
               {t("eyebrow")}
             </p>
@@ -296,7 +292,11 @@ export function CoverScrollDemo() {
             </div>
           </div>
 
-          <div className="flex min-h-0 flex-col justify-center overflow-y-auto py-2">
+          <div className="relative flex min-h-0 flex-col justify-center overflow-y-auto py-2">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 rounded-2xl bg-[radial-gradient(ellipse_at_30%_40%,rgba(14,16,13,0.72)_0%,rgba(14,16,13,0.35)_55%,transparent_78%)] md:-inset-x-6"
+            />
             <ul className="space-y-5 md:space-y-7">
               {STEPS.map((id, i) => {
                 const on = i === stepIndex;
