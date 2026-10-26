@@ -1,4 +1,8 @@
-# Bind
+<p align="center">
+  <a href="https://bind-beta.vercel.app">
+    <img src="public/brand/bind-readme-hero.svg" alt="Bind" width="560" />
+  </a>
+</p>
 
 **Updated:** 2026-10-26
 
