@@ -51,10 +51,10 @@ Optional B-roll: open https://bind-beta.vercel.app/api/v1/chain/por and https://
 
 ### 1:10–2:10 — Live rail (real testnet)  
 **SHOW:** `/en/live`  
-**DO (if Freighter available):** Connect Freighter on **Testnet** → Get TUSDC / trustline if needed → Deposit → open the resulting stellar.expert tx from the on-page log. Optionally Transfer, then Dispute, then Approve claim if ops token works.  
-**DO (if no wallet):** Still show `/en/live` UI, vault explorer link on the page, then jump to README “On-chain proof” table and open 2–3 explorer txs (deposit, dispute, resolve).  
+**DO (if Freighter available):** Connect Freighter on **Testnet** → Get TUSDC / trustline if needed → Deposit → open the stellar.expert tx from the log. For a full path: Transfer to a **second** wallet → switch Freighter to the **recipient** → wait retention (~60s) → Settle → Unwrap. Optionally (as **sender**) Dispute before recipient Settles; Approve claim if ops token works. Do **not** Settle as the sender after Transfer (returns 0 / UI blocks).  
+**DO (if no wallet):** Still show `/en/live` UI, vault explorer link on the page, then jump to README “On-chain proof” table and open 2–3 explorer txs (deposit, dispute, resolve) — note README path already Settles as Bob.  
 **SAY:**  
-“This is the live cover rail — Freighter signs real transactions against our published testnet vault. Demo is a simulator; Live is the chain. Here you deposit collateral, open a protected lot, and if something goes wrong you can dispute. An arbiter resolve remints covered credit to the rightful party. Under the hood that uses Stellar’s clawback path — claims operations, not the consumer brand.”
+“This is the live cover rail — Freighter signs real transactions against our published testnet vault. Demo is a simulator; Live is the chain. Deposit wraps collateral; Transfer opens a protected unsettled lot on the recipient; after the window the recipient Settles and can Unwrap. If something goes wrong in the window, the sender Disputes. Arbiter resolve remints covered credit to the rightful party — Stellar clawback under the hood, claims ops, not the consumer brand.”
 
 ### 2:10–2:40 — Proof of reserves + COVER  
 **SHOW:** `/en/por`  

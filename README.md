@@ -1,6 +1,6 @@
 # Bind
 
-**Updated:** 2026-10-25
+**Updated:** 2026-10-26
 
 **DeFi deposit insurance on Stellar** · Genesis · **Stellar Unlocked**
 
@@ -102,6 +102,21 @@ npm run build
 | `/por` | Local + live `por()` + COVER evidence | On-chain readable |
 | `/docs` | Product docs + search | EN/ES/PT |
 | `/api/v1/chain/por` | Live PoR JSON | Must return vault `CDGNKK…` |
+
+### How to drive `/live` (two wallets)
+
+Happy path needs **sender + recipient** (Freighter Testnet). *Transfer to* is only used by Transfer.
+
+| Step | Who signs | What happens |
+|------|-----------|--------------|
+| Deposit | You | TUSDC → **settled** cover on your wallet |
+| Transfer | Sender | Opens an **unsettled** lot on the **recipient** (retention window ~60s on this vault) |
+| Settle | **Recipient** | Ready lots → settled on the signing wallet (ignores Transfer to; returns 0 if you are still the sender) |
+| Unwrap | Whoever holds settled | Settled cover → free TUSDC out |
+| Exit (fee) | Unsettled holder | Skip the window; pay fee if exit pool has liquidity |
+| Dispute | **Sender** of the lot | Freeze during the window; arbiter resolve is ops |
+
+UI blocks Settle when your unsettled is 0 and you just sent lots (“Settle runs on the recipient”). Full ops notes: [`docs/MEMORIA.md`](./docs/MEMORIA.md).
 
 ## License
 

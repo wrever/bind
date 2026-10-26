@@ -1,6 +1,6 @@
 # Bind — Memoria operativa
 
-**Actualizado:** 2026-10-25 (noche — risk board hackathon)  
+**Actualizado:** 2026-10-26 (Live UX + env Vercel)  
 **Producto:** **Bind** (paths de código pueden seguir en `keel/`)  
 **Autor git:** `wrever` · AI tooling: [`AI_ATTRIBUTION.md`](./AI_ATTRIBUTION.md)  
 **Repo:** https://github.com/wrever/bind (**debe ser público** antes del submit)  
@@ -21,6 +21,8 @@
 | Repo público | **Hecho** | https://github.com/wrever/bind |
 | Deploy prod | **Hecho** | https://bind-beta.vercel.app · vault `CDGNKK…` · faucet OK |
 | Tx proof in README | **Hecho** | e2e 2026-10-25 22:58 UTC · links en README + EVIDENCE |
+| Live UX (Settle ≠ sender) | **Hecho** | preflight + copy EN/ES/PT; README “How to drive /live” |
+| Vercel env | **Hecho** | BIND_* + `KEEL_*` + Supabase URL/anon/service_role + `KEEL_POR_SECRET` |
 
 ---
 
@@ -68,12 +70,24 @@ npm run dev                # :3847 → /en/live
 
 ---
 
+## Live — quién firma qué (evitar Settled 0)
+
+| Acción | Firma | Nota |
+|--------|-------|------|
+| Deposit / Transfer / Dispute | Sender | Transfer crea lot en el **destinatario** |
+| Settle / Unwrap / Exit | Wallet con el balance | Settle solo madura lots **recibidos** por quien firma |
+| Resolve approve/reject | Ops / arbiter | No es Freighter del user |
+
+Presentación: dos wallets (Alice→Bob). Alice Deposit→Transfer; Bob espera ventana→Settle→Unwrap. Dispute = Alice antes del Settle de Bob.
+
+---
+
 ## Próximos movimientos (orden submit)
 
-1. **P0 seguridad:** rotar token Vercel (quedó expuesto en chat) y rotar `BIND_OPS_TOKEN` si el form es público.
-2. **P1:** re-correr `npm run testnet:e2e` antes del submit y pegar hashes frescos en README si hace falta.
-3. **P1:** prefund wallet Freighter del presentador; multisig arbiter.
-4. **P2:** Circle USDC; partner API keys; unificar sessions≠vault (dual-track OK).
+1. **P1:** re-correr `npm run testnet:e2e` antes del submit y pegar hashes frescos en README si hace falta.
+2. **P1:** prefund wallet Freighter del presentador (Alice+Bob); multisig arbiter.
+3. **P2:** Circle USDC; partner API keys; unificar sessions≠vault (dual-track OK).
+4. **Ops:** redeploy Vercel tras cambios de env si el runtime aún no ve Supabase/PoR.
 
 ---
 
@@ -81,6 +95,7 @@ npm run dev                # :3847 → /en/live
 
 | Fecha | Nota |
 |-------|------|
+| 2026-10-26a | Live: Settle = recipient (preflight + i18n); README how-to; Vercel + Supabase/PoR env; MEMORIA/script demo. |
 | 2026-10-25u | P0 perfection vault CDGNKK + e2e |
 | 2026-10-25v | (hist) vault live CDGNKK |
 | 2026-10-25w | Risk board: AI_ATTRIBUTION, LICENSE, health tracks, hygiene curl/ops token |
