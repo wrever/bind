@@ -45,6 +45,9 @@ export function FreighterConnect() {
         address: addr.address,
         network: net.error ? undefined : net.network,
       });
+      window.dispatchEvent(
+        new CustomEvent("bind:freighter", { detail: { address: addr.address } }),
+      );
     } catch {
       setWallet({ status: "missing" });
     }
@@ -77,6 +80,9 @@ export function FreighterConnect() {
         address: access.address,
         network: net.error ? undefined : net.network,
       });
+      window.dispatchEvent(
+        new CustomEvent("bind:freighter", { detail: { address: access.address } }),
+      );
     } catch (e) {
       setWallet({
         status: "error",

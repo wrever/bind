@@ -70,7 +70,11 @@ export function DemoConsole() {
 
   useEffect(() => {
     if (!state) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      /* private mode / quota */
+    }
   }, [state]);
 
   const reserves = useMemo(() => (state ? por(state) : null), [state]);

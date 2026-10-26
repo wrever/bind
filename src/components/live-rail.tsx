@@ -21,6 +21,13 @@ type LotView = {
   from: string;
 };
 
+type SentLot = {
+  id: string;
+  to: string;
+  amount: string;
+  at: string;
+};
+
 type AccountView = {
   address: string;
   exists: boolean;
@@ -126,6 +133,8 @@ export function LiveRail() {
   const [busy, setBusy] = useState<string | null>(null);
   const [log, setLog] = useState<TxLog[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [nowSec, setNowSec] = useState(() => Math.floor(Date.now() / 1000));
+  const [sentLots, setSentLots] = useState<SentLot[]>([]);
 
   const refreshAccount = useCallback(async (addr: string) => {
     try {
@@ -145,24 +154,71 @@ export function LiveRail() {
   const syncWallet = useCallback(async () => {
     const addr = await freighterAddress();
     setAddress(addr);
-    if (addr) void refreshAccount(addr);
-    else setAccount(null);
+    if (addr) {
+      void refreshAccount(addr);
+      setSentLots(loadSentLots(addr));
+    } else {
+      setAccount(null);
+      setSentLots([]);
+    }
   }, [refreshAccount]);
 
   useEffect(() => {
     void syncWallet();
     const timer = setInterval(() => void syncWallet(), 5000);
-    return () => clearInterval(timer);
+    const onFreighter = () => void syncWallet();
+    window.addEventListener("bind:freighter", onFreighter);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener("bind:freighter", onFreighter);
+    };
   }, [syncWallet]);
+
+  useEffect(() => {
+    const tick = setInterval(() => setNowSec(Math.floor(Date.now() / 1000)), 1000);
+    return () => clearInterval(tick);
+  }, []);
+
+  const windowSecs = account?.windowSecs ?? 60;
 
   function pushLog(row: Omit<TxLog, "at">) {
     setLog((prev) => [{ ...row, at: new Date().toISOString() }, ...prev].slice(0, 10));
+  }
+
+  function mapChainError(raw: string, action?: VaultAction): string {
+    if (/Contract,\s*#6|#6\b/.test(raw)) {
+      if (action === "exit") return t("errExitNeedsUnsettled");
+      return t("errInsufficient");
+    }
+    if (/Contract,\s*#4|#4\b/.test(raw)) return t("errUnauthorized");
+    if (/Contract,\s*#8|#8\b/.test(raw)) return t("errNotFound");
+    if (/Contract,\s*#12|#12\b/.test(raw)) return t("errSelfTransfer");
+    if (/Contract,\s*#13|#13\b/.test(raw)) return t("errExitIlliquid");
+    return raw;
+  }
+
+  function preflight(action: VaultAction): string | null {
+    const settledN = Number(account?.settled ?? 0);
+    const unsettledN = Number(account?.unsettled ?? 0);
+    if (action === "unwrap" && settledN <= 0) return t("preflightNoSettled");
+    if (action === "exit" && unsettledN <= 0) return t("preflightNoUnsettledExit");
+    if (action === "transfer") {
+      const dest = to.trim();
+      if (!dest) return t("needTo");
+      if (address && dest === address) return t("errSelfTransfer");
+    }
+    return null;
   }
 
   async function run(action: VaultAction, lotId?: string) {
     setError(null);
     if (!address) {
       setError(t("needWallet"));
+      return;
+    }
+    const blocked = preflight(action);
+    if (blocked) {
+      setError(blocked);
       return;
     }
     setBusy(action + (lotId ?? ""));
@@ -177,7 +233,6 @@ export function LiveRail() {
         prepBody.amount = amount;
       }
       if (action === "transfer") {
-        if (!to.trim()) throw new Error(t("needTo"));
         prepBody.to = to.trim();
       }
       if (action === "dispute") {
@@ -213,20 +268,41 @@ export function LiveRail() {
         prep.xdr,
         prep.networkPassphrase,
       );
-      const detail =
-        action === "transfer" && sub.returnValue != null
-          ? `lot #${String(sub.returnValue)}`
-          : undefined;
+      const status = sub.status ?? "UNKNOWN";
+      if (status !== "SUCCESS") {
+        throw new Error(
+          status === "PENDING"
+            ? t("txPending")
+            : t("txFailed", { status }),
+        );
+      }
+      let detail: string | undefined;
+      if (action === "transfer" && sub.returnValue != null) {
+        const lotId = String(sub.returnValue);
+        detail = `lot #${lotId}`;
+        // Contract: only the sender (lot.from) can dispute — track locally.
+        rememberSentLot(address, {
+          id: lotId,
+          to: to.trim(),
+          amount: amount.trim() || "?",
+          at: new Date().toISOString(),
+        });
+        setSentLots(loadSentLots(address));
+      } else if (action === "settle" && isZeroReturn(sub.returnValue)) {
+        detail = t("settleZero");
+        setError(t("settleZero"));
+      }
       pushLog({
         action,
-        status: sub.status ?? "UNKNOWN",
+        status,
         hash: sub.hash,
         explorerUrl: sub.explorerUrl,
         detail,
       });
       await refreshAccount(address);
     } catch (e) {
-      const message = e instanceof Error ? e.message : "tx failed";
+      const raw = e instanceof Error ? e.message : "tx failed";
+      const message = mapChainError(raw, action);
       setError(message);
       pushLog({ action, status: "ERROR", error: message });
     } finally {
@@ -391,12 +467,37 @@ export function LiveRail() {
           </div>
           <FreighterConnect />
         </div>
+
+        <div className="mt-8 max-w-3xl">
+          <p className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
+            {t("howTitle")}
+          </p>
+          <ol className="mt-3 grid gap-2 sm:grid-cols-2">
+            {[
+              t("how1"),
+              t("how2"),
+              t("how3", { secs: windowSecs }),
+              t("how4"),
+            ].map((step, i) => (
+              <li
+                key={step}
+                className="flex gap-3 border border-[var(--color-line)] bg-[var(--color-bg)] px-4 py-3 text-sm leading-snug text-[var(--color-muted)]"
+              >
+                <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--color-accent2)]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
       </header>
 
       <section className="relative space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <StatusMark status={address ? "done" : "pending"} size={14} />
           <FadeChip>{address ? t("walletOn") : t("walletOff")}</FadeChip>
+          <FadeChip>{t("windowChip", { secs: windowSecs })}</FadeChip>
           {account && !account.exists ? (
             <FadeChip alert>{t("noAccount")}</FadeChip>
           ) : null}
@@ -472,9 +573,14 @@ export function LiveRail() {
       </section>
 
       <section className="relative space-y-6 border-t border-[var(--color-line)] pt-10">
-        <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold text-[var(--color-text)] md:text-2xl">
-          {t("signTitle")}
-        </h2>
+        <div>
+          <h2 className="font-[family-name:var(--font-display)] text-xl font-extrabold text-[var(--color-text)] md:text-2xl">
+            {t("signTitle")}
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-muted)]">
+            {t("signBody")}
+          </p>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="space-y-2 text-sm text-[var(--color-muted)]">
@@ -494,53 +600,148 @@ export function LiveRail() {
               placeholder="G…"
               className="font-[family-name:var(--font-mono)] text-xs"
             />
+            <span className="block text-xs text-[var(--color-muted)]/80">
+              {t("transferToHint")}
+            </span>
           </label>
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Button disabled={!!busy} onClick={() => void run("deposit")}>
-            {busy === "deposit" ? t("signing") : t("deposit")}
-            <ArrowRight className="size-4" strokeWidth={1.5} aria-hidden />
-          </Button>
-          <Button
-            variant="outline"
-            disabled={!!busy}
-            onClick={() => void run("transfer")}
-          >
-            {busy === "transfer" ? t("signing") : t("transfer")}
-          </Button>
-          <Button
-            variant="outline"
-            disabled={!!busy}
-            onClick={() => void run("settle")}
-          >
-            {busy === "settle" ? t("signing") : t("settle")}
-          </Button>
-          <Button
-            variant="outline"
-            disabled={!!busy}
-            onClick={() => void run("unwrap")}
-          >
-            {busy === "unwrap" ? t("signing") : t("unwrap")}
-          </Button>
-          <Button
-            variant="outline"
-            disabled={!!busy}
-            onClick={() => void run("exit")}
-          >
-            {busy === "exit" ? t("signing") : t("exit")}
-          </Button>
+          <div className="space-y-1">
+            <Button disabled={!!busy} onClick={() => void run("deposit")}>
+              {busy === "deposit" ? t("signing") : t("deposit")}
+              <ArrowRight className="size-4" strokeWidth={1.5} aria-hidden />
+            </Button>
+            <p className="max-w-[11rem] text-[11px] leading-snug text-[var(--color-muted)]">
+              {t("hintDeposit")}
+            </p>
+          </div>
+          <div className="space-y-1">
+            <Button
+              variant="outline"
+              disabled={!!busy}
+              onClick={() => void run("transfer")}
+            >
+              {busy === "transfer" ? t("signing") : t("transfer")}
+            </Button>
+            <p className="max-w-[11rem] text-[11px] leading-snug text-[var(--color-muted)]">
+              {t("hintTransfer")}
+            </p>
+          </div>
+          <div className="space-y-1">
+            <Button
+              variant="outline"
+              disabled={!!busy}
+              onClick={() => void run("settle")}
+            >
+              {busy === "settle" ? t("signing") : t("settle")}
+            </Button>
+            <p className="max-w-[11rem] text-[11px] leading-snug text-[var(--color-muted)]">
+              {t("hintSettle")}
+            </p>
+          </div>
+          <div className="space-y-1">
+            <Button
+              variant="outline"
+              disabled={!!busy}
+              onClick={() => void run("unwrap")}
+            >
+              {busy === "unwrap" ? t("signing") : t("unwrap")}
+            </Button>
+            <p className="max-w-[11rem] text-[11px] leading-snug text-[var(--color-muted)]">
+              {t("hintUnwrap")}
+            </p>
+          </div>
+          <div className="space-y-1">
+            <Button
+              variant="outline"
+              disabled={!!busy}
+              onClick={() => void run("exit")}
+            >
+              {busy === "exit" ? t("signing") : t("exit")}
+            </Button>
+            <p className="max-w-[11rem] text-[11px] leading-snug text-[var(--color-muted)]">
+              {t("hintExit")}
+            </p>
+          </div>
         </div>
 
         {account?.lots && account.lots.length > 0 ? (
           <div className="space-y-3">
-            <h3 className="text-sm font-medium text-[var(--color-text)]">
-              {t("lotsTitle")}
-            </h3>
+            <div>
+              <h3 className="text-sm font-medium text-[var(--color-text)]">
+                {t("lotsTitle")}
+              </h3>
+              <p className="mt-1 text-xs text-[var(--color-muted)]">
+                {t("lotsHint")}
+              </p>
+            </div>
             <ul className="divide-y divide-[var(--color-line)] border border-[var(--color-line)]">
-              {account.lots.map((lot) => (
+              {account.lots.map((lot) => {
+                const wait = lotWaitSecs(lot.receivedAt, windowSecs, nowSec);
+                const ready = !lot.frozen && wait <= 0;
+                return (
+                  <li
+                    key={lot.id}
+                    className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="text-sm text-[var(--color-muted)]">
+                      <span className="font-[family-name:var(--font-mono)] text-[var(--color-text)]">
+                        #{lot.id}
+                      </span>
+                      {" · "}
+                      {lot.amount} cover
+                      {lot.frozen ? ` · ${t("frozen")}` : null}
+                      {!lot.frozen
+                        ? ` · ${ready ? t("lotReady") : t("lotWait", { secs: wait })}`
+                        : null}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {showOps && lot.frozen ? (
+                        <>
+                          <Button
+                            size="sm"
+                            disabled={!!busy}
+                            onClick={() => void resolveLot(lot.id, true)}
+                          >
+                            {t("approve")}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={!!busy}
+                            onClick={() => void resolveLot(lot.id, false)}
+                          >
+                            {t("reject")}
+                          </Button>
+                        </>
+                      ) : (
+                        <p className="text-xs text-[var(--color-muted)]">
+                          {t("disputeSenderOnly")}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
+
+        {sentLots.length > 0 ? (
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-sm font-medium text-[var(--color-text)]">
+                {t("sentLotsTitle")}
+              </h3>
+              <p className="mt-1 text-xs text-[var(--color-muted)]">
+                {t("sentLotsHint")}
+              </p>
+            </div>
+            <ul className="divide-y divide-[var(--color-line)] border border-[var(--color-line)]">
+              {sentLots.map((lot) => (
                 <li
-                  key={lot.id}
+                  key={`sent-${lot.id}`}
                   className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="text-sm text-[var(--color-muted)]">
@@ -548,40 +749,16 @@ export function LiveRail() {
                       #{lot.id}
                     </span>
                     {" · "}
-                    {lot.amount} cover
-                    {lot.frozen ? ` · ${t("frozen")}` : null}
+                    {lot.amount} cover → {lot.to.slice(0, 4)}…{lot.to.slice(-4)}
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      disabled={!!busy || lot.frozen}
-                      onClick={() => void run("dispute", lot.id)}
-                    >
-                      {busy === `dispute${lot.id}`
-                        ? t("signing")
-                        : t("dispute")}
-                    </Button>
-                    {showOps && lot.frozen ? (
-                      <>
-                        <Button
-                          size="sm"
-                          disabled={!!busy}
-                          onClick={() => void resolveLot(lot.id, true)}
-                        >
-                          {t("approve")}
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          disabled={!!busy}
-                          onClick={() => void resolveLot(lot.id, false)}
-                        >
-                          {t("reject")}
-                        </Button>
-                      </>
-                    ) : null}
-                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={!!busy}
+                    onClick={() => void run("dispute", lot.id)}
+                  >
+                    {busy === `dispute${lot.id}` ? t("signing") : t("dispute")}
+                  </Button>
                 </li>
               ))}
             </ul>
@@ -626,4 +803,52 @@ export function LiveRail() {
       <ChainStatus />
     </div>
   );
+}
+
+function isZeroReturn(value: unknown): boolean {
+  if (value == null) return false;
+  if (value === 0 || value === "0") return true;
+  if (typeof value === "bigint") return value === BigInt(0);
+  if (typeof value === "string") {
+    return /^-?0(i128|u128|i64|u64)?$/i.test(value.trim());
+  }
+  return false;
+}
+
+/** Seconds left until a lot can settle (testnet windowSecs). */
+function lotWaitSecs(
+  receivedAt: string,
+  windowSecs: number,
+  nowSec: number,
+): number {
+  const received = Number(receivedAt);
+  if (!Number.isFinite(received)) return windowSecs;
+  return Math.max(0, Math.ceil(received + windowSecs - nowSec));
+}
+
+function sentLotsKey(address: string) {
+  return `bind-sent-lots-v1:${address}`;
+}
+
+function loadSentLots(address: string): SentLot[] {
+  try {
+    const raw = localStorage.getItem(sentLotsKey(address));
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as SentLot[];
+    return Array.isArray(parsed) ? parsed.slice(0, 20) : [];
+  } catch {
+    return [];
+  }
+}
+
+function rememberSentLot(address: string, lot: SentLot) {
+  try {
+    const prev = loadSentLots(address).filter((x) => x.id !== lot.id);
+    localStorage.setItem(
+      sentLotsKey(address),
+      JSON.stringify([lot, ...prev].slice(0, 20)),
+    );
+  } catch {
+    /* private mode */
+  }
 }
