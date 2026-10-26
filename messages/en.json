@@ -78,9 +78,9 @@
     "ctaDocs": "Read the docs"
   },
   "QuickDemo": {
-    "eyebrow": "Scroll · ~30 seconds",
-    "title": "Watch Bind in four beats",
-    "body": "A compressed walkthrough of Protected Deposit. Scroll the window; the story moves for you.",
+    "eyebrow": "Scroll · four beats",
+    "title": "How cover works",
+    "body": "Scroll to walk Deposit, the retention hold, then Settled or Claim.",
     "windowChrome": "bind · protected deposit",
     "scrollHint": "Scroll inside this window. No taps needed.",
     "stepDeposit": "Deposit",
@@ -124,7 +124,7 @@
     "s4PegOk": "OK",
     "s4ClaimKicker": "Step 4 · Claim",
     "s4ClaimTitle": "Breach in window: Bind indemnifies",
-    "s4ClaimBody": "Lot freezes. Claims desk reviews. Approved claim remints settled cover to the rightful party.",
+    "s4ClaimBody": "Lot freezes. Claims desk reviews. Approved claim settles cover 1:1 to the rightful party. Clawback is ops under the hood, not the product pitch.",
     "s4Lot": "Lot",
     "s4Frozen": "Frozen",
     "s4ClaimOpen": "Open",
@@ -132,7 +132,12 @@
     "s4Blocked": "Blocked",
     "runAgain": "Run again",
     "openConsole": "Open full console",
-    "seeOps": "See claims ops"
+    "seeOps": "See claims ops",
+    "nodeWallet": "Wallet",
+    "nodeRail": "Bind rail",
+    "nodeWindow": "Retention",
+    "nodeSettled": "Settled",
+    "nodeClaim": "Claim"
   },
   "Cover": {
     "meta": "Cover",

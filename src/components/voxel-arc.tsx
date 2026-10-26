@@ -152,20 +152,20 @@ export function VoxelArc({
       ctx!.fillRect(0, 0, w, h);
 
       const hz = h * horizon;
-      // How far the crest dissolves into the sky (kills the hard line)
-      const crestFeather = h * 0.16;
+      // Wide dissolve so voxel tops never form a second hard crest line
+      const crestFeather = h * 0.28;
 
       // Soft atmosphere — bleeds past the crest so there’s no knife-edge
       if (haze > 0) {
-        const sky = ctx!.createLinearGradient(0, 0, 0, hz + crestFeather * 0.4);
+        const sky = ctx!.createLinearGradient(0, 0, 0, hz + crestFeather * 0.55);
         sky.addColorStop(0, rgb(bg, 1));
         sky.addColorStop(
-          0.7,
-          `rgba(${mix(bg, accent, 0.05 * glow).join(",")},${0.4 * haze})`,
+          0.78,
+          `rgba(${mix(bg, accent, 0.04 * glow).join(",")},${0.28 * haze})`,
         );
         sky.addColorStop(1, "rgba(0,0,0,0)");
         ctx!.fillStyle = sky;
-        ctx!.fillRect(0, 0, w, hz + crestFeather * 0.4);
+        ctx!.fillRect(0, 0, w, hz + crestFeather * 0.55);
       }
 
       const nx = cols();
@@ -220,27 +220,29 @@ export function VoxelArc({
 
       const r = Math.max(0, Math.min(1, roundness));
       for (const p of pts) {
-        // Fade voxels as they approach the crest — no hard cut
+        // Start fading well below the horizon so tops never silhouette a 2nd wave
         const crestFade = clamp01(
-          (p.sy - (hz - crestFeather * 0.15)) / crestFeather,
+          (p.sy - (hz - crestFeather * 0.55)) / (crestFeather * 1.15),
         );
-        if (crestFade <= 0.02) continue;
-        const fog = clamp01((p.depth - 0.1) / 0.9);
+        if (crestFade <= 0.04) continue;
+        const fog = clamp01((p.depth - 0.08) / 0.92);
         const a =
           (0.38 + p.lit * 0.62) *
-          (1 - fog * 0.5 * haze) *
+          (1 - fog * 0.58 * haze) *
           introK *
           crestFade;
-        if (a < 0.03) continue;
+        if (a < 0.04) continue;
         const c = mix(base, accent, clamp01(p.lit * 1.2 - 0.12));
-        if (bloom > 0 && p.lit > 0.7) {
-          ctx!.fillStyle = `rgba(${accent.join(",")},${(p.lit - 0.7) * bloom * 0.5 * introK * crestFade})`;
+        // No bloom near the crest — bloom was painting a ghost ridge above the sea
+        const nearCrest = crestFade < 0.55;
+        if (bloom > 0 && p.lit > 0.72 && !nearCrest) {
+          ctx!.fillStyle = `rgba(${accent.join(",")},${(p.lit - 0.72) * bloom * 0.35 * introK * crestFade})`;
           roundRect(
             ctx!,
-            p.sx - p.size * 0.9,
-            p.sy - p.size * 0.9,
-            p.size * 1.8,
-            p.size * 1.8,
+            p.sx - p.size * 0.85,
+            p.sy - p.size * 0.85,
+            p.size * 1.7,
+            p.size * 1.7,
             p.size * r,
           );
           ctx!.fill();
@@ -257,41 +259,42 @@ export function VoxelArc({
         ctx!.fill();
       }
 
-      // Soft horizon glow (arc), feathered — not a hard band
+      // Soft under-crest wash only (no radial arc — that doubled the horizon)
       if (glow > 0) {
-        const g = ctx!.createRadialGradient(
-          w * 0.5,
-          hz + crestFeather * 0.25,
-          w * 0.02,
-          w * 0.5,
-          hz + crestFeather * 0.25,
-          w * 0.65,
+        const wash = ctx!.createLinearGradient(
+          0,
+          hz + crestFeather * 0.15,
+          0,
+          hz + crestFeather * 1.1,
         );
-        g.addColorStop(0, `rgba(${accent.join(",")},${0.2 * glow * introK})`);
-        g.addColorStop(0.4, `rgba(${accent.join(",")},${0.07 * glow * introK})`);
-        g.addColorStop(1, "rgba(0,0,0,0)");
-        ctx!.fillStyle = g;
-        ctx!.fillRect(0, hz - crestFeather * 0.2, w, h * 0.55);
+        wash.addColorStop(
+          0,
+          `rgba(${accent.join(",")},${0.06 * glow * introK})`,
+        );
+        wash.addColorStop(1, "rgba(0,0,0,0)");
+        ctx!.fillStyle = wash;
+        ctx!.fillRect(0, hz + crestFeather * 0.1, w, crestFeather);
       }
 
-      // Final crest dissolve into sky — removes the line through the headline
+      // Final crest dissolve into sky — kills any remaining silhouette
       {
         const dissolve = ctx!.createLinearGradient(
           0,
-          hz - crestFeather * 0.5,
+          hz - crestFeather * 0.75,
           0,
-          hz + crestFeather,
+          hz + crestFeather * 0.85,
         );
         dissolve.addColorStop(0, rgb(bg, 1));
-        dissolve.addColorStop(0.35, rgb(bg, 0.65));
-        dissolve.addColorStop(0.7, rgb(bg, 0.22));
+        dissolve.addColorStop(0.28, rgb(bg, 0.78));
+        dissolve.addColorStop(0.55, rgb(bg, 0.35));
+        dissolve.addColorStop(0.82, rgb(bg, 0.1));
         dissolve.addColorStop(1, "rgba(0,0,0,0)");
         ctx!.fillStyle = dissolve;
         ctx!.fillRect(
           0,
-          hz - crestFeather * 0.5,
+          hz - crestFeather * 0.75,
           w,
-          crestFeather * 1.5,
+          crestFeather * 1.7,
         );
       }
 

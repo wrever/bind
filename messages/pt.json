@@ -78,9 +78,9 @@
     "ctaDocs": "Ler docs"
   },
   "QuickDemo": {
-    "eyebrow": "Scroll · ~30 segundos",
-    "title": "Veja a Bind em quatro tempos",
-    "body": "Um walkthrough comprimido de Protected Deposit. Role a janela; a história anda sozinha.",
+    "eyebrow": "Scroll · quatro tempos",
+    "title": "Como o cover funciona",
+    "body": "Role: Deposit, retenção, depois Settled ou Claim.",
     "windowChrome": "bind · protected deposit",
     "scrollHint": "Role dentro desta janela. Sem toques.",
     "stepDeposit": "Depositar",
@@ -124,7 +124,7 @@
     "s4PegOk": "OK",
     "s4ClaimKicker": "Passo 4 · Claim",
     "s4ClaimTitle": "Breach na janela: a Bind indeniza",
-    "s4ClaimBody": "O lot congela. O desk de claims revisa. Claim aprovado reminta cover settled à parte legítima. Clawback é ops sob o capô, não o pitch do produto.",
+    "s4ClaimBody": "O lot congela. O desk de claims revisa. Claim aprovado liquida cover 1:1 à parte legítima. Clawback é ops sob o capô, não o pitch do produto.",
     "s4Lot": "Lot",
     "s4Frozen": "Congelado",
     "s4ClaimOpen": "Aberto",
@@ -132,7 +132,12 @@
     "s4Blocked": "Bloqueada",
     "runAgain": "De novo",
     "openConsole": "Abrir console completo",
-    "seeOps": "Ver claims ops"
+    "seeOps": "Ver claims ops",
+    "nodeWallet": "Wallet",
+    "nodeRail": "Rail Bind",
+    "nodeWindow": "Retenção",
+    "nodeSettled": "Settled",
+    "nodeClaim": "Claim"
   },
   "Cover": {
     "meta": "Cobertura",

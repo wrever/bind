@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { LandingScrollDemo } from "@/components/landing-scroll-demo";
+import { CoverScrollDemo } from "@/components/cover-scroll-demo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
@@ -47,9 +47,9 @@ export default async function HomePage({ params }: Props) {
               waveLength={1}
               speed={0.42}
               turbulence={0.38}
-              glow={1}
-              haze={0.65}
-              bloom={0.5}
+              glow={0.55}
+              haze={0.7}
+              bloom={0.28}
               brightness={1}
               interactive={false}
               intro
@@ -94,7 +94,7 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             <div className="pt-2 sm:pt-4">
-              <LandingScrollDemo />
+              <CoverScrollDemo />
             </div>
 
             <div
