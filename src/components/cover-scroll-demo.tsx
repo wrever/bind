@@ -6,16 +6,22 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
   type RefObject,
 } from "react";
 import { useTranslations } from "next-intl";
+import { CountUp } from "@/components/motion/count-up";
+import { FadeChip } from "@/components/motion/fade-chip";
+import { FlatTimer } from "@/components/motion/flat-timer";
+import { SplitRise } from "@/components/motion/split-rise";
+import { StatusMark } from "@/components/motion/status-mark";
 import { cn } from "@/lib/utils";
 
 type StepId = "deposit" | "hold" | "settle" | "claim";
 
 const STEPS: StepId[] = ["deposit", "hold", "settle", "claim"];
 
-/** Concept C — Split diagram: sticky SVG path + scrolling step copy. */
+/** Concept C — Split diagram + Bind-native motion (no React Bits license). */
 export function CoverScrollDemo() {
   const t = useTranslations("QuickDemo");
   const trackRef = useRef<HTMLElement>(null);
@@ -97,7 +103,6 @@ export function CoverScrollDemo() {
     };
   }, [reduceMotion]);
 
-  // Spine draws through deposit+hold (0–50%). Branches fill settle/claim halves.
   const spineP = Math.min(1, progress / 0.5);
   const settleP =
     active === "settle" || active === "claim"
@@ -106,7 +111,15 @@ export function CoverScrollDemo() {
   const claimP =
     active === "claim" ? Math.min(1, Math.max(0, (progress - 0.75) / 0.25)) : 0;
 
-  const head = headFor(active, spineRef, settleRef, claimRef, spineP, settleP, claimP);
+  const head = headFor(
+    active,
+    spineRef,
+    settleRef,
+    claimRef,
+    spineP,
+    settleP,
+    claimP,
+  );
   const timer = holdTimer(progress);
 
   return (
@@ -122,10 +135,23 @@ export function CoverScrollDemo() {
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
               {t("eyebrow")}
             </p>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <FadeChip show={stepIndex >= 0} delayMs={0}>
+                Cover active
+              </FadeChip>
+              <FadeChip show={active === "hold" || stepIndex >= 1} delayMs={60}>
+                Free exit paused
+              </FadeChip>
+              <FadeChip show={active === "claim"} delayMs={80} alert>
+                Incident
+              </FadeChip>
+            </div>
+
             <div className="mt-3 flex-1">
               <svg
                 viewBox="-90 8 260 350"
-                className="mx-auto h-[min(48vh,380px)] w-full max-w-[300px] md:h-[min(56vh,460px)]"
+                className="mx-auto h-[min(44vh,360px)] w-full max-w-[300px] md:h-[min(52vh,440px)]"
                 aria-hidden
               >
                 <path
@@ -187,39 +213,50 @@ export function CoverScrollDemo() {
                   x={40}
                   y={40}
                   label={t("nodeWallet")}
-                  lit={active === "deposit"}
-                  done={stepIndex > 0}
+                  status={nodeStatus(stepIndex, 0, active === "deposit")}
                 />
                 <NodeBox
                   x={40}
                   y={112}
                   label={t("nodeRail")}
-                  lit={active === "deposit" || active === "hold"}
-                  done={stepIndex > 0}
+                  status={nodeStatus(
+                    stepIndex,
+                    0,
+                    active === "deposit" || active === "hold",
+                  )}
                 />
                 <NodeBox
                   x={40}
                   y={186}
                   label={t("nodeWindow")}
-                  lit={active === "hold"}
-                  done={stepIndex > 1}
+                  status={nodeStatus(stepIndex, 1, active === "hold")}
                   sub={
-                    active === "hold" || stepIndex > 1 ? timer : undefined
+                    active === "hold" || stepIndex > 1 ? (
+                      <FlatTimer value={timer} className="text-[12px]" />
+                    ) : undefined
                   }
                 />
                 <NodeBox
                   x={118}
                   y={318}
                   label={t("nodeSettled")}
-                  lit={active === "settle"}
-                  done={active === "settle"}
+                  status={
+                    active === "settle"
+                      ? "running"
+                      : stepIndex > 2
+                        ? "done"
+                        : "pending"
+                  }
                 />
                 <NodeBox
                   x={-38}
                   y={318}
                   label={t("nodeClaim")}
-                  lit={active === "claim"}
-                  done={active === "claim"}
+                  status={
+                    active === "claim"
+                      ? "failed"
+                      : "pending"
+                  }
                   alert={active === "claim"}
                 />
 
@@ -234,10 +271,27 @@ export function CoverScrollDemo() {
                 ) : null}
               </svg>
             </div>
-            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--color-line)] pt-3 font-[family-name:var(--font-mono)] text-[12px] tabular-nums text-[var(--color-accent2)]">
-              <span>Vault 100.00</span>
+
+            <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[var(--color-line)] pt-3 font-[family-name:var(--font-mono)] text-[12px] tabular-nums text-[var(--color-accent2)]">
+              <span>
+                Vault{" "}
+                <CountUp
+                  to={100}
+                  decimals={2}
+                  playKey={active}
+                  reduceMotion={reduceMotion}
+                />
+              </span>
               <span className="text-[var(--color-muted)]">·</span>
-              <span>Supply 100.00</span>
+              <span>
+                Supply{" "}
+                <CountUp
+                  to={100}
+                  decimals={2}
+                  playKey={active}
+                  reduceMotion={reduceMotion}
+                />
+              </span>
             </div>
           </div>
 
@@ -255,19 +309,27 @@ export function CoverScrollDemo() {
                       on ? "opacity-100" : done ? "opacity-55" : "opacity-32",
                     )}
                   >
-                    <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
-                      {item.kicker}
-                    </p>
-                    <h2
-                      className={cn(
-                        "mt-1.5 font-[family-name:var(--font-display)] font-extrabold tracking-[-0.025em] text-[var(--color-text)]",
-                        on
-                          ? "text-[clamp(1.35rem,3.2vw,2.15rem)] leading-[1.15]"
-                          : "text-lg leading-snug md:text-xl",
-                      )}
-                    >
-                      {item.title}
-                    </h2>
+                    <div className="flex items-center gap-2">
+                      <StatusMark
+                        status={on ? "running" : done ? "done" : "pending"}
+                        size={14}
+                      />
+                      <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
+                        {item.kicker}
+                      </p>
+                    </div>
+                    {on ? (
+                      <SplitRise
+                        text={item.title}
+                        playKey={id}
+                        reduceMotion={reduceMotion}
+                        className="mt-1.5 font-[family-name:var(--font-display)] text-[clamp(1.35rem,3.2vw,2.15rem)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[var(--color-text)]"
+                      />
+                    ) : (
+                      <h2 className="mt-1.5 font-[family-name:var(--font-display)] text-lg font-extrabold leading-snug tracking-[-0.025em] text-[var(--color-text)] md:text-xl">
+                        {item.title}
+                      </h2>
+                    )}
                     {on ? (
                       <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--color-muted)] md:text-[15px]">
                         {item.body}
@@ -284,28 +346,36 @@ export function CoverScrollDemo() {
   );
 }
 
+function nodeStatus(
+  stepIndex: number,
+  nodeStep: number,
+  lit: boolean,
+): "pending" | "running" | "done" {
+  if (lit) return "running";
+  if (stepIndex > nodeStep) return "done";
+  return "pending";
+}
+
 function NodeBox({
   x,
   y,
   label,
-  lit,
-  done,
+  status,
   sub,
   alert,
 }: {
   x: number;
   y: number;
   label: string;
-  lit: boolean;
-  done: boolean;
-  sub?: string;
+  status: "pending" | "running" | "done" | "failed";
+  sub?: ReactNode;
   alert?: boolean;
 }) {
   const border = alert
     ? "#F12A02"
-    : lit
+    : status === "running"
       ? "#F54307"
-      : done
+      : status === "done"
         ? "#AFAFAC"
         : "#3A3934";
   return (
@@ -314,14 +384,20 @@ function NodeBox({
         x={-54}
         y={-18}
         width={108}
-        height={sub ? 46 : 36}
+        height={sub ? 48 : 36}
         rx={4}
         fill="#22211E"
         stroke={border}
         strokeWidth={1}
       />
+      <foreignObject x={-48} y={-12} width={16} height={16}>
+        <div className="flex h-4 w-4 items-center justify-center">
+          <StatusMark status={status} size={12} />
+        </div>
+      </foreignObject>
       <text
-        textAnchor="middle"
+        textAnchor="start"
+        x={-28}
         y={sub ? 2 : 5}
         fill="#F5F4F0"
         fontSize={11}
@@ -331,16 +407,9 @@ function NodeBox({
         {label}
       </text>
       {sub ? (
-        <text
-          textAnchor="middle"
-          y={20}
-          fill="#01E4FD"
-          fontSize={13}
-          fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-          fontWeight={600}
-        >
-          {sub}
-        </text>
+        <foreignObject x={-48} y={8} width={96} height={22}>
+          <div className="flex justify-center">{sub}</div>
+        </foreignObject>
       ) : null}
     </g>
   );
@@ -356,9 +425,9 @@ function headFor(
   claimP: number,
 ): { x: number; y: number } | null {
   try {
-    if (active === "claim" && claim.current && claimP > 0) {
+    if (active === "claim" && claim.current) {
       const len = claim.current.getTotalLength();
-      const pt = claim.current.getPointAtLength(len * claimP);
+      const pt = claim.current.getPointAtLength(len * Math.max(0.02, claimP));
       return { x: pt.x, y: pt.y };
     }
     if (active === "settle" && settle.current) {

@@ -157,3 +157,54 @@ body {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
+
+/* Bind-native motion (inspired by React Bits patterns — no RB license) */
+.split-rise {
+  display: block;
+}
+
+.split-rise__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.split-rise__word {
+  display: inline-block;
+  animation: split-rise-word 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes split-rise-word {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-chip {
+  animation: fade-chip-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes fade-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-rise__word,
+  .fade-chip {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
