@@ -131,14 +131,14 @@ export function CoverScrollDemo() {
       aria-label={t("title")}
     >
       <div className="sticky top-[60px] z-10 flex h-[calc(100dvh-60px)] w-full items-stretch">
-        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-5 px-4 py-5 md:grid-cols-2 md:gap-10 md:px-8 md:py-8">
-          {/* Opaque plate only on the diagram — aurora stays visible around it */}
-          <div className="relative flex min-h-0 flex-col justify-center rounded-lg border border-[var(--color-line)] bg-[var(--color-bg)]/95 p-4 shadow-[inset_0_1px_0_rgba(245,244,240,0.04)] md:p-6">
+        <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-8 px-4 py-6 md:grid-cols-2 md:gap-12 md:px-8 md:py-10 lg:gap-16">
+          {/* Solid plate — aurora stays outside the border */}
+          <div className="relative flex min-h-0 flex-col justify-center rounded-xl border border-[var(--color-line)] bg-[var(--color-bg)] p-6 md:p-8">
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--color-muted)]">
               {t("eyebrow")}
             </p>
 
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
               <FadeChip show={stepIndex >= 0} delayMs={0}>
                 Cover active
               </FadeChip>
@@ -150,10 +150,10 @@ export function CoverScrollDemo() {
               </FadeChip>
             </div>
 
-            <div className="mt-3 flex-1">
+            <div className="mt-5 flex-1">
               <svg
                 viewBox="-90 8 260 350"
-                className="mx-auto h-[min(44vh,360px)] w-full max-w-[300px] md:h-[min(52vh,440px)]"
+                className="mx-auto h-[min(42vh,340px)] w-full max-w-[300px] md:h-[min(48vh,400px)]"
                 aria-hidden
               >
                 {/* Connectors run between nodes so the head sits under boxes, not through them */}
@@ -280,7 +280,7 @@ export function CoverScrollDemo() {
               </svg>
             </div>
 
-            <div className="mt-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[var(--color-line)] pt-3 font-[family-name:var(--font-mono)] text-[12px] tabular-nums text-[var(--color-accent2)]">
+            <div className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-[var(--color-line)] pt-4 font-[family-name:var(--font-mono)] text-[12px] tabular-nums text-[var(--color-accent2)]">
               <span>
                 Vault <span className="tabular-nums">{peg.vault.toFixed(2)}</span>
               </span>
@@ -292,12 +292,8 @@ export function CoverScrollDemo() {
             </div>
           </div>
 
-          <div className="relative flex min-h-0 flex-col justify-center overflow-y-auto py-2">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -inset-x-4 inset-y-0 -z-10 rounded-2xl bg-[radial-gradient(ellipse_at_30%_40%,rgba(14,16,13,0.72)_0%,rgba(14,16,13,0.35)_55%,transparent_78%)] md:-inset-x-6"
-            />
-            <ul className="space-y-5 md:space-y-7">
+          <div className="relative flex min-h-0 flex-col justify-center overflow-y-auto rounded-xl border border-[var(--color-line)] bg-[var(--color-bg)] p-6 md:p-8">
+            <ul className="space-y-6 md:space-y-8">
               {STEPS.map((id, i) => {
                 const on = i === stepIndex;
                 const done = i < stepIndex;
@@ -324,15 +320,15 @@ export function CoverScrollDemo() {
                         text={item.title}
                         playKey={id}
                         reduceMotion={reduceMotion}
-                        className="mt-1.5 font-[family-name:var(--font-display)] text-[clamp(1.35rem,3.2vw,2.15rem)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[var(--color-text)]"
+                        className="mt-2 font-[family-name:var(--font-display)] text-[clamp(1.35rem,3.2vw,2.15rem)] font-extrabold leading-[1.15] tracking-[-0.025em] text-[var(--color-text)]"
                       />
                     ) : (
-                      <h2 className="mt-1.5 font-[family-name:var(--font-display)] text-lg font-extrabold leading-snug tracking-[-0.025em] text-[var(--color-text)] md:text-xl">
+                      <h2 className="mt-2 font-[family-name:var(--font-display)] text-lg font-extrabold leading-snug tracking-[-0.025em] text-[var(--color-text)] md:text-xl">
                         {item.title}
                       </h2>
                     )}
                     {on ? (
-                      <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--color-muted)] md:text-[15px]">
+                      <p className="mt-3 max-w-md text-sm leading-relaxed text-[var(--color-muted)] md:text-[15px]">
                         {item.body}
                       </p>
                     ) : null}
